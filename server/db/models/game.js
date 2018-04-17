@@ -14,8 +14,10 @@ const Game = db.define('game', {
     type: Sequelize.TEXT,
     allowNull: true
   },
-  coverUrl: Sequelize.STRING,
-  allowNull: true
+  coverUrl: {
+    type: Sequelize.STRING,
+    allowNull: true
+  }
 })
 
 module.exports = Game
