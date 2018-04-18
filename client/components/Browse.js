@@ -8,6 +8,7 @@ export default class Browse extends React.Component {
 
   render() {
     return (
+      // OB/KH: zombies!
       // <div>
       //   <ul>
       //     {this.props.products && this.props.products.map(product => (

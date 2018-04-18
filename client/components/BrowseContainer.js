@@ -8,6 +8,12 @@ const mapState = (state) => {
   }
 }
 
+// OB/KH: there's a "object" form of mapDispatchToProps
+/*
+const mapDispatch = {
+  loadAllProducts: fetchGames
+};
+*/
 const mapDispatch = (dispatch) => {
   return {
     loadAllProducts: () => {

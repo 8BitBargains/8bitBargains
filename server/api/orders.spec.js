@@ -11,6 +11,7 @@ describe('Order routes', () => {
     return db.sync({force: true})
   })
 
+  // OB/KH: more undead code
   // describe('/api/orders/', () => {
   //   const codysEmail = 'cody@puppybook.com'
 

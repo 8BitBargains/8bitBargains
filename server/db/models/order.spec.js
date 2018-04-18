@@ -8,7 +8,7 @@ describe('Order model', () => {
   beforeEach(() => {
     return db.sync({force: true})
   })
-
+  // OB/KH: remove undead code from master source, instead consider keeping it in an issue, comments should be for documentation ONLY
   // describe('instanceMethods', () => {
   //   describe('correctPassword', () => {
   //     let cody

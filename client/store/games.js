@@ -20,6 +20,7 @@ export const fetchGames = () =>
       .then(res =>
         dispatch(getGames(res.data)))
       .catch(err => console.log(err))
+      // OB/KH: error handling that reports to the user, alert is a bad option, toastr is a better option https://github.com/tomchentw/react-toastr
 
 
 /**
