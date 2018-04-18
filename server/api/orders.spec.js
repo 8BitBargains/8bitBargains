@@ -1,33 +1,54 @@
 /* global describe beforeEach it */
 
-const {expect} = require('chai')
-const request = require('supertest')
-const db = require('../db')
-const app = require('../index')
-const Order = db.model('order')
+const {expect} = require('chai');
+const request = require('supertest');
+const db = require('../db');
+const app = require('../index');
+const Order = db.model('order');
 
-describe('Order routes', () => {
+// tests and things and wow everything works great!!!
+
+describe('Game routes', () => {
   beforeEach(() => {
-    return db.sync({force: true})
-  })
+    return db.sync({ force: true });
+  });
 
-  // describe('/api/orders/', () => {
-  //   const codysEmail = 'cody@puppybook.com'
+  describe('/api/orders/', () => {
 
-  //   beforeEach(() => {
-  //     return User.create({
-  //       email: codysEmail
-  //     })
-  //   })
+    beforeEach(() => {
 
-  //   it('GET /api/users', () => {
-  //     return request(app)
-  //       .get('/api/users')
-  //       .expect(200)
-  //       .then(res => {
-  //         expect(res.body).to.be.an('array')
-  //         expect(res.body[0].email).to.be.equal(codysEmail)
-  //       })
-  //   })
-  // }) // end describe('/api/orders')
-}) // end describe('Order routes')
+    });
+
+    it('GET /api/orders', () => {
+
+    });
+
+  describe('/api/orders/:orderId', () => {
+
+    beforeEach(() => {
+
+    });
+
+    it('GET /api/orders/:orderId/games', () => {
+
+    });
+
+    it('POST /api/orders/:orderId/games', () => {
+
+    });
+
+    it('PUT /api/orders/:orderId/games', () => {
+
+    });
+
+  describe('/api/orders/allOrders', () => {
+
+    beforeEach(() => {
+
+    });
+
+    it('GET /api/orders/allOrders', () => {
+
+    });
+  }); // end describe('/api/orders')
+});// end describe('Order routes')

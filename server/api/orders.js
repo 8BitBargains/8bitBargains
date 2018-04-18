@@ -2,26 +2,17 @@ const router = require('express').Router();
 const { Order, GameOrder } = require('../db/models');
 module.exports = router;
 
-router.get('/:userId/allOrders', (req, res, next) => {
-  // ONLY ADMIN SHOULD BE ABLE TO SEE THIS ROUTE
-  // to reiterate, ONLY ADMIN SHOULD BE ABLE TO SEE THIS ROUTE
-  // userId/privileges will have to be pulled in from
-  // the session data
-  // might need to add a 'privileges' ENUM column to User db
-  // and use that to protect our findAll
+router.get('/allOrders', (req, res, next) => {
+  // returns all orders (should only be visible to super user)
   Order.findAll()
-  .then(orders  => res.json(orders))
-  .catch(next);
+    .then(orders  => res.json(orders))
+    .catch(next);
 });
 
-router.get('/:userId/:orderId?', (req, res, next) => {
-  // fetches all orders based on userId or fetches just one if
+router.get('/:orderId?', (req, res, next) => {
+  // fetches all orders for that specific user or fetches just one if
   // the optional orderId parameter is added
-  // ONLY ADMIN AND THE SPECIFIC USER SHOULD BE ABLE TO
-  // SEE THIS ROUTE
-  // to reiterate, ONLY ADMIN AND THE SPECIFIC USER
-  //SHOULD BE ABLE TO SEE THIS ROUTE
-  const userId = req.params.userId;
+  const userId = req.user.id;
   if (req.params.orderId){
     const id = req.params.orderId;
     Order.findOne({where: { id, userId }})
@@ -29,40 +20,48 @@ router.get('/:userId/:orderId?', (req, res, next) => {
     Order.findAll({
       where: { userId }
     })
-    .then(orders  => res.json(orders))
-    .catch(next);
+      .then(orders  => res.json(orders))
+      .catch(next);
   }
 });
 
-router.post('/:userId', (req, res, next) => {
+router.post('/', (req, res, next) => {
   // create new order
-  const userId = req.params.userId
-  const address = req.body.address.split(',');
+  const userId = req.body.userId
+  const address = req.body.address;
   Order.create({ userId, address })
-  .then(order => res.json(order))
-  .catch(next);
+    .then(order => res.json(order))
+    .catch(next);
 });
 
-router.put('/:userId/:orderId/:gameId', (req, res, next) => {
-  // update an item on an active order
-  const gameId = req.params.gameId;
+router.post('/:orderId/games', (req, res, next) => {
+    // create an instance of a game on an order
   const orderId = req.params.orderId;
+  const gameId = req.body.gameId;
+  GameOrder.create({orderId, gameId})
+    .then(gameOrder => res.send(gameOrder))
+    .catch(next);
+});
+
+router.put('/:orderId/games', (req, res, next) => {
+  // update an instance in the gameOrders join table on an active order
+  const orderId = req.params.orderId;
+  const gameId = req.body.gameId;
   const quantity = req.body.quantity;
   GameOrder.findOne({where: { gameId, orderId }})
-  .then(gameOrder => {
-    return gameOrder.update({ quantity });
-  })
-  .then(gameOrder => res.send(gameOrder))
-  .catch(next);
+    .then(gameOrder => {
+      return gameOrder.update({ quantity })
+    })
+    .then(gameOrder => res.send(gameOrder))
+    .catch(next);
 });
 
-router.delete('/:userId/:orderId/:gameId', (req, res, next) => {
+router.delete('/:orderId', (req, res, next) => {
   // delete an item on an active order
-  const gameId = req.params.gameId;
   const orderId = req.params.orderId;
+  const gameId = req.body.gameId;
   GameOrder.findOne({where: { gameId, orderId }})
-  .then(gameOrder => gameOrder.destroy())
-  .then(() => res.sendStatus(204))
-  .catch(next);
+    .then(gameOrder => gameOrder.destroy())
+    .then(() => res.sendStatus(204))
+    .catch(next);
 });
-
