@@ -2,6 +2,15 @@ const router = require('express').Router();
 const { Order, GameOrder } = require('../db/models');
 module.exports = router;
 
+// OB/KH: RESTful standards, for the sake of clarity / readability, uniqueness
+/*
+all orders...
+GET /api/orders
+orders by user...
+GET /api/users/:userId/orders
+GET /api/orders?userId=5 (using the querying string)
+*/
+
 router.get('/:userId/allOrders', (req, res, next) => {
   // ONLY ADMIN SHOULD BE ABLE TO SEE THIS ROUTE
   // to reiterate, ONLY ADMIN SHOULD BE ABLE TO SEE THIS ROUTE
@@ -34,6 +43,7 @@ router.get('/:userId/:orderId?', (req, res, next) => {
   }
 });
 
+// OB/KH: user id can be on the request body (same for PUT, but also with game id)
 router.post('/:userId', (req, res, next) => {
   // create new order
   const userId = req.params.userId
