@@ -7,19 +7,19 @@ const db = require('../db')
 const app = require('../index')
 const Game = db.model('game')
 
-describe('Game routes', () => {
+describe('Product routes', () => {
   beforeEach(() => {
     return db.sync({ force: true })
   })
 
-  describe('/api/games/', () => {
+  describe('/api/products/', () => {
 
     beforeEach(() => {
 
     })
 
-    it('GET /api/games', () => {
+    it('GET /api/products', () => {
 
     })
-  }) // end describe('/api/games')
-}) // end describe('Game routes')
+  }) // end describe('/api/products')
+}) // end describe('Product routes')

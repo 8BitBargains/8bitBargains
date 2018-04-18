@@ -16,14 +16,14 @@ const getSingleProduct = product => ({ type: GET_SINGLE_PRODUCT, product });
  */
 export const fetchSingleProduct = (id) => {
   return dispatch => (
-    axios.get(`/api/games/${id}`)
+    axios.get(`/api/products/${id}`)
       .then(res => {
-        dispatch(getSingleProduct(res.data))
+        dispatch(getSingleProduct(res.data));
       }
       )
       .catch(err => console.log(err))
   );
-}
+};
 
 /**
  * REDUCER

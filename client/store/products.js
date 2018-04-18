@@ -16,7 +16,7 @@ const getProducts = products => ({ type: GET_PRODUCTS, products });
  */
 export const fetchProducts = () =>
   dispatch => (
-    axios.get('/api/games')
+    axios.get('/api/products')
       .then(res =>
         dispatch(getProducts(res.data)))
       .catch(err => console.log(err))
