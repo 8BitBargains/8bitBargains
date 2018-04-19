@@ -1,19 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Sidebar, Segment, Menu } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
+import { sortProducts } from '../store';
+
 
 // const mapState = (state) => {
 //   return {
 //   };
 // };
 
-// const mapDispatch = (dispatch) => {
-//   return {
-//   };
-// };
+const mapDispatch = (dispatch) => {
+  return {
+    sortProducts: (field, direction) => {
+      dispatch(sortProducts(field, direction));
+    }
+  };
+};
 
-export default class SidebarFilter extends React.Component {
+class SidebarFilter extends React.Component {
   handleItemClick = name => this.setState({ activeItem: name })
 
 
@@ -21,29 +26,41 @@ export default class SidebarFilter extends React.Component {
     const { activeItem } = this.state || {};
 
     return (
-      <Sidebar as={Menu} animation="overlay" visible={true} vertical>
+      <Menu vertical className="browse-sidebar">
         <Menu.Item>
           <Menu.Header>FILTER PRODUCTS</Menu.Header>
         </Menu.Item>
         <Menu.Item>
-          <Menu.Header>Example Header</Menu.Header>
+          <Menu.Header>Price</Menu.Header>
           <Menu.Menu>
-            <Menu.Item name="example menu item" active={activeItem === 'example menu item'} onClick={this.handleItemClick} />
-            <Menu.Item name="example menu item" active={activeItem === 'example menu item'} onClick={this.handleItemClick} />
+            <Menu.Item name="ascending" active={activeItem === 'ascending'} onClick={() => {
+              this.props.sortProducts('price', 'asc');
+              this.handleItemClick();
+            }} />
+            <Menu.Item name="descending" active={activeItem === 'descending'} onClick={() => {
+              this.props.sortProducts('price', 'desc');
+              this.handleItemClick();
+            }} />
           </Menu.Menu>
         </Menu.Item>
         <Menu.Item>
-          <Menu.Header>Example Header</Menu.Header>
+          <Menu.Header>Title</Menu.Header>
           <Menu.Menu>
-            <Menu.Item name="example menu item" active={activeItem === 'example menu item'} onClick={this.handleItemClick} />
-            <Menu.Item name="example menu item" active={activeItem === 'example menu item'} onClick={this.handleItemClick} />
+            <Menu.Item name="ascending" active={activeItem === 'ascending'} onClick={() => {
+              this.props.sortProducts('title', 'asc');
+              this.handleItemClick();
+            }} />
+            <Menu.Item name="descending" active={activeItem === 'descending'} onClick={() => {
+              this.props.sortProducts('title', 'desc');
+              this.handleItemClick();
+            }} />
           </Menu.Menu>
         </Menu.Item>
-      </Sidebar >
+      </Menu>
     );
   }
 }
 
-// const SidebarFilterContainer = connect(mapState, mapDispatch)(SidebarFilter);
+const SidebarFilterContainer = connect(null, mapDispatch)(SidebarFilter);
 
-// export default SidebarFilterContainer;
+export default SidebarFilterContainer;

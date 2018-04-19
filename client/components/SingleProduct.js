@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Header, Image } from 'semantic-ui-react';
 import { displayPrice } from '../utils';
 import { connect } from 'react-redux';
-import { fetchSingleProduct } from '../store/selectedProduct';
+import { fetchSingleProduct } from '../store';
 
 const mapState = (state) => {
   return {
