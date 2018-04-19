@@ -34,11 +34,11 @@ router.get('/:orderId?', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   // create new order
-  const userId = req.body.userId;
-  const address = req.body.address;
-  Order.create({ userId, address })
-    .then(order => res.json(order))
-    .catch(next);
+    const userId = req.body.userId;
+    const address = req.body.address;
+    Order.create({ userId, address })
+      .then(order => res.json(order))
+      .catch(next);
 });
 
 router.post('/:orderId/games', (req, res, next) => {

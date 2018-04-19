@@ -3,9 +3,8 @@ const db = require('../db');
 
 const Order = db.define('order', {
   address: {
-    // require address, expecting a comma separated string
+    // expecting a comma separated string
     type: Sequelize.STRING,
-    allowNull: false,
   },
 
   status: {
