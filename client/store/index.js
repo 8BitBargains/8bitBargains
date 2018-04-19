@@ -18,3 +18,4 @@ export default store;
 export * from './user';
 export * from './products';
 export * from './selectedProduct';
+export * from './cart';
