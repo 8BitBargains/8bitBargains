@@ -1,8 +1,24 @@
 import React from 'react';
 import { Container, Header, Image } from 'semantic-ui-react';
 import { displayPrice } from '../utils';
+import { connect } from 'react-redux';
+import { fetchSingleProduct } from '../store';
 
-export default class SingleProduct extends React.Component {
+const mapState = (state) => {
+  return {
+    selectedProduct: state.selectedProduct
+  };
+};
+
+const mapDispatch = (dispatch, ownProps) => {
+  return {
+    loadSingleProduct: () => {
+      dispatch(fetchSingleProduct(ownProps.match.params.productId));
+    }
+  };
+};
+
+class SingleProduct extends React.Component {
   componentDidMount() {
     this.props.loadSingleProduct();
   }
@@ -22,3 +38,6 @@ export default class SingleProduct extends React.Component {
   }
 }
 
+const SingleProductContainer = connect(mapState, mapDispatch)(SingleProduct);
+
+export default SingleProductContainer;
