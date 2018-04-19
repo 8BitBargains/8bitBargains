@@ -9,6 +9,13 @@ router.get('/allOrders', (req, res, next) => {
     .catch(next);
 });
 
+router.get('/cart', (req, res, next) => {
+  const userId = req.user.id;
+  Order.findOne({where: { userId, status: 'Created' }, include: {all: true}})
+    .then(cart => res.json(cart))
+    .catch(next);
+});
+
 router.get('/:orderId?', (req, res, next) => {
   // fetches all orders for that specific user or fetches just one if
   // the optional orderId parameter is added
@@ -27,7 +34,7 @@ router.get('/:orderId?', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   // create new order
-  const userId = req.body.userId
+  const userId = req.body.userId;
   const address = req.body.address;
   Order.create({ userId, address })
     .then(order => res.json(order))
