@@ -19,3 +19,16 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.browse-products-container {
+  display: flex;
+}
+
+.all-products-container {
+  padding: 30px;
+  flex: 4;
+}
+
+.browse-sidebar {
+  flex: 1;
+}
