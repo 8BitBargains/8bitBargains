@@ -24,13 +24,13 @@ export const fetchCart = () =>
       .catch(err => console.log(err))
   );
 
-export const addToCart = () =>
-  dispatch => (
-    axios.post('/api/{store.cart.id}/games')
-      .then(res =>
-        dispatch(getCart(res.data)))
-      .catch(err => console.log(err))
-  );
+// export const addToCart = () =>
+//   dispatch => (
+//     axios.post('/api/{store.cart.id}/games')
+//       .then(res =>
+//         dispatch(addGame(res.data)))
+//       .catch(err => console.log(err))
+//   );
 
 /**
  * REDUCER

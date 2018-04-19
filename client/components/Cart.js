@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { List, Image, Input, Container, Button } from 'semantic-ui-react';
 import { displayPrice, truncate } from '../utils';
 import { connect } from 'react-redux';
-import { fetchCart } from '../store/cart';
+import { fetchCart } from '../store';
 
 const ItemList = (props) => {
 
@@ -49,20 +49,25 @@ class Cart extends Component {
 
   subtotal = () => {
     let subtotal = 0;
-    this.props.games.forEach(item => {
+    this.props.cart.games.forEach(item => {
       subtotal += item.price * item.game_order.quantity;
     });
     return subtotal;
   }
 
   render(){
-    return (
-      <Container>
-        <ItemList items={this.props.games} />;
-        <h1>Subtotal: {displayPrice(this.subtotal())}</h1>
-        <Button positive>Check Out</Button>
-      </Container>
-    );
+    console.log(this.props)
+    if ( this.props.cart.games ) {
+      return (
+        <Container>
+          <ItemList items={this.props.cart.games} />;
+          <h1>Subtotal: {displayPrice(this.subtotal())}</h1>
+          <Button positive>Check Out</Button>
+        </Container>
+      );
+    } else {
+      return null
+    }
   }
 }
 
@@ -72,10 +77,8 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = dispatch => {
-  return {
-    loadCart: dispatch(fetchCart())
-  };
+const mapDispatch = {
+    loadCart: fetchCart
 };
 
 const CartContainer = connect(mapState, mapDispatch)(Cart);
