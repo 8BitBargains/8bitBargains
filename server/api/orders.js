@@ -10,7 +10,7 @@ router.get('/allOrders', (req, res, next) => {
 });
 
 router.get('/cart', (req, res, next) => {
-  const userId = req.user.id;
+  const userId = req.user ? req.user.id : null;
   Order.findOne({where: { userId, status: 'Created' }, include: {all: true}})
     .then(cart => res.json(cart))
     .catch(next);
@@ -32,6 +32,7 @@ router.get('/:orderId?', (req, res, next) => {
   }
 });
 
+// Need to refactor to create a cart for visitors
 router.post('/', (req, res, next) => {
   // create new order
     const userId = req.body.userId;
