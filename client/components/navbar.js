@@ -1,33 +1,88 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { logout } from '../store'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logout } from '../store';
+import { Menu } from 'semantic-ui-react';
 
-const Navbar = ({ handleClick, isLoggedIn }) => (
-  <div>
-    <h1>8 Bit Bargains</h1>
-    <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
-      ) : (
-          <div>
-            {/* The navbar will show these links before you log in */}
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Sign Up</Link>
-            <Link to="/products">Browse</Link>
-          </div>
-        )}
-    </nav>
-    <hr />
-  </div>
-)
+class Navbar extends React.Component {
+  state = {};
+
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  render() {
+    const { activeItem } = this.state;
+
+    return (
+      <div>
+        <h1>8 Bit Bargains</h1>
+        <Menu pointing tabular>
+          {this.props.isLoggedIn ? (
+            <Menu.Menu>
+              {/* The navbar will show these links after you log in */}
+              <Menu.Item
+                as={Link} to="/home"
+                name="home"
+                active={activeItem === 'home'}
+                onClick={this.handleItemClick}
+              >
+                Home
+              </Menu.Item>
+              <Menu.Item
+                as={Link} to="/logout"
+                name="logout"
+                onClick={this.props.handleLogout}
+              >
+                Logout
+              </Menu.Item>
+            </Menu.Menu>
+          ) : (
+              <Menu.Menu>
+                {/* The navbar will show these links before you log in */}
+                <Menu.Item
+                  as={Link} to="/login"
+                  name="login"
+                  active={activeItem === 'login'}
+                  onClick={this.handleItemClick}
+                >
+                  Login
+                </Menu.Item>
+                <Menu.Item
+                  as={Link} to="/signup"
+                  name="signup"
+                  active={activeItem === 'signup'}
+                  onClick={this.handleItemClick}
+                >
+                  Signup
+                </Menu.Item>
+              </Menu.Menu>
+            )}
+          {/* The navbar will always show these links */}
+          <Menu.Menu>
+            <Menu.Item
+              as={Link} to="/products"
+              name="browse"
+              active={activeItem === 'browse'}
+              onClick={this.handleItemClick}
+            >
+              Browse
+            </Menu.Item>
+            <Menu.Item
+              as={Link} to="/cart"
+              name="cart"
+              active={activeItem === 'cart'}
+              onClick={this.handleItemClick}
+            >
+              Cart
+            </Menu.Item>
+          </Menu.Menu>
+        </Menu>
+        <br />
+      </div>
+    );
+  }
+}
+
 
 /**
  * CONTAINER
@@ -35,23 +90,23 @@ const Navbar = ({ handleClick, isLoggedIn }) => (
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id
-  }
-}
+  };
+};
 
 const mapDispatch = dispatch => {
   return {
-    handleClick() {
-      dispatch(logout())
+    handleLogout() {
+      dispatch(logout());
     }
-  }
-}
+  };
+};
 
-export default connect(mapState, mapDispatch)(Navbar)
+export default connect(mapState, mapDispatch)(Navbar);
 
 /**
  * PROP TYPES
  */
 Navbar.propTypes = {
-  handleClick: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired
-}
+};
