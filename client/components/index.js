@@ -10,3 +10,4 @@ export { default as SidebarFilter } from './SidebarFilter';
 export { default as BrowseProducts } from './BrowseProducts';
 export { default as AllProducts } from './AllProducts';
 export { default as SingleProduct } from './SingleProduct';
+export { default as Cart } from './Cart';
