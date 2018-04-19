@@ -2,8 +2,20 @@ import React from 'react';
 import { Card, Image } from 'semantic-ui-react';
 import { displayPrice, truncate } from '../utils';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchProducts } from '../store/products';
 
-export default class AllProducts extends React.Component {
+const mapState = (state) => {
+  return {
+    products: state.products
+  };
+};
+
+const mapDispatch = {
+  loadAllProducts: fetchProducts
+};
+
+class AllProducts extends React.Component {
   componentDidMount() {
     this.props.loadAllProducts();
   }
@@ -26,3 +38,6 @@ export default class AllProducts extends React.Component {
   }
 }
 
+const AllProductsContainer = connect(mapState, mapDispatch)(AllProducts);
+
+export default AllProductsContainer;
