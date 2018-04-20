@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Image, Input, Container, Button } from 'semantic-ui-react';
+import { List, Image, Input, Container, Button, Form } from 'semantic-ui-react';
 import { displayPrice, truncate } from '../utils';
 import { connect } from 'react-redux';
 import { fetchCart, updateCart } from '../store';
@@ -29,8 +29,13 @@ const ItemList = (props) => {
                   {displayPrice(item.price)}
                 </div>
                 <div>
-                  <Input action={{content: 'Update', onClick:(event, data) => handleChange(item, event, data)}} placeholder={item.game_order.quantity} />
-                  <Button negative>Remove Item</Button>
+                  {/* <Input type='text' action={{content: 'Update', onClick: (event, data) => handleChange(item, event, data)}} placeholder={item.game_order.quantity} /> */}
+                  <Form onSubmit={(e)=> handleChange(item, e.target.update.value)}>
+                    <Input name='update' type='text' placeholder={item.game_order.quantity} />
+                    <Button type='submit'>Update</Button>
+                    <Button negative>Remove Item</Button>
+                  </Form>
+
                 </div>
               </div>
             </List.Item>
@@ -81,8 +86,8 @@ const mapDispatch = (dispatch) => {
     loadCart: () => {
       dispatch(fetchCart());
     },
-    handleChange: (game, event, data) => {
-      dispatch(updateCart(game, data.value));
+    handleChange: (game, quantity) => {
+      dispatch(updateCart(game, quantity));
     }
   };
 };
