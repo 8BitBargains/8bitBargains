@@ -2,52 +2,51 @@ import React, { Component } from 'react';
 import { List, Image, Input, Container, Button, Form } from 'semantic-ui-react';
 import { displayPrice, truncate } from '../utils';
 import { connect } from 'react-redux';
-import { fetchCart, updateCart } from '../store';
+import { fetchCart, updateCart, removeFromCart } from '../store';
 
-const ItemList = (props) => {
-
-  const { items, handleChange } = props;
+const ItemList = props => {
+  const { items, handleSubmit, handleClick } = props;
 
   return (
-
     <List divided relaxed>
-      {
-        items.map( item => {
-          return (
-            <List.Item key={item.title}>
+      {items.map(item => {
+        return (
+          <List.Item key={item.title}>
+            <div>
               <div>
-                <div>
-                <Image src={item.coverUrl} size='small' />
-                </div>
-                <div>
-                  <List.Content>
-                    <List.Header as='h3'>{item.title}</List.Header>
-                    <List.Description as='p'>{truncate(item.description)}</List.Description>
-                  </List.Content>
-                </div>
-                <div>
-                  {displayPrice(item.price)}
-                </div>
-                <div>
-                  {/* <Input type='text' action={{content: 'Update', onClick: (event, data) => handleChange(item, event, data)}} placeholder={item.game_order.quantity} /> */}
-                  <Form onSubmit={(e)=> handleChange(item, e.target.update.value)}>
-                    <Input name='update' type='text' placeholder={item.game_order.quantity} />
-                    <Button type='submit'>Update</Button>
-                    <Button negative>Remove Item</Button>
-                  </Form>
-
-                </div>
+                <Image src={item.coverUrl} size="small" />
               </div>
-            </List.Item>
-          );
-        })
-      }
+              <div>
+                <List.Content>
+                  <List.Header as="h3">{item.title}</List.Header>
+                  <List.Description as="p">
+                    {truncate(item.description)}
+                  </List.Description>
+                </List.Content>
+              </div>
+              <div>{displayPrice(item.price)}</div>
+              <div>
+                <Form onSubmit={e => handleSubmit(item, e.target.update.value)}>
+                  <Input
+                    name="update"
+                    type="text"
+                    placeholder={item.game_order.quantity}
+                  />
+                  <Button type="submit">Update</Button>
+                  <Button negative onClick={() => handleClick(item)}>
+                    Remove Item
+                  </Button>
+                </Form>
+              </div>
+            </div>
+          </List.Item>
+        );
+      })}
     </List>
   );
 };
 
 class Cart extends Component {
-
   componentDidMount() {
     this.props.loadCart();
   }
@@ -58,13 +57,17 @@ class Cart extends Component {
       subtotal += item.price * item.game_order.quantity;
     });
     return subtotal;
-  }
+  };
 
-  render(){
-    if ( this.props.cart.games ) {
+  render() {
+    if (this.props.cart.games) {
       return (
         <Container>
-          <ItemList items={this.props.cart.games} handleChange={this.props.handleChange} />
+          <ItemList
+            items={this.props.cart.games}
+            handleSubmit={this.props.handleSubmit}
+            handleClick={this.props.handleClick}
+          />
           <h1>Subtotal: {displayPrice(this.subtotal())}</h1>
           <Button positive>Check Out</Button>
         </Container>
@@ -75,19 +78,22 @@ class Cart extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapState = state => {
   return {
     cart: state.cart
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
     loadCart: () => {
       dispatch(fetchCart());
     },
-    handleChange: (game, quantity) => {
+    handleSubmit: (game, quantity) => {
       dispatch(updateCart(game, quantity));
+    },
+    handleClick: game => {
+      dispatch(removeFromCart(game));
     }
   };
 };
