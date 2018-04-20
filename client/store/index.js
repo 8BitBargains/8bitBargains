@@ -26,3 +26,4 @@ export * from './user';
 export * from './products';
 export * from './selectedProduct';
 export * from './searchEntry';
+export * from './cart';
