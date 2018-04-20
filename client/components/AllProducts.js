@@ -6,14 +6,13 @@ import { connect } from 'react-redux';
 import { fetchProducts, addToCart } from '../store';
 
 const mapState = (state) => {
-  // union of the state address
   return {
-    products: state.products
+    products: state.products,
+    searchEntry: state.searchEntry
   };
 };
 
 const mapDispatch = (dispatch, ownProps) => {
-  // handle clicks and load dem products
   return {
     loadAllProducts: () => {
       dispatch(fetchProducts());
@@ -31,11 +30,17 @@ class AllProducts extends React.Component {
 
   render() {
     const handleClick = this.props.handleClick;
+
+    // filters products based on search input contents
+    const products = this.props.products.filter(product => {
+      return product.title.toLowerCase().match(this.props.searchEntry);
+    });
+
     return (
       <div className="all-products-container">
         <Card.Group>
-          {this.props.products && this.props.products.map(product => (
-            <Card key={product.id}>
+          {products && products.map(product => (
+            <Card key={product.id} link>
               <Image as={Link} to={`/products/${product.id}`} src={product.coverUrl} />
               <Card.Content>
                 <Card.Header as={Link} to={`/products/${product.id}`}>{product.title}</Card.Header>
