@@ -1,5 +1,6 @@
 const User = require('./user');
 const Game = require('./game');
+const Genre = require('./genre');
 const Order = require('./order');
 const GameOrder = require('./gameOrder');
 
@@ -7,6 +8,7 @@ const GameOrder = require('./gameOrder');
 
 User.hasMany(Order);
 Order.belongsTo(User);
+Game.belongsTo(Genre);
 Order.belongsToMany(Game, { through: GameOrder });
 Game.belongsToMany(Order, { through: GameOrder });
 
