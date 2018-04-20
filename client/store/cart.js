@@ -1,5 +1,4 @@
 import axios from 'axios';
-import history from '../history';
 
 /**
  * ACTION TYPES
@@ -17,6 +16,7 @@ const addGame = cart => ({ type: ADD_GAME, cart });
  * THUNK CREATORS
  */
 export const fetchCart = () =>
+  // retrieve the cart from the back end
   dispatch => (
     axios.get('/api/orders/cart')
       .then(res =>
@@ -24,13 +24,17 @@ export const fetchCart = () =>
       .catch(err => console.log(err))
   );
 
-// export const addToCart = () =>
-//   dispatch => (
-//     axios.post('/api/{store.cart.id}/games')
-//       .then(res =>
-//         dispatch(addGame(res.data)))
-//       .catch(err => console.log(err))
-//   );
+export const addToCart = (product, history) =>
+  // add games to cart on back end
+  dispatch => (
+    axios.post(`/api/orders/cart`, product)
+      .then(res => {
+        console.log('history: ', history);
+        dispatch(addGame(res.data));
+        history.push('/cart');
+      })
+      .catch(err => console.log(err))
+  );
 
 /**
  * REDUCER

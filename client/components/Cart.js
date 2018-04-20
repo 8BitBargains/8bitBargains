@@ -56,17 +56,17 @@ class Cart extends Component {
   }
 
   render(){
-    console.log(this.props)
+    console.log(this.props);
     if ( this.props.cart.games ) {
       return (
         <Container>
-          <ItemList items={this.props.cart.games} />;
+          <ItemList items={this.props.cart.games} />
           <h1>Subtotal: {displayPrice(this.subtotal())}</h1>
           <Button positive>Check Out</Button>
         </Container>
       );
     } else {
-      return null
+      return null;
     }
   }
 }

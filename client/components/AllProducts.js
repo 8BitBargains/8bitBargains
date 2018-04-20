@@ -1,18 +1,27 @@
 import React from 'react';
-import { Card, Image } from 'semantic-ui-react';
+import { Card, Image, Button } from 'semantic-ui-react';
 import { displayPrice, truncate } from '../utils';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProducts } from '../store';
+import { fetchProducts, addToCart } from '../store';
 
 const mapState = (state) => {
+  // union of the state address
   return {
     products: state.products
   };
 };
 
-const mapDispatch = {
-  loadAllProducts: fetchProducts
+const mapDispatch = (dispatch, ownProps) => {
+  // handle clicks and load dem products
+  return {
+    loadAllProducts: () => {
+      dispatch(fetchProducts());
+    },
+    handleClick: (product) => {
+      dispatch(addToCart(product, ownProps.history));
+    }
+  };
 };
 
 class AllProducts extends React.Component {
@@ -21,16 +30,18 @@ class AllProducts extends React.Component {
   }
 
   render() {
+    const handleClick = this.props.handleClick;
     return (
       <div className="all-products-container">
         <Card.Group>
           {this.props.products && this.props.products.map(product => (
-            <Card as={Link} to={`/products/${product.id}`} key={product.id}>
-              <Image src={product.coverUrl} />
+            <Card key={product.id}>
+              <Image as={Link} to={`/products/${product.id}`} src={product.coverUrl} />
               <Card.Content>
-                <Card.Header>{product.title}</Card.Header>
+                <Card.Header as={Link} to={`/products/${product.id}`}>{product.title}</Card.Header>
                 <Card.Meta>Price: {displayPrice(product.price)}</Card.Meta>
                 <Card.Description>{truncate(product.description)}</Card.Description>
+                <Button onClick={() => handleClick(product)} positive>Add to Cart</Button>
               </Card.Content>
             </Card>
           ))}
