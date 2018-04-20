@@ -37,7 +37,7 @@ router.get('/:orderId?', (req, res, next) => {
 });
 
 // Need to refactor to create a cart for visitors
-router.post('/', (req, res, next) => {
+router.post('/', (req, res, next) => git {
   // create new order
     const userId = req.body.userId;
     const address = req.body.address;
@@ -75,14 +75,20 @@ router.post('/cart', (req, res, next) => {
 
 router.put('/cart', (req, res, next) => {
   // update an instance in the gameOrders join table on an active order
-  const orderId = req.params.orderId;
-  const gameId = req.body.gameId;
-  const quantity = req.body.quantity;
+  const orderId = req.body.game_order.orderId;
+  const gameId = req.body.game_order.gameId;
+  const quantity = req.body.newQuantity;
   GameOrder.findOne({where: { gameId, orderId }})
     .then(gameOrder => {
-      return gameOrder.update({ quantity })
+      return gameOrder.update({ quantity });
     })
-    .then(gameOrder => res.send(gameOrder))
+    .then(gameOrder => {
+      const id = gameOrder.orderId;
+      return Order.findOne({where: { id }, include: {all: true}});
+    })
+    .then(order => {
+      res.send(order);
+    })
     .catch(next);
 });
 
