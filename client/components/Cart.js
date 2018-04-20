@@ -30,7 +30,7 @@ const ItemList = (props) => {
                   {displayPrice(item.price)}
                 </div>
                 <div>
-                  <Input action='Update' placeholder={item.game_order.quantity} onChange={() => handleChange(item)} />
+                  <Input action='Update' placeholder={item.game_order.quantity} onChange={(event, data) => handleChange(item, event, data)} />
                   <Button negative>Remove Item</Button>
                 </div>
               </div>
@@ -83,8 +83,9 @@ const mapDispatch = (dispatch) => {
     loadCart: () => {
       dispatch(fetchCart());
     },
-    handleChange: (game) => {
-      dispatch(updateCart(game));
+    handleChange: (game, event, data) => {
+      console.log('handleChange event, data: ', event, data.value)
+      dispatch(updateCart(game, data.value));
     }
   };
 };

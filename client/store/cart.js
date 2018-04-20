@@ -38,10 +38,10 @@ export const fetchCart = () =>
     .catch(err => console.log(err))
   );
 
-  export const updateCart = (game) =>
+  export const updateCart = (game, newQuantity) =>
     // update the quantity of a game in the cart on back end
     dispatch => (
-      axios.put('/api/orders/cart', game)
+      axios.put('/api/orders/cart', {...game, newQuantity: newQuantity})
         .then(res => {
           console.log('return from put: ', res.data);
           dispatch(updateQuantity(res.data));
