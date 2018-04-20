@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Image } from 'semantic-ui-react';
 
 class Navbar extends React.Component {
   state = {};
@@ -15,8 +15,8 @@ class Navbar extends React.Component {
 
     return (
       <div>
-        <h1>8 Bit Bargains</h1>
-        <Menu pointing tabular>
+        <Image src={'/logo2.jpg'} alt="8 Bit Bargains" className="logo" />
+        <Menu tabular className="nav-menu">
           {this.props.isLoggedIn ? (
             <Menu.Menu>
               {/* The navbar will show these links after you log in */}

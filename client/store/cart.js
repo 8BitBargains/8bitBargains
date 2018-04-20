@@ -5,12 +5,15 @@ import axios from 'axios';
  */
 const GET_CART = 'GET_CART';
 const ADD_GAME = 'ADD_GAME';
+const UPDATE_QUANTITY = 'UPDATE_QUANTITY';
 
 /**
  * ACTION CREATORS
  */
 const getCart = cart => ({ type: GET_CART, cart });
 const addGame = cart => ({ type: ADD_GAME, cart });
+const updateQuantity = updatedCart => ({ type: UPDATE_QUANTITY, updatedCart });
+
 
 /**
  * THUNK CREATORS
@@ -24,18 +27,26 @@ export const fetchCart = () =>
       .catch(err => console.log(err))
   );
 
-export const addToCart = (product, history) =>
+  export const addToCart = (product, history) =>
   // add games to cart on back end
   dispatch => (
     axios.post(`/api/orders/cart`, product)
-      .then(res => {
-        console.log('history: ', history);
-        dispatch(addGame(res.data));
-        history.push('/cart');
-      })
-      .catch(err => console.log(err))
+    .then(res => {
+      dispatch(addGame(res.data));
+      history.push('/cart');
+    })
+    .catch(err => console.log(err))
   );
 
+  export const updateCart = (game, newQuantity) =>
+    // update the quantity of a game in the cart on back end
+    dispatch => (
+      axios.put('/api/orders/cart', {...game, newQuantity: newQuantity})
+        .then(res => {
+          dispatch(updateQuantity(res.data));
+        })
+        .catch(err => console.log(err))
+    );
 /**
  * REDUCER
  */
@@ -45,6 +56,8 @@ export default function (state = {}, action) {
       return action.cart;
     case ADD_GAME:
       return action.cart;
+    case UPDATE_QUANTITY:
+      return action.updatedCart;
     default:
       return state;
   }

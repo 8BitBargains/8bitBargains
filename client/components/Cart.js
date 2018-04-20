@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { List, Image, Input, Container, Button } from 'semantic-ui-react';
 import { displayPrice, truncate } from '../utils';
 import { connect } from 'react-redux';
-import { fetchCart } from '../store';
+import { fetchCart, updateCart } from '../store';
 
 const ItemList = (props) => {
 
-  const { items } = props;
+  const { items, handleChange } = props;
 
   return (
 
@@ -29,7 +29,7 @@ const ItemList = (props) => {
                   {displayPrice(item.price)}
                 </div>
                 <div>
-                  <Input action='Update' placeholder={item.game_order.quantity} />
+                  <Input action={{content: 'Update', onClick:(event, data) => handleChange(item, event, data)}} placeholder={item.game_order.quantity} />
                   <Button negative>Remove Item</Button>
                 </div>
               </div>
@@ -56,17 +56,16 @@ class Cart extends Component {
   }
 
   render(){
-    console.log(this.props);
     if ( this.props.cart.games ) {
       return (
         <Container>
-          <ItemList items={this.props.cart.games} />
+          <ItemList items={this.props.cart.games} handleChange={this.props.handleChange} />
           <h1>Subtotal: {displayPrice(this.subtotal())}</h1>
           <Button positive>Check Out</Button>
         </Container>
       );
     } else {
-      return null;
+      return <h3>Add some games to your cart!</h3>;
     }
   }
 }
@@ -77,8 +76,15 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = {
-    loadCart: fetchCart
+const mapDispatch = (dispatch) => {
+  return {
+    loadCart: () => {
+      dispatch(fetchCart());
+    },
+    handleChange: (game, event, data) => {
+      dispatch(updateCart(game, data.value));
+    }
+  };
 };
 
 const CartContainer = connect(mapState, mapDispatch)(Cart);
