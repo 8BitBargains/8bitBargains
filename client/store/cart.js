@@ -43,7 +43,6 @@ export const fetchCart = () =>
     dispatch => (
       axios.put('/api/orders/cart', {...game, newQuantity: newQuantity})
         .then(res => {
-          console.log('return from put: ', res.data);
           dispatch(updateQuantity(res.data));
         })
         .catch(err => console.log(err))

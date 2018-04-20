@@ -37,7 +37,7 @@ router.get('/:orderId?', (req, res, next) => {
 });
 
 // Need to refactor to create a cart for visitors
-router.post('/', (req, res, next) => {
+router.post('/', (req, res, next) => git {
   // create new order
     const userId = req.body.userId;
     const address = req.body.address;
@@ -75,7 +75,6 @@ router.post('/cart', (req, res, next) => {
 
 router.put('/cart', (req, res, next) => {
   // update an instance in the gameOrders join table on an active order
-  console.log('req.body: ', req.body)
   const orderId = req.body.game_order.orderId;
   const gameId = req.body.game_order.gameId;
   const quantity = req.body.newQuantity;

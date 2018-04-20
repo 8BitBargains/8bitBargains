@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { fetchCart, updateCart } from '../store';
 
 const ItemList = (props) => {
-  console.log('ItemList props: ', props);
 
   const { items, handleChange } = props;
 
@@ -57,7 +56,6 @@ class Cart extends Component {
   }
 
   render(){
-    // console.log('Cart props = ', this.props);
     if ( this.props.cart.games ) {
       return (
         <Container>
@@ -84,7 +82,6 @@ const mapDispatch = (dispatch) => {
       dispatch(fetchCart());
     },
     handleChange: (game, event, data) => {
-      console.log('handleChange event, data: ', event, data.value)
       dispatch(updateCart(game, data.value));
     }
   };
