@@ -32,3 +32,14 @@ form div {
 .browse-sidebar {
   flex: 1;
 }
+
+.logo {
+  margin-top: 14px;
+  margin-left: 5px;
+  height: 80px;
+  width: auto;
+}
+
+.nav-menu {
+  margin-top: 0 !important;
+}
