@@ -4,7 +4,7 @@ module.exports = router;
 
 // GET all products
 router.get('/', (req, res, next) => {
-  Game.findAll()
+  Game.findAll({ include: { all: true } })
     .then(products => res.json(products))
     .catch(next);
 });
