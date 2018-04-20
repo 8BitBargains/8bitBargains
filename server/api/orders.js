@@ -10,9 +10,13 @@ router.get('/allOrders', (req, res, next) => {
 });
 
 router.get('/cart', (req, res, next) => {
-  const userId = req.user.id;
-  Order.findOne({where: { userId, status: 'Created' }, include: {all: true}})
-    .then(cart => res.json(cart))
+  // gets the active cart or returns a new cart for the client
+  const userId = req.user ? req.user.id : null;
+  const sessionId = req.session.id;
+  Order.findOrCreate({where: { userId, status: 'Created' }, defaults: { sessionId }, include: {all: true}})
+    .spread(cart => {
+      res.json(cart);
+    })
     .catch(next);
 });
 
@@ -32,6 +36,7 @@ router.get('/:orderId?', (req, res, next) => {
   }
 });
 
+// Need to refactor to create a cart for visitors
 router.post('/', (req, res, next) => {
   // create new order
     const userId = req.body.userId;
@@ -41,16 +46,34 @@ router.post('/', (req, res, next) => {
       .catch(next);
 });
 
-router.post('/:orderId/games', (req, res, next) => {
+router.post('/cart', (req, res, next) => {
     // create an instance of a game on an order
-  const orderId = req.params.orderId;
-  const gameId = req.body.gameId;
-  GameOrder.create({orderId, gameId})
+  const gameId = req.body.id;
+  const userId = req.user ? req.user.id : null;
+  const sessionId = req.session.id;
+  if (userId) {
+    // if the user is authenticated, update that user's cart
+    Order.findOne({where: { userId, status: 'Created' }})
+    .then( order => {
+      const orderId = order.id;
+      return GameOrder.create({orderId, gameId});
+    })
     .then(gameOrder => res.send(gameOrder))
     .catch(next);
+  } else {
+    // if the user is not authenticated,
+    // update that session's cart
+    Order.findOne({where: { sessionId, status: 'Created' }})
+    .then( order => {
+      const orderId = order.id;
+      return GameOrder.create({orderId, gameId});
+    })
+    .then(gameOrder => res.send(gameOrder))
+    .catch(next);
+  }
 });
 
-router.put('/:orderId/games', (req, res, next) => {
+router.put('/cart', (req, res, next) => {
   // update an instance in the gameOrders join table on an active order
   const orderId = req.params.orderId;
   const gameId = req.body.gameId;
@@ -63,7 +86,7 @@ router.put('/:orderId/games', (req, res, next) => {
     .catch(next);
 });
 
-router.delete('/:orderId', (req, res, next) => {
+router.delete('/cart', (req, res, next) => {
   // delete an item on an active order
   const orderId = req.params.orderId;
   const gameId = req.body.gameId;

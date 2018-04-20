@@ -8,6 +8,7 @@ import { Login, Signup,
          OrderHistory 
          } from './components';
 import { me } from './store';
+import { fetchCart } from './store/cart';
 
 /**
  * COMPONENT
@@ -55,9 +56,11 @@ const mapState = (state) => {
 };
 
 const mapDispatch = (dispatch) => {
+  // loads user and fetches cart upon load
   return {
     loadInitialData() {
       dispatch(me());
+      dispatch(fetchCart());
     }
   };
 };
