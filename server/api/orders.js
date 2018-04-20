@@ -75,14 +75,21 @@ router.post('/cart', (req, res, next) => {
 
 router.put('/cart', (req, res, next) => {
   // update an instance in the gameOrders join table on an active order
-  const orderId = req.params.orderId;
-  const gameId = req.body.gameId;
-  const quantity = req.body.quantity;
+  const orderId = req.body.game_order.orderId;
+  const gameId = req.body.game_order.gameId;
+  const quantity = 3;
   GameOrder.findOne({where: { gameId, orderId }})
     .then(gameOrder => {
-      return gameOrder.update({ quantity })
+      return gameOrder.update({ quantity });
     })
-    .then(gameOrder => res.send(gameOrder))
+    .then(gameOrder => {
+      const id = gameOrder.orderId;
+      return Order.findOne({where: { id }, include: {all: true}});
+    })
+    .then(order => {
+      console.log('order after update: ', order)
+      res.send(order);
+    })
     .catch(next);
 });
 
