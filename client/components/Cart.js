@@ -30,7 +30,7 @@ const ItemList = (props) => {
                   {displayPrice(item.price)}
                 </div>
                 <div>
-                  <Input action='Update' placeholder={item.game_order.quantity} onChange={(event, data) => handleChange(item, event, data)} />
+                  <Input action={{content: 'Update', onClick:(event, data) => handleChange(item, event, data)}} placeholder={item.game_order.quantity} />
                   <Button negative>Remove Item</Button>
                 </div>
               </div>
