@@ -39,11 +39,11 @@ const mapDispatch = (dispatch, ownProps) => {
     handleSearchChange: event => {
       dispatch(writeSearchEntry(event.target.value));
     },
-    handleGenreChange: (event, secondArg) => {
-      dispatch(writeGenreEntry(secondArg.value));
+    handleGenreChange: (event, { value }) => {
+      dispatch(writeGenreEntry(value));
     },
-    handleSystemChange: (event, secondArg) => {
-      dispatch(writeSystemEntry(secondArg.value));
+    handleSystemChange: (event, { value }) => {
+      dispatch(writeSystemEntry(value));
     }
   };
 };
