@@ -77,20 +77,22 @@ router.post('/cart', (req, res, next) => {
 });
 
 router.put('/cart/:orderId', (req, res, next) => {
-  // update an instance in the gameOrders join table on an active order
-  // Refactor to : '/cart/:orderId
-  // add logic destroying game_order where quantity === 0
-  // better: use associated methods
+  // update the quantity of an instance in the gameOrders join table on an active order
+  // if the new quantity === 0, remove the row on the game_order join table
   const orderId = req.params.orderId;
   const gameId = req.body.gameId;
   const quantity = req.body.newQuantity;
   if (quantity) {
-    GameOrder.update({ quantity }, { where: { gameId, orderId } })
-      .then(() => res.sendStatus(204))
+    GameOrder.update({ quantity }, {
+      where: { gameId, orderId },
+      returning: true,
+      plain: true
+    })
+      .then((updatedRow) => res.json(updatedRow[1][0]))
       .catch(next);
   } else {
     GameOrder.destroy({ where: { gameId, orderId } })
-      .then(() => res.sendStatus(204))
+      .then(() => res.send({ gameId }))
       .catch(next);
   }
   // GameOrder.findOne({ where: { gameId, orderId } })
@@ -107,14 +109,14 @@ router.put('/cart/:orderId', (req, res, next) => {
   //   .catch(next);
 });
 
-router.delete('/cart/:gameId/:orderId', (req, res, next) => {
-  // delete an item on an active order
-  const gameId = req.params.gameId;
-  const orderId = req.params.orderId;
-  GameOrder.destroy({ where: { gameId, orderId } })
-    .then(() => {
-      return Order.findOne({ where: { id: orderId }, include: { all: true } });
-    })
-    .then(order => res.json(order))
-    .catch(next);
-});
+// router.delete('/cart/:gameId/:orderId', (req, res, next) => {
+//   // delete an item on an active order
+//   const gameId = req.params.gameId;
+//   const orderId = req.params.orderId;
+//   GameOrder.destroy({ where: { gameId, orderId } })
+//     .then(() => {
+//       return Order.findOne({ where: { id: orderId }, include: { all: true } });
+//     })
+//     .then(order => res.json(order))
+//     .catch(next);
+// });

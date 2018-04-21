@@ -74,7 +74,7 @@ export const removeFromCart = (game) =>
 /**
  * REDUCER
  */
-export default function (state = {}, action) {
+export default function (state = {id: null, games: [], address: ''}, action) {
   switch (action.type) {
     case GET_CART:
       return action.cart;
