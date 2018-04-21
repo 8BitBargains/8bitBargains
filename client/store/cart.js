@@ -6,6 +6,7 @@ import axios from 'axios';
 const GET_CART = 'GET_CART';
 const ADD_GAME = 'ADD_GAME';
 const UPDATE_QUANTITY = 'UPDATE_QUANTITY';
+const REMOVE_GAME = 'REMOVE_GAME';
 
 /**
  * ACTION CREATORS
@@ -13,7 +14,7 @@ const UPDATE_QUANTITY = 'UPDATE_QUANTITY';
 const getCart = cart => ({ type: GET_CART, cart });
 const addGame = cart => ({ type: ADD_GAME, cart });
 const updateQuantity = updatedCart => ({ type: UPDATE_QUANTITY, updatedCart });
-
+const removeGame = updatedCart => ({ type: REMOVE_GAME, updatedCart });
 
 /**
  * THUNK CREATORS
@@ -39,14 +40,25 @@ export const fetchCart = () =>
   );
 
   export const updateCart = (game, newQuantity) =>
-    // update the quantity of a game in the cart on back end
+  // update the quantity of a game in the cart on back end
+  dispatch => (
+    axios.put('/api/orders/cart', {...game, newQuantity: newQuantity})
+      .then(res => {
+        dispatch(updateQuantity(res.data));
+      })
+      .catch(err => console.log(err))
+  );
+
+  export const removeFromCart = (game) =>
+    // remove a game from the cart
     dispatch => (
-      axios.put('/api/orders/cart', {...game, newQuantity: newQuantity})
-        .then(res => {
-          dispatch(updateQuantity(res.data));
-        })
-        .catch(err => console.log(err))
+      axios.delete('/api/orders/cart/' + game.id + '/' + game.game_order.orderId)
+      .then(res => {
+        dispatch(removeGame(res.data));
+      })
+      .catch(err => console.log(err))
     );
+
 /**
  * REDUCER
  */
@@ -57,6 +69,8 @@ export default function (state = {}, action) {
     case ADD_GAME:
       return action.cart;
     case UPDATE_QUANTITY:
+      return action.updatedCart;
+    case REMOVE_GAME:
       return action.updatedCart;
     default:
       return state;
