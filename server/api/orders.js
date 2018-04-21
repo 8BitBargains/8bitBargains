@@ -100,6 +100,8 @@ router.delete('/cart/:gameId/:orderId', (req, res, next) => {
     .then( () => {
       return Order.findOne({where: { id: orderId }, include: {all: true}});
     })
-    .then((order) => res.status(204).json(order))
+    .then((order) => {
+      res.json(order)
+    })
     .catch(next);
 });

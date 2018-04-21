@@ -69,7 +69,7 @@ class Cart extends Component {
             handleClick={this.props.handleClick}
           />
           <h1>Subtotal: {displayPrice(this.subtotal())}</h1>
-          <Button positive>Check Out</Button>
+          <Button positive onClick={() => this.props.history.push('/cart/process')}>Check Out</Button>
         </Container>
       );
     } else {
