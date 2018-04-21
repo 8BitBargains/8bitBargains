@@ -53,27 +53,14 @@ router.post('/cart', (req, res, next) => {
   // create an instance of a game on an order
   const gameId = req.body.id;
   const userId = req.user ? req.user.id : null;
-  const sessionId = req.session.id;
-  if (userId) {
-    // if the user is authenticated, update that user's cart
-    Order.findOne({ where: { userId, status: 'Created' } })
+  const sessionId = userId ? null : req.session.id;
+    Order.findOne({ where: { userId, sessionId, status: 'Created' } })
       .then(order => {
         const orderId = order.id;
         return GameOrder.create({ orderId, gameId });
       })
       .then(gameOrder => res.send(gameOrder))
       .catch(next);
-  } else {
-    // if the user is not authenticated,
-    // update that session's cart
-    Order.findOne({ where: { sessionId, status: 'Created' } })
-      .then(order => {
-        const orderId = order.id;
-        return GameOrder.create({ orderId, gameId });
-      })
-      .then(gameOrder => res.send(gameOrder))
-      .catch(next);
-  }
 });
 
 router.put('/cart/:orderId', (req, res, next) => {
