@@ -26,11 +26,11 @@ async function seed() {
   const systems = await Promise.all([
     System.create({
       id: 1,
-      name: 'Nintendo Entertainment System'
+      name: 'NES'
     }),
     System.create({
       id: 2,
-      name: 'Super Nintendo Entertainment System'
+      name: 'SNES'
     }),
     System.create({
       id: 3,
