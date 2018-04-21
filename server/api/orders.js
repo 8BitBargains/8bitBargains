@@ -76,26 +76,35 @@ router.post('/cart', (req, res, next) => {
   }
 });
 
-router.put('/cart', (req, res, next) => {
+router.put('/cart/:orderId', (req, res, next) => {
   // update an instance in the gameOrders join table on an active order
   // Refactor to : '/cart/:orderId
   // add logic destroying game_order where quantity === 0
   // better: use associated methods
-  const orderId = req.body.game_order.orderId;
-  const gameId = req.body.game_order.gameId;
+  const orderId = req.params.orderId;
+  const gameId = req.body.gameId;
   const quantity = req.body.newQuantity;
-  GameOrder.findOne({ where: { gameId, orderId } })
-    .then(gameOrder => {
-      return gameOrder.update({ quantity });
-    })
-    .then(gameOrder => {
-      const id = gameOrder.orderId;
-      return Order.findOne({ where: { id }, include: { all: true } });
-    })
-    .then(order => {
-      res.send(order);
-    })
-    .catch(next);
+  if (quantity) {
+    GameOrder.update({ quantity }, { where: { gameId, orderId } })
+      .then(() => res.sendStatus(204))
+      .catch(next);
+  } else {
+    GameOrder.destroy({ where: { gameId, orderId } })
+      .then(() => res.sendStatus(204))
+      .catch(next);
+  }
+  // GameOrder.findOne({ where: { gameId, orderId } })
+  //   .then(gameOrder => {
+  //     return gameOrder.update({ quantity });
+  //   })
+  //   .then(gameOrder => {
+  //     const id = gameOrder.orderId;
+  //     return Order.findOne({ where: { id }, include: { all: true } });
+  //   })
+  //   .then(order => {
+  //     res.send(order);
+  //   })
+  //   .catch(next);
 });
 
 router.delete('/cart/:gameId/:orderId', (req, res, next) => {
