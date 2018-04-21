@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Order, GameOrder } = require('../db/models');
+const { Order, GameOrder, Game } = require('../db/models');
 module.exports = router;
 
 router.get('/allOrders', (req, res, next) => {
@@ -59,7 +59,11 @@ router.post('/cart', (req, res, next) => {
         const orderId = order.id;
         return GameOrder.create({ orderId, gameId });
       })
-      .then(gameOrder => res.send(gameOrder))
+      .then(gameOrder => {
+        const id = gameOrder.gameId
+        return Game.findOne( {where: { id } })
+      })
+      .then(game => res.json(game))
       .catch(next);
 });
 

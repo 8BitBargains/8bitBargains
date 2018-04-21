@@ -1,4 +1,5 @@
 import axios from 'axios';
+const _ = require('lodash');
 
 /**
  * ACTION TYPES
@@ -13,7 +14,7 @@ const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
  * ACTION CREATORS
  */
 const getCart = cart => ({ type: GET_CART, cart });
-const addGame = cart => ({ type: ADD_GAME, cart });
+const addGame = game => ({ type: ADD_GAME, game });
 const updateQuantity = updatedCart => ({ type: UPDATE_QUANTITY, updatedCart });
 const removeGame = updatedCart => ({ type: REMOVE_GAME, updatedCart });
 const updateAddressAction = updatedCart => ({ type: UPDATE_ADDRESS, updatedCart });
@@ -25,8 +26,19 @@ export const fetchCart = () =>
   // retrieve the cart from the back end
   dispatch => (
     axios.get('/api/orders/cart')
-      .then(res =>
-        dispatch(getCart(res.data)))
+      .then(res => {
+        const cart = {
+          id: res.data.id,
+          address: res.data.address,
+          games: res.data.games.map( game => {
+            return {
+              game: _.omit(game, 'game_order'),
+              quantity: game.game_order.quantity
+            }
+          })
+        }
+        dispatch(getCart(cart))
+      })
       .catch(err => console.log(err))
   );
 
@@ -35,17 +47,22 @@ export const addToCart = (product, history) =>
   dispatch => (
     axios.post(`/api/orders/cart`, product)
     .then(res => {
-      dispatch(addGame(res.data));
+      const game = {
+        game: res.data,
+        quantity: 1
+      }
+      dispatch(addGame(game));
       history.push('/cart');
     })
     .catch(err => console.log(err))
   );
 
-export const updateCart = (game, newQuantity) =>
+export const updateCart = (orderId, game, newQuantity) =>
   // update the quantity of a game in the cart
   dispatch => (
-    axios.put('/api/orders/cart', {...game, newQuantity: newQuantity})
+    axios.put(`/api/orders/cart/${orderId}`, {...game, newQuantity: newQuantity})
       .then(res => {
+        console.log(res.data)
         dispatch(updateQuantity(res.data));
       })
       .catch(err => console.log(err))
@@ -79,7 +96,7 @@ export default function (state = {id: null, games: [], address: ''}, action) {
     case GET_CART:
       return action.cart;
     case ADD_GAME:
-      return action.cart;
+      return Object.assign({}, state, { games: [...state.games, action.game]});
     case UPDATE_QUANTITY:
       return action.updatedCart;
     case REMOVE_GAME:
