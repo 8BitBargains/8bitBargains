@@ -1,33 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Menu, Input } from 'semantic-ui-react';
-import { sortProducts, writeSearchEntry } from '../store';
+import { Menu, Input, Dropdown } from 'semantic-ui-react';
+import { alphaSort } from '../utils';
 
-
-// const mapState = (state) => {
-//   return {
-//   };
-// };
-
-const mapDispatch = (dispatch) => {
-  return {
-    sortProducts: (field, direction) => {
-      dispatch(sortProducts(field, direction));
-    },
-    handleSearchChange: event => {
-      dispatch(writeSearchEntry(event.target.value));
-    }
-  };
-};
-
-class SidebarFilter extends React.Component {
+export default class SidebarFilter extends React.Component {
   state = {};
 
   handleItemClick = name => this.setState({ activeItem: name })
 
   render() {
     const { activeItem } = this.state;
+
+    const genres = this.props.genres;
+    const systems = this.props.systems;
+
+    const createOptions = (array) => {
+      return [{
+        key: 0,
+        text: '-',
+        value: null
+      }].concat(alphaSort(array, 'name').map(elem => {
+        return {
+          key: elem.id,
+          text: elem.name,
+          value: elem.id
+        };
+      }));
+    };
 
     return (
       <Menu vertical className="browse-sidebar">
@@ -87,11 +85,29 @@ class SidebarFilter extends React.Component {
               </Menu.Item>
           </Menu.Menu>
         </Menu.Item>
+        <Menu.Item>
+          <Menu.Header>Genre</Menu.Header>
+          <Menu.Menu>
+            <Dropdown
+              placeholder="Select Genre"
+              fluid search
+              selection options={createOptions(genres)}
+              onChange={this.props.handleGenreChange}
+            />
+          </Menu.Menu>
+        </Menu.Item>
+        <Menu.Item>
+          <Menu.Header>Console</Menu.Header>
+          <Menu.Menu>
+            <Dropdown
+              placeholder="Select Console"
+              fluid search
+              selection options={createOptions(systems)}
+              onChange={this.props.handleSystemChange}
+            />
+          </Menu.Menu>
+        </Menu.Item>
       </Menu>
     );
   }
 }
-
-const SidebarFilterContainer = connect(null, mapDispatch)(SidebarFilter);
-
-export default SidebarFilterContainer;

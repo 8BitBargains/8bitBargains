@@ -43,3 +43,20 @@ form div {
 .nav-menu {
   margin-top: 0 !important;
 }
+
+.card-price-button {
+  display: flex;
+}
+
+.card-price {
+  padding-top: 8px;
+  flex: 1;
+  font-size: 1.3rem;
+  color: rgb(26, 26, 26);
+  text-align: center;
+  font-weight: bold;
+}
+
+.card-button {
+  flex: 1
+}
