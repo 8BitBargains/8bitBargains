@@ -43,3 +43,20 @@ form div {
 .nav-menu {
   margin-top: 0 !important;
 }
+
+#order-info-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#order-info-form .component {
+  display: flex;
+}
+
+#order-info-form .section {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
