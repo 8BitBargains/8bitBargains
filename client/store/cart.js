@@ -54,7 +54,6 @@ export const fetchCart = () =>
     dispatch => (
       axios.delete('/api/orders/cart/' + game.id + '/' + game.game_order.orderId)
       .then(res => {
-        console.log(res.data);
         dispatch(removeGame(res.data));
       })
       .catch(err => console.log(err))
