@@ -33,10 +33,10 @@ const ItemList = props => {
                     placeholder={item.game_order.quantity}
                   />
                   <Button type="submit">Update</Button>
-                  <Button negative onClick={() => handleClick(item)}>
-                    Remove Item
-                  </Button>
                 </Form>
+                <Button negative onClick={() => handleClick(item)}>
+                  Remove Item
+                </Button>
               </div>
             </div>
           </List.Item>

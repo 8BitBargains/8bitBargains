@@ -92,13 +92,11 @@ router.put('/cart', (req, res, next) => {
     .catch(next);
 });
 
-router.delete('/cart', (req, res, next) => {
+router.delete('/cart/:gameId/:orderId', (req, res, next) => {
   // delete an item on an active order
-  console.log(req.body)
-  const orderId = req.body.game_order.orderId;
-  const gameId = req.body.game_order.gameId;
-  GameOrder.findOne({where: { gameId, orderId }})
-    .then(gameOrder => gameOrder.destroy())
+  const gameId = req.params.gameId;
+  const orderId = req.params.orderId;
+  GameOrder.destroy({where: { gameId, orderId }})
     .then( () => {
       return Order.findOne({where: { id: orderId }, include: {all: true}});
     })

@@ -50,14 +50,15 @@ export const fetchCart = () =>
   );
 
   export const removeFromCart = (game) =>
-  // remove a game from the cart
-  dispatch => (
-    axios.delete('/api/orders/cart', game)
-    .then(res => {
-      dispatch(removeGame(res.data));
-    })
-    .catch(err => console.log(err))
-  );
+    // remove a game from the cart
+    dispatch => (
+      axios.delete('/api/orders/cart/' + game.id + '/' + game.game_order.orderId)
+      .then(res => {
+        console.log(res.data);
+        dispatch(removeGame(res.data));
+      })
+      .catch(err => console.log(err))
+    );
 
 /**
  * REDUCER
