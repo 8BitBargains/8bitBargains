@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { Checkbox, Input, Container, Button, Form, Select } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { shippingOptions, stateOptions, countryOptions } from '../utils';
-import { submitInfo } from '../store';
+import { updateAddress } from '../store';
 
 const Shipping = (props) => {
-
-  const { handleSubmit } = props.handleSubmit
+  console.log('shipping props ', props)
+  const { handleSubmit } = props.handleSubmit;
 
   return (
     <Container>
-      <Form id="order-info-form" >
+      <Form id="order-info-form" onSubmit={ (event, info) => handleSubmit(info)} >
         <div className="component" >
           <div className="section">
             <label>Shipping Address</label>
@@ -39,7 +39,7 @@ const Shipping = (props) => {
               <Select placeholder="Shipping Options" options={shippingOptions} />
             </Form.Field>
           </div>
-          <div className="section">
+          {/* <div className="section">
             <label>Billing Address</label>
             <Checkbox label="Same as Shipping Address" />
             <Form.Field>
@@ -62,7 +62,7 @@ const Shipping = (props) => {
               <label>Country</label>
               <Select placeholder="Country" options={countryOptions} />
             </Form.Field>
-          </div>
+          </div> */}
         </div>
         <Form.Field>
           <Checkbox label="I agree to pay for this stuff" />
@@ -74,11 +74,11 @@ const Shipping = (props) => {
 };
 
 class OrderInfo extends Component {
-
   render(){
+    console.log('order info props ', this.props)
     return (
       <Container>
-        <Shipping handleChange={this.props.handleSubmit}/>
+        <Shipping handleSubmit={this.props.handleSubmit}/>
       </Container>
     );
   }
@@ -92,7 +92,9 @@ const mapState = () => {
 const mapDispatch = dispatch => {
   return {
     handleSubmit: (formData) => {
-      dispatch(submitInfo(formData));
+      // logic for converting to string here
+      console.log('form data ', formData)
+      // dispatch(updateAddress(formData));
     }
   };
 };
