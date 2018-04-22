@@ -2,11 +2,12 @@ import React from 'react';
 import { Container, Header, Image, Button } from 'semantic-ui-react';
 import { displayPrice } from '../utils';
 import { connect } from 'react-redux';
-import { fetchSingleProduct, addToCart } from '../store';
+import { fetchSingleProduct } from '../store';
 
 const mapState = (state) => {
   // union of the state address
   return {
+    cart: state.cart,
     selectedProduct: state.selectedProduct
   };
 };
@@ -16,9 +17,6 @@ const mapDispatch = (dispatch, ownProps) => {
   return {
     loadSingleProduct: () => {
       dispatch(fetchSingleProduct(ownProps.match.params.productId));
-    },
-    handleClick: (product) => {
-      dispatch(addToCart(product, ownProps.history));
     }
   };
 };
@@ -29,7 +27,8 @@ class SingleProduct extends React.Component {
   }
 
   render() {
-    const handleClick = this.props.handleClick;
+    const handleAddButton = this.props.handleAddButton;
+    const cart = this.props.cart;
     const product = this.props.selectedProduct;
     return (
       Object.keys(product).length ?
@@ -38,7 +37,9 @@ class SingleProduct extends React.Component {
           <Header as="h1">{product.title}</Header>
           <Header as="h2">Price: {displayPrice(product.price)}</Header>
           <p>{product.description}</p>
-          <Button onClick={() => handleClick(product)} positive>Add to Cart</Button>
+          <Button onClick={() => handleAddButton(cart, product)} positive>
+            Add to Cart
+          </Button>
         </Container> :
         <p>Loading...</p>
     );

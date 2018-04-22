@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const Game = db.define('game', {
+const Product = db.define('product', {
   title: {
     type: Sequelize.STRING,
     allowNull: false
@@ -24,7 +24,7 @@ const Game = db.define('game', {
   }
 });
 
-module.exports = Game;
+module.exports = Product;
 
 /**
  * instanceMethods

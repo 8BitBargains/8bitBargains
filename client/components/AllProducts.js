@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 
 
 export default function AllProducts(props) {
-  const handleAddProduct = props.handleAddProduct;
-  const handleUpdateProduct = props.handleUpdateProduct;
+  const handleAddButton = props.handleAddButton;
   const products = props.products;
   const cart = props.cart;
 
@@ -15,7 +14,11 @@ export default function AllProducts(props) {
       <Card.Group>
         {products && products.map(product => (
           <Card key={product.id} link>
-            <Image as={Link} to={`/products/${product.id}`} src={product.coverUrl} />
+            <Image
+              src={product.coverUrl}
+              centered size="small"
+              as={Link} to={`/products/${product.id}`}
+            />
             <Card.Content>
               <Card.Header as={Link} to={`/products/${product.id}`}>{product.title}</Card.Header>
               <Card.Meta>{product.system.name}</Card.Meta>
@@ -25,22 +28,7 @@ export default function AllProducts(props) {
               <div className="card-price-button">
                 <span className="card-price">{displayPrice(product.price)}</span>
                 <Button className="card-button" onClick={
-                  () => {
-                    // check if product is in cart to determine handler
-
-                    // find cartProducts that match product
-                    const matchingProducts = cart.cartProducts.filter(
-                      cartProduct => cartProduct.game.id === product.id
-                    );
-
-                    const productInCart = matchingProducts[0];
-
-                    if (productInCart) {
-                      console.log('productInCart ', productInCart);
-                      handleUpdateProduct(cart.id, product.id, productInCart.quantity + 1);
-                    }
-                    else handleAddProduct(product);
-                  }
+                  () => handleAddButton(cart, product)
                 } positive>Add to Cart</Button>
               </div>
             </Card.Content>
@@ -50,4 +38,3 @@ export default function AllProducts(props) {
     </div>
   );
 }
-

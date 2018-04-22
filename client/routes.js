@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Login, Signup, 
-         UserHome, BrowseProducts, 
-         SingleProduct, Cart, OrderInfo } from './components';
-import { me } from './store';
+import {
+  Login, Signup,
+  UserHome, BrowseProducts,
+  SingleProduct, Cart, OrderInfo
+} from './components';
+import { me, addToCart, updateCart } from './store';
 import { fetchCart } from './store/cart';
 
 /**
@@ -24,11 +26,15 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route exact path="/products" component={BrowseProducts} />
-        <Route exact path ="/cart" component={Cart} />
-        <Route exact path ="/cart/process" component={OrderInfo} />
+        <Route exact path="/products" render={
+          () => <BrowseProducts handleAddButton={this.props.handleAddButton} />
+        } />
+        <Route exact path="/cart" component={Cart} />
+        <Route exact path="/cart/process" component={OrderInfo} />
 
-        <Route path="/products/:productId" component={SingleProduct} />
+        <Route path="/products/:productId" render={
+          ({ match }) => <SingleProduct match={match} handleAddButton={this.props.handleAddButton} />
+        } />
         {
           isLoggedIn &&
           <Switch>
@@ -54,13 +60,23 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, ownProps) => {
   // loads user and fetches cart upon load
   return {
-    loadInitialData() {
+    loadInitialData: () => {
       dispatch(me());
       dispatch(fetchCart());
-    }
+    },
+    handleAddButton: (cart, product) => {
+      // check if product is in cart
+      const productInCart = cart.cartProducts.filter(
+        cartProduct => cartProduct.product.id === product.id
+      )[0];
+      if (productInCart) {
+        dispatch(updateCart(cart.id, product.id, ++productInCart.quantity, ownProps.history));
+      }
+      else dispatch(addToCart(product, ownProps.history));
+    },
   };
 };
 

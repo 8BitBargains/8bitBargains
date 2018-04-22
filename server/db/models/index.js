@@ -1,26 +1,26 @@
 const User = require('./user');
-const Game = require('./game');
+const Product = require('./product');
 const Genre = require('./genre');
 const System = require('./system');
 const Order = require('./order');
-const GameOrder = require('./gameOrder');
+const ProductOrder = require('./productOrder');
 
 //STOP. Association Time.
 
 User.hasMany(Order);
 Order.belongsTo(User);
-Game.belongsTo(Genre);
-Game.belongsTo(System);
-Order.belongsToMany(Game, { through: GameOrder });
-Game.belongsToMany(Order, { through: GameOrder });
+Product.belongsTo(Genre);
+Product.belongsTo(System);
+Order.belongsToMany(Product, { through: ProductOrder });
+Product.belongsToMany(Order, { through: ProductOrder });
 
 //SEND IT!!!
 
 module.exports = {
   User,
-  Game,
+  Product,
   Genre,
   System,
   Order,
-  GameOrder,
+  ProductOrder,
 };
