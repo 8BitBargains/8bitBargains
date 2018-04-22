@@ -43,3 +43,36 @@ form div {
 .nav-menu {
   margin-top: 0 !important;
 }
+
+#order-info-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#order-info-form .component {
+  display: flex;
+}
+
+#order-info-form .section {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.card-price-button {
+  display: flex;
+}
+
+.card-price {
+  padding-top: 8px;
+  flex: 1;
+  font-size: 1.3rem;
+  color: rgb(26, 26, 26);
+  text-align: center;
+  font-weight: bold;
+}
+
+.card-button {
+  flex: 1
+}

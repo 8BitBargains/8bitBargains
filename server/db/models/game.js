@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize')
-const db = require('../db')
+const Sequelize = require('sequelize');
+const db = require('../db');
 
 const Game = db.define('game', {
   title: {
@@ -7,6 +7,10 @@ const Game = db.define('game', {
     allowNull: false
   },
   price: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  inventory: {
     type: Sequelize.INTEGER,
     allowNull: false
   },
@@ -18,9 +22,9 @@ const Game = db.define('game', {
     type: Sequelize.STRING,
     allowNull: true
   }
-})
+});
 
-module.exports = Game
+module.exports = Game;
 
 /**
  * instanceMethods

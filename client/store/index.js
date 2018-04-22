@@ -6,14 +6,22 @@ import user from './user';
 import cart from './cart';
 import products from './products';
 import selectedProduct from './selectedProduct';
-import searchEntry from './searchEntry';
+import searchEntry from './sidebar/searchEntry';
+import genreEntry from './sidebar/genreEntry';
+import systemEntry from './sidebar/systemEntry';
+import genres from './genres';
+import systems from './systems';
 
 const reducer = combineReducers({
   user,
   products,
   selectedProduct,
   cart,
-  searchEntry
+  searchEntry,
+  genreEntry,
+  systemEntry,
+  genres,
+  systems
 });
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
@@ -25,5 +33,9 @@ export default store;
 export * from './user';
 export * from './products';
 export * from './selectedProduct';
-export * from './searchEntry';
+export * from './sidebar/searchEntry';
+export * from './sidebar/genreEntry';
+export * from './sidebar/systemEntry';
 export * from './cart';
+export * from './genres';
+export * from './systems';

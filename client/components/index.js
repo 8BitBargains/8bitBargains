@@ -11,4 +11,4 @@ export { default as BrowseProducts } from './BrowseProducts';
 export { default as AllProducts } from './AllProducts';
 export { default as SingleProduct } from './SingleProduct';
 export { default as Cart } from './Cart';
-export { default as OrderHistory } from './OrderHistory';
+export { default as OrderInfo } from './OrderInfo';
