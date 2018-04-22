@@ -34,7 +34,7 @@ export const fetchCart = () =>
         const cart = {
           id: res.data.id,
           address: res.data.address,
-          games: res.data.games.map(game => {
+          cartProducts: res.data.games.map(game => {
             return {
               game: _.omit(game, 'game_order'),
               quantity: game.game_order.quantity
@@ -61,7 +61,7 @@ export const addToCart = (product, history) =>
       .catch(err => console.log(err))
   );
 
-export const updateCart = (orderId, productId, quantity) =>
+export const updateCart = (orderId, productId, quantity, history) =>
   // update the quantity of a game in the cart
   dispatch => {
     return (
@@ -72,6 +72,7 @@ export const updateCart = (orderId, productId, quantity) =>
             quantity
           };
           dispatch(updateProductQuantity(cartProduct));
+          if (history) history.push('/cart');
         })
         .catch(err => console.log(err))
     );
@@ -82,7 +83,6 @@ export const removeFromCart = (orderId, productId) =>
   dispatch => (
     axios.put(`/api/orders/cart/${orderId}`, { productId, quantity: 0 })
       .then(res => {
-        console.log(res.data);
         const removedProductId = res.data.productId;
         dispatch(removeCartProduct(removedProductId));
       })
@@ -103,22 +103,39 @@ export const updateAddress = address =>
 /**
  * REDUCER
  */
-export default function (state = { id: null, games: [], address: '' }, action) {
+export default function (state = { id: null, cartProducts: [], address: '' }, action) {
   switch (action.type) {
+
     case GET_CART:
       return action.cart;
+
     case ADD_CART_PRODUCT:
-      return Object.assign({}, state, { games: [...state.games, action.cartProduct] });
+      return Object.assign({}, state, {
+        cartProducts: [...state.cartProducts, action.cartProduct]
+      });
+
     case UPDATE_PRODUCT_QUANTITY:
       return Object.assign({}, state, {
-        games: [...state.games.filter(cartProduct => cartProduct.game.id !== action.cartProduct.game.id), action.cartProduct]
+        cartProducts: [
+          ...state.cartProducts.filter(cartProduct => {
+            return cartProduct.game.id !== action.cartProduct.game.id;
+          }),
+          action.cartProduct
+        ]
       });
+
     case REMOVE_CART_PRODUCT:
       return Object.assign({}, state, {
-        games: [...state.games.filter(cartProduct => cartProduct.game.id !== action.removedProductId)]
+        cartProducts: [
+          ...state.cartProducts.filter(cartProduct => {
+            return cartProduct.game.id !== action.removedProductId;
+          })
+        ]
       });
+
     case UPDATE_CART_ADDRESS:
       return Object.assign({}, state, { address: action.address });
+
     default:
       return state;
   }

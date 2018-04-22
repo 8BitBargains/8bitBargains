@@ -53,18 +53,18 @@ class Cart extends Component {
 
   subtotal = () => {
     let subtotal = 0;
-    this.props.cart.games.forEach(product => {
+    this.props.cart.cartProducts.forEach(product => {
       subtotal += product.game.price * product.quantity;
     });
     return subtotal;
   };
 
   render() {
-    if (this.props.cart.games) {
+    if (this.props.cart.cartProducts.length) {
       return (
         <Container>
           <ItemList
-            cartProducts={this.props.cart.games}
+            cartProducts={this.props.cart.cartProducts}
             handleUpdateQuantity={this.props.handleUpdateQuantity}
             handleRemoveProduct={this.props.handleRemoveProduct}
             orderId={this.props.cart.id}

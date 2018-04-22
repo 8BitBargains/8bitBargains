@@ -50,17 +50,20 @@ router.get('/:orderId?', (req, res, next) => {
 // });
 
 router.post('/cart', (req, res, next) => {
-  // create an instance of a game on an order
+  // create an instance of a product on an order
+  // ie add a product to the cart
   const gameId = req.body.id;
   const userId = req.user ? req.user.id : null;
   const sessionId = userId ? null : req.session.id;
+  console.log('inside the post to cart route');
   Order.findOne({ where: { userId, sessionId, status: 'Created' } })
     .then(order => {
+      console.log('found order', order.id);
       const orderId = order.id;
       return GameOrder.create({ orderId, gameId });
     })
     .then(gameOrder => {
-      const id = gameOrder.gameId
+      const id = gameOrder.gameId;
       return Game.findOne({ where: { id } })
     })
     .then(game => res.json(game))
@@ -89,28 +92,5 @@ router.put('/cart/:orderId', (req, res, next) => {
       .then(() => res.send({ productId: gameId }))
       .catch(next);
   }
-  // GameOrder.findOne({ where: { gameId, orderId } })
-  //   .then(gameOrder => {
-  //     return gameOrder.update({ quantity });
-  //   })
-  //   .then(gameOrder => {
-  //     const id = gameOrder.orderId;
-  //     return Order.findOne({ where: { id }, include: { all: true } });
-  //   })
-  //   .then(order => {
-  //     res.send(order);
-  //   })
-  //   .catch(next);
 });
 
-// router.delete('/cart/:gameId/:orderId', (req, res, next) => {
-//   // delete an item on an active order
-//   const gameId = req.params.gameId;
-//   const orderId = req.params.orderId;
-//   GameOrder.destroy({ where: { gameId, orderId } })
-//     .then(() => {
-//       return Order.findOne({ where: { id: orderId }, include: { all: true } });
-//     })
-//     .then(order => res.json(order))
-//     .catch(next);
-// });

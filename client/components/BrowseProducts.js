@@ -9,11 +9,13 @@ import {
   writeGenreEntry,
   writeSystemEntry,
   writeSearchEntry,
-  addToCart
+  addToCart,
+  updateCart
 } from '../store';
 
 const mapState = (state) => {
   return {
+    cart: state.cart,
     products: state.products,
     searchEntry: state.searchEntry,
     selectedGenre: state.genreEntry,
@@ -30,8 +32,11 @@ const mapDispatch = (dispatch, ownProps) => {
       dispatch(fetchSystems());
       dispatch(fetchProducts());
     },
-    handleClick: (product) => {
+    handleAddProduct: (product) => {
       dispatch(addToCart(product, ownProps.history));
+    },
+    handleUpdateProduct: (orderId, productId, quantity) => {
+      dispatch(updateCart(orderId, productId, quantity, ownProps.history));
     },
     sortProducts: (field, direction) => {
       dispatch(sortProducts(field, direction));
@@ -85,7 +90,9 @@ class BrowseProducts extends React.Component {
         />
         <AllProducts
           products={products}
-          handleClick={this.props.handleClick}
+          cart={this.props.cart}
+          handleAddProduct={this.props.handleAddProduct}
+          handleUpdateProduct={this.props.handleUpdateProduct}
         />
       </div>
     );
