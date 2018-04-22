@@ -5,36 +5,36 @@ import { connect } from 'react-redux';
 import { fetchCart, updateCart, removeFromCart } from '../store';
 
 const ItemList = props => {
-  const { items, handleSubmit, handleClick } = props;
+  const { cartProducts, handleUpdateQuantity, handleRemoveProduct, orderId } = props;
 
   return (
     <List divided relaxed>
-      {items.map(item => {
+      {cartProducts.map(cartProduct => {
         return (
-          <List.Item key={item.title}>
+          <List.Item key={cartProduct.game.title}>
             <div>
               <div>
-                <Image src={item.coverUrl} size="small" />
+                <Image src={cartProduct.game.coverUrl} size="small" />
               </div>
               <div>
                 <List.Content>
-                  <List.Header as="h3">{item.title}</List.Header>
+                  <List.Header as="h3">{cartProduct.game.title}</List.Header>
                   <List.Description as="p">
-                    {truncate(item.description)}
+                    {truncate(cartProduct.game.description)}
                   </List.Description>
                 </List.Content>
               </div>
-              <div>{displayPrice(item.price)}</div>
+              <div>{displayPrice(cartProduct.game.price)}</div>
               <div>
-                <Form onSubmit={e => handleSubmit(item, e.target.update.value)}>
+                <Form onSubmit={e => handleUpdateQuantity(orderId, cartProduct.game.id, e.target.update.value)}>
                   <Input
                     name="update"
                     type="text"
-                    placeholder={item.game_order.quantity}
+                    placeholder={cartProduct.quantity}
                   />
                   <Button type="submit">Update</Button>
                 </Form>
-                <Button negative onClick={() => handleClick(item)}>
+                <Button negative onClick={() => handleRemoveProduct(orderId, cartProduct.game.id)}>
                   Remove Item
                 </Button>
               </div>
@@ -53,20 +53,21 @@ class Cart extends Component {
 
   subtotal = () => {
     let subtotal = 0;
-    this.props.cart.games.forEach(item => {
-      subtotal += item.price * item.game_order.quantity;
+    this.props.cart.cartProducts.forEach(product => {
+      subtotal += product.game.price * product.quantity;
     });
     return subtotal;
   };
 
   render() {
-    if (this.props.cart.games) {
+    if (this.props.cart.cartProducts.length) {
       return (
         <Container>
           <ItemList
-            items={this.props.cart.games}
-            handleSubmit={this.props.handleSubmit}
-            handleClick={this.props.handleClick}
+            cartProducts={this.props.cart.cartProducts}
+            handleUpdateQuantity={this.props.handleUpdateQuantity}
+            handleRemoveProduct={this.props.handleRemoveProduct}
+            orderId={this.props.cart.id}
           />
           <h1>Subtotal: {displayPrice(this.subtotal())}</h1>
           <Button positive onClick={() => this.props.history.push('/cart/process')}>Check Out</Button>
@@ -89,11 +90,11 @@ const mapDispatch = dispatch => {
     loadCart: () => {
       dispatch(fetchCart());
     },
-    handleSubmit: (game, quantity) => {
-      dispatch(updateCart(game, quantity));
+    handleUpdateQuantity: (orderId, productId, quantity) => {
+      dispatch(updateCart(orderId, productId, quantity));
     },
-    handleClick: game => {
-      dispatch(removeFromCart(game));
+    handleRemoveProduct: (orderId, productId) => {
+      dispatch(removeFromCart(orderId, productId));
     }
   };
 };
