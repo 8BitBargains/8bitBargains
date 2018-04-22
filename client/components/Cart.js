@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { List, Image, Input, Container, Button, Form } from 'semantic-ui-react';
 import { displayPrice, truncate } from '../utils';
 import { connect } from 'react-redux';
@@ -14,11 +15,15 @@ const ItemList = props => {
           <List.Item key={cartProduct.product.title}>
             <div>
               <div>
-                <Image src={cartProduct.product.coverUrl} size="small" />
+                <Link to={`/products/${cartProduct.product.id}`}>
+                  <Image src={cartProduct.product.coverUrl} size="small" />
+                </Link>
               </div>
               <div>
                 <List.Content>
-                  <List.Header as="h3">{cartProduct.product.title}</List.Header>
+                  <Link to={`/products/${cartProduct.product.id}`}>
+                    <List.Header as="h3" >{cartProduct.product.title}</List.Header>
+                  </Link>
                   <List.Description as="p">
                     {truncate(cartProduct.product.description)}
                   </List.Description>
