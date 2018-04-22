@@ -11,22 +11,24 @@ const ItemList = props => {
     <List divided relaxed>
       {cartProducts.map(cartProduct => {
         return (
-          <List.Item key={cartProduct.game.title}>
+          <List.Item key={cartProduct.product.title}>
             <div>
               <div>
-                <Image src={cartProduct.game.coverUrl} size="small" />
+                <Image src={cartProduct.product.coverUrl} size="small" />
               </div>
               <div>
                 <List.Content>
-                  <List.Header as="h3">{cartProduct.game.title}</List.Header>
+                  <List.Header as="h3">{cartProduct.product.title}</List.Header>
                   <List.Description as="p">
-                    {truncate(cartProduct.game.description)}
+                    {truncate(cartProduct.product.description)}
                   </List.Description>
                 </List.Content>
               </div>
-              <div>{displayPrice(cartProduct.game.price)}</div>
+              <div>{displayPrice(cartProduct.product.price)}</div>
               <div>
-                <Form onSubmit={e => handleUpdateQuantity(orderId, cartProduct.game.id, e.target.update.value)}>
+
+                <Form className="inline-block" onSubmit={e => handleUpdateQuantity(orderId, cartProduct.product.id, e.target.update.value)}>
+                  <strong>Quantity:</strong>
                   <Input
                     name="update"
                     type="text"
@@ -34,8 +36,8 @@ const ItemList = props => {
                   />
                   <Button type="submit">Update</Button>
                 </Form>
-                <Button negative onClick={() => handleRemoveProduct(orderId, cartProduct.game.id)}>
-                  Remove Item
+                <Button className="inline-block" negative onClick={() => handleRemoveProduct(orderId, cartProduct.product.id)}>
+                  Remove
                 </Button>
               </div>
             </div>
@@ -54,7 +56,7 @@ class Cart extends Component {
   subtotal = () => {
     let subtotal = 0;
     this.props.cart.cartProducts.forEach(product => {
-      subtotal += product.game.price * product.quantity;
+      subtotal += product.product.price * product.quantity;
     });
     return subtotal;
   };
@@ -74,7 +76,7 @@ class Cart extends Component {
         </Container>
       );
     } else {
-      return <h3>Add some games to your cart!</h3>;
+      return <h3>Add some products to your cart!</h3>;
     }
   }
 }
@@ -91,7 +93,8 @@ const mapDispatch = dispatch => {
       dispatch(fetchCart());
     },
     handleUpdateQuantity: (orderId, productId, quantity) => {
-      dispatch(updateCart(orderId, productId, quantity));
+      if (!quantity) console.log('please enter a new quantity');
+      else dispatch(updateCart(orderId, productId, quantity));
     },
     handleRemoveProduct: (orderId, productId) => {
       dispatch(removeFromCart(orderId, productId));

@@ -30,7 +30,7 @@ export default function AllProducts(props) {
 
                     // find cartProducts that match product
                     const matchingProducts = cart.cartProducts.filter(
-                      cartProduct => cartProduct.game.id === product.id
+                      cartProduct => cartProduct.product.id === product.id
                     );
 
                     const productInCart = matchingProducts[0];
