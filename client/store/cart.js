@@ -5,19 +5,23 @@ const _ = require('lodash');
  * ACTION TYPES
  */
 const GET_CART = 'GET_CART';
-const ADD_GAME = 'ADD_GAME';
-const UPDATE_QUANTITY = 'UPDATE_QUANTITY';
-const REMOVE_GAME = 'REMOVE_GAME';
-const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
+
+const ADD_CART_PRODUCT = 'ADD_CART_PRODUCT';
+const UPDATE_PRODUCT_QUANTITY = 'UPDATE_PRODUCT_QUANTITY';
+const REMOVE_CART_PRODUCT = 'REMOVE_CART_PRODUCT';
+
+const UPDATE_CART_ADDRESS = 'UPDATE_CART_ADDRESS';
 
 /**
  * ACTION CREATORS
  */
 const getCart = cart => ({ type: GET_CART, cart });
-const addGame = game => ({ type: ADD_GAME, game });
-const updateQuantity = updatedCart => ({ type: UPDATE_QUANTITY, updatedCart });
-const removeGame = updatedCart => ({ type: REMOVE_GAME, updatedCart });
-const updateAddressAction = updatedCart => ({ type: UPDATE_ADDRESS, updatedCart });
+
+const addCartProduct = cartProduct => ({ type: ADD_CART_PRODUCT, cartProduct });
+const updateProductQuantity = cartProduct => ({ type: UPDATE_PRODUCT_QUANTITY, cartProduct });
+const removeCartProduct = removedProductId => ({ type: REMOVE_CART_PRODUCT, removedProductId });
+
+const updateCartAddress = address => ({ type: UPDATE_CART_ADDRESS, address });
 
 /**
  * THUNK CREATORS
@@ -30,13 +34,13 @@ export const fetchCart = () =>
         const cart = {
           id: res.data.id,
           address: res.data.address,
-          games: res.data.games.map( game => {
+          games: res.data.games.map(game => {
             return {
               game: _.omit(game, 'game_order'),
               quantity: game.game_order.quantity
-            }
+            };
           })
-        }
+        };
         dispatch(getCart(cart))
       })
       .catch(err => console.log(err))
@@ -46,24 +50,41 @@ export const addToCart = (product, history) =>
   // add games to cart on back end
   dispatch => (
     axios.post(`/api/orders/cart`, product)
-    .then(res => {
-      const game = {
-        game: res.data,
-        quantity: 1
-      }
-      dispatch(addGame(game));
-      history.push('/cart');
-    })
-    .catch(err => console.log(err))
+      .then(res => {
+        const cartProduct = {
+          game: res.data,
+          quantity: 1
+        };
+        dispatch(addCartProduct(cartProduct));
+        history.push('/cart');
+      })
+      .catch(err => console.log(err))
   );
 
-export const updateCart = (orderId, game, newQuantity) =>
+export const updateCart = (orderId, productId, quantity) =>
   // update the quantity of a game in the cart
+  dispatch => {
+    return (
+      axios.put(`/api/orders/cart/${orderId}`, { productId, quantity })
+        .then(res => {
+          const cartProduct = {
+            game: res.data,
+            quantity
+          };
+          dispatch(updateProductQuantity(cartProduct));
+        })
+        .catch(err => console.log(err))
+    );
+  };
+
+export const removeFromCart = (orderId, productId) =>
+  // remove a game from the cart
   dispatch => (
-    axios.put(`/api/orders/cart/${orderId}`, {...game, newQuantity: newQuantity})
+    axios.put(`/api/orders/cart/${orderId}`, { productId, quantity: 0 })
       .then(res => {
-        console.log(res.data)
-        dispatch(updateQuantity(res.data));
+        console.log(res.data);
+        const removedProductId = res.data.productId;
+        dispatch(removeCartProduct(removedProductId));
       })
       .catch(err => console.log(err))
   );
@@ -73,36 +94,31 @@ export const updateAddress = address =>
   dispatch => (
     axios.put('/api/orders/cart/address', address)
       .then(res => {
-        dispatch(updateAddressAction(res.data));
+        dispatch(updateCartAddress(res.data));
       })
       .catch(err => console.log(err))
   );
 
-export const removeFromCart = (game) =>
-  // remove a game from the cart
-  dispatch => (
-    axios.delete('/api/orders/cart/' + game.id + '/' + game.game_order.orderId)
-    .then(res => {
-      dispatch(removeGame(res.data));
-    })
-    .catch(err => console.log(err))
-  );
 
 /**
  * REDUCER
  */
-export default function (state = {id: null, games: [], address: ''}, action) {
+export default function (state = { id: null, games: [], address: '' }, action) {
   switch (action.type) {
     case GET_CART:
       return action.cart;
-    case ADD_GAME:
-      return Object.assign({}, state, { games: [...state.games, action.game]});
-    case UPDATE_QUANTITY:
-      return action.updatedCart;
-    case REMOVE_GAME:
-      return action.updatedCart;
-    case UPDATE_ADDRESS:
-      return action.updatedCart;
+    case ADD_CART_PRODUCT:
+      return Object.assign({}, state, { games: [...state.games, action.cartProduct] });
+    case UPDATE_PRODUCT_QUANTITY:
+      return Object.assign({}, state, {
+        games: [...state.games.filter(cartProduct => cartProduct.game.id !== action.cartProduct.game.id), action.cartProduct]
+      });
+    case REMOVE_CART_PRODUCT:
+      return Object.assign({}, state, {
+        games: [...state.games.filter(cartProduct => cartProduct.game.id !== action.removedProductId)]
+      });
+    case UPDATE_CART_ADDRESS:
+      return Object.assign({}, state, { address: action.address });
     default:
       return state;
   }

@@ -54,36 +54,39 @@ router.post('/cart', (req, res, next) => {
   const gameId = req.body.id;
   const userId = req.user ? req.user.id : null;
   const sessionId = userId ? null : req.session.id;
-    Order.findOne({ where: { userId, sessionId, status: 'Created' } })
-      .then(order => {
-        const orderId = order.id;
-        return GameOrder.create({ orderId, gameId });
-      })
-      .then(gameOrder => {
-        const id = gameOrder.gameId
-        return Game.findOne( {where: { id } })
-      })
-      .then(game => res.json(game))
-      .catch(next);
+  Order.findOne({ where: { userId, sessionId, status: 'Created' } })
+    .then(order => {
+      const orderId = order.id;
+      return GameOrder.create({ orderId, gameId });
+    })
+    .then(gameOrder => {
+      const id = gameOrder.gameId
+      return Game.findOne({ where: { id } })
+    })
+    .then(game => res.json(game))
+    .catch(next);
 });
 
 router.put('/cart/:orderId', (req, res, next) => {
   // update the quantity of an instance in the gameOrders join table on an active order
   // if the new quantity === 0, remove the row on the game_order join table
   const orderId = req.params.orderId;
-  const gameId = req.body.gameId;
-  const quantity = req.body.newQuantity;
+  const gameId = req.body.productId;
+  const quantity = req.body.quantity;
   if (quantity) {
     GameOrder.update({ quantity }, {
       where: { gameId, orderId },
       returning: true,
-      plain: true
     })
-      .then((updatedRow) => res.json(updatedRow[1][0]))
+      .then(([numAffected, affectedRows]) => {
+        const id = affectedRows[0].gameId;
+        return Game.findOne({ where: { id } });
+      })
+      .then(game => res.json(game))
       .catch(next);
   } else {
     GameOrder.destroy({ where: { gameId, orderId } })
-      .then(() => res.send({ gameId }))
+      .then(() => res.send({ productId: gameId }))
       .catch(next);
   }
   // GameOrder.findOne({ where: { gameId, orderId } })
