@@ -12,3 +12,4 @@ export { default as AllProducts } from './AllProducts';
 export { default as SingleProduct } from './SingleProduct';
 export { default as Cart } from './Cart';
 export { default as OrderInfo } from './OrderInfo';
+export { default as AllOrders } from './AllOrders';
