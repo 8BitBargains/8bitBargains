@@ -106,11 +106,10 @@ router.put('/process', (req, res, next) => {
     return order.update({ address, status: 'Processing' })
   })
   .then((processingOrder) => {
-    console.log(processingOrder)
-    // need to figure out what to do with this
-    // res.json(processingOrder);
+    console.log(processingOrder);
+    // Create a new cart for the user. May need to use bluebird.tap to prevent a race condition
+    Order.create({ userId, sessionId, status: 'Created' })
+    res.json(processingOrder);
   })
-  .then(() => Order.create({ userId, sessionId, status: 'Created' }))
-  .then((order) => res.send(order))
   .catch(next);
 });
