@@ -15,9 +15,10 @@ const getUserOrders = orders => ({type: GET_USER_ORDERS, orders});
 /**
  * THUNK CREATORS
  */
-export const fetchUserOrders = userId =>
+export const fetchUserOrders = () =>
   dispatch => (
-    axios.get('/api/orders/user/' + userId)
+    axios.get('/api/orders/')
+      .then(res => res.data)
       .then(orders => {
         dispatch(getUserOrders(orders));
       })
@@ -29,7 +30,7 @@ export const fetchUserOrders = userId =>
 export default function (state = [], action) {
   switch (action.type){
     case GET_USER_ORDERS:
-      return {...state, orders: action.orders};
+      return action.orders;
     default:
       return state;
   }

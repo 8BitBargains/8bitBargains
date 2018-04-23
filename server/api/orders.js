@@ -32,7 +32,8 @@ router.get('/:orderId?', (req, res, next) => {
     Order.findOne({ where: { id, userId } });
   } else {
     Order.findAll({
-      where: { userId }
+      where: { userId },
+      include: [ Game ]
     })
       .then(orders => res.json(orders))
       .catch(next);
