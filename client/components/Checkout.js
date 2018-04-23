@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Checkbox, Input, Container, Button, Form, Select } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { shippingOptions, stateOptions, countryOptions } from '../utils';
-import { updateAddress } from '../store';
+import { submitOrder } from '../store';
 
 const initialState = {
   name: '',
@@ -12,7 +12,7 @@ const initialState = {
   country: '',
   shipping: '',
 };
-class OrderInfo extends Component {
+class Checkout extends Component {
   constructor(props){
     super(props);
     this.state = initialState;
@@ -40,7 +40,7 @@ class OrderInfo extends Component {
     // takes the submit information from the form and passes it onto the container
     const { name, address, city, state, country } = formData;
     const shippingAddress = `${name},${address},${city},${state},${country}`;
-    console.log('address: ', shippingAddress)
+    // if implementing shipping details, add it here
     this.props.handleSubmit(shippingAddress);
     this.setState(initialState);
   }
@@ -112,12 +112,11 @@ class OrderInfo extends Component {
 const mapDispatch = dispatch => {
   return {
     handleSubmit: (formData) => {
-      // logic for converting to string here
-      dispatch(updateAddress(formData));
+      dispatch(submitOrder(formData));
     }
   };
 };
 
-const OrderInfoContainer = connect(null, mapDispatch)(OrderInfo);
+const CheckoutContainer = connect(null, mapDispatch)(Checkout);
 
-export default OrderInfoContainer;
+export default CheckoutContainer;

@@ -57,7 +57,6 @@ router.post('/cart', (req, res, next) => {
   const sessionId = userId ? null : req.session.id;
   Order.findOne({ where: { userId, sessionId, status: 'Created' } })
     .then(order => {
-      console.log('found order', order.id);
       const orderId = order.id;
       return ProductOrder.create({ orderId, productId });
     })
@@ -94,3 +93,24 @@ router.put('/cart/:orderId', (req, res, next) => {
   }
 });
 
+router.put('/checkout', (req, res, next) => {
+  // add address, shipping method to order
+  // change status to 'Processing'
+  // no need to create a new empty cart--should be taken care of above
+  const address = req.body.address;
+  // shipping not implemented just yet
+  // const shipping = req.body.shipping;
+  const userId = req.user ? req.user.id : null;
+  const sessionId = userId ? null : req.session.id;
+  Order.findOne({ where: { userId, sessionId, status: 'Created' } })
+  .then(foundOrder => {
+    return foundOrder.update({ address, status: 'Processing' })
+  })
+  .then((processingOrder) => {
+    console.log(processingOrder);
+    // Create a new cart for the user. May need to use bluebird.tap to prevent a race condition
+    Order.create({ userId, sessionId, status: 'Created' })
+    res.json(processingOrder);
+  })
+  .catch(next);
+});
