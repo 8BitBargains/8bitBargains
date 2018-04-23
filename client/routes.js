@@ -10,7 +10,7 @@ import {
   SingleProduct,
   Cart,
   OrderInfo,
-  OrderHistory,
+  AllOrders,
 } from './components';
 import { me, addToCart, updateCart } from './store';
 import { fetchCart } from './store/cart';
@@ -45,7 +45,7 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
-            <Route path="/order-history" component={OrderHistory} />
+            <Route path="/order-history" component={AllOrders} />
           </Switch>
         }
         {/* Displays our Browse component as a fallback */}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Item } from 'semantic-ui-react';
 
 import { fetchUserOrders } from '../store';
-import Order from './Order';
+import SingleOrder from './SingleOrder';
 
 const mapState = (state) => {
   return {
@@ -28,7 +28,7 @@ class OrderHistory extends Component {
     return (
       <div className="order-history-container">
         <Item.Group>
-          {orders.map(order => <Order key={order.id} order={order} />)}
+          {orders.map(order => <SingleOrder key={order.id} order={order} />)}
         </Item.Group>
       </div>
     );
