@@ -16,4 +16,4 @@ router.get('/:productId', (req, res, next) => {
   })
     .then(product => res.json(product))
     .catch(next);
-})
+});
