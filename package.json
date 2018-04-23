@@ -11,7 +11,7 @@
     "build-client-watch": "webpack -w",
     "deploy": "script/deploy",
     "lint": "eslint ./ --ignore-path .gitignore",
-    "postinstall": "webpack & npm run seed",
+    "postinstall": "webpack -p & npm run seed", // maybe no seed file postinstall b/c production deployment, -p will minify the bundle
     "seed": "node script/seed.js",
     "start": "node server",
     "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server",
@@ -49,14 +49,14 @@
     "webpack-cli": "^2.0.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.40",
-    "@babel/polyfill": "^7.0.0-beta.40",
-    "@babel/preset-env": "^7.0.0-beta.40",
-    "@babel/preset-react": "^7.0.0-beta.40",
-    "@babel/preset-stage-2": "^7.0.0-beta.40",
+    "@babel/core": "^7.0.0-beta.40", // move?
+    "@babel/polyfill": "^7.0.0-beta.40", // move?
+    "@babel/preset-env": "^7.0.0-beta.40", // move
+    "@babel/preset-react": "^7.0.0-beta.40", // move
+    "@babel/preset-stage-2": "^7.0.0-beta.40", // move
     "@babel/register": "^7.0.0-beta.40",
     "babel-eslint": "^8.0.1",
-    "babel-loader": "^8.0.0-beta.2",
+    "babel-loader": "^8.0.0-beta.2", // move
     "axios-mock-adapter": "^1.9.0",
     "chai": "^3.5.0",
     "enzyme": "^3.0.0",

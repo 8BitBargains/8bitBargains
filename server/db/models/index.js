@@ -14,7 +14,7 @@ Product.belongsTo(System);
 Order.belongsToMany(Product, { through: ProductOrder });
 Product.belongsToMany(Order, { through: ProductOrder });
 
-//SEND IT!!!
+//SEND IT!!! // delete this
 
 module.exports = {
   User,

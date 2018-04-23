@@ -13,6 +13,8 @@ router.get('/allOrders',
       .catch(next);
   });
 
+// Geoff:  you may want 2 separate routes here for cart for authenticated versus not authenticated users
+
 // GET cart ('created' order) for current user
 router.get('/cart', (req, res, next) => {
   // gets the active cart or returns a new cart for the client
@@ -62,7 +64,7 @@ router.post('/cart', (req, res, next) => {
     })
     .then(productOrder => {
       const id = productOrder.productId;
-      return Product.findOne({ where: { id } })
+      return Product.findOne({ where: { id } }) // findById is better here
     })
     .then(product => res.json(product))
     .catch(next);

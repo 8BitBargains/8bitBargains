@@ -4,7 +4,7 @@ import { displayPrice, truncate } from '../utils';
 import { Link } from 'react-router-dom';
 
 
-export default function AllProducts(props) {
+export default function AllProducts(props) { // Geoff:  de-structure props for less code Lines 8-10
   const handleAddButton = props.handleAddButton;
   const products = props.products;
   const cart = props.cart;
@@ -12,7 +12,7 @@ export default function AllProducts(props) {
   return (
     <div className="all-products-container">
       <Card.Group>
-        {products && products.map(product => (
+        {products && products.map(product => ( // Geoff:  return just a function, make a single product card component -- modularity!
           <Card key={product.id} link>
             <Image
               src={product.coverUrl}
