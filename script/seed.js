@@ -332,11 +332,11 @@ async function seed() {
   ]);
 
   const addItemsToOrders = await Promise.all([
-    orders[0].addGame(games[0], { through: {quantity: 2, salePrice: games[0].price} }),
-    orders[0].addGame(games[1], { through: {quantity: 3, salePrice: games[1].price} }),
-    orders[0].addGame(games[2], { through: {quantity: 4, salePrice: games[2].price} }),
-    orders[1].addGame(games[3], { through: {quantity: 1, salePrice: games[3].price} }),
-    orders[1].addGame(games[4], { through: {quantity: 2, salePrice: games[4].price} })
+    orders[0].addProduct(products[0], { through: {quantity: 2, salePrice: products[0].price} }),
+    orders[0].addProduct(products[1], { through: {quantity: 3, salePrice: products[1].price} }),
+    orders[0].addProduct(products[2], { through: {quantity: 4, salePrice: products[2].price} }),
+    orders[1].addProduct(products[3], { through: {quantity: 1, salePrice: products[3].price} }),
+    orders[1].addProduct(products[4], { through: {quantity: 2, salePrice: products[4].price} })
   ]);
 
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
