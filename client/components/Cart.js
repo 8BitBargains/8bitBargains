@@ -10,7 +10,7 @@ const ItemList = props => {
 
   return (
     <List divided relaxed>
-      {cartProducts.map(cartProduct => {
+      {cartProducts && cartProducts.map(cartProduct => {
         return (
           <List.Item key={cartProduct.product.title}>
             <div>

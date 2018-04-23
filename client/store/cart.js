@@ -1,5 +1,5 @@
 import axios from 'axios';
-const _ = require('lodash');
+import { omit } from 'lodash';
 
 /**
  * ACTION TYPES
@@ -36,7 +36,7 @@ export const fetchCart = () =>
           address: res.data.address,
           cartProducts: res.data.products.map(product => {
             return {
-              product: _.omit(product, 'product_order'),
+              product: omit(product, 'product_order'),
               quantity: product.product_order.quantity
             };
           })
