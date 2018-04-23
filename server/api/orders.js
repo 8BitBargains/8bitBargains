@@ -107,8 +107,10 @@ router.put('/process', (req, res, next) => {
   })
   .then((processingOrder) => {
     console.log(processingOrder)
-    res.json(processingOrder);
+    // need to figure out what to do with this
+    // res.json(processingOrder);
   })
+  .then(() => Order.create({ userId, sessionId, status: 'Created' }))
+  .then((order) => res.send(order))
   .catch(next);
 });
-

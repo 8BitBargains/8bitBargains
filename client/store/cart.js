@@ -10,7 +10,7 @@ const ADD_CART_PRODUCT = 'ADD_CART_PRODUCT';
 const UPDATE_PRODUCT_QUANTITY = 'UPDATE_PRODUCT_QUANTITY';
 const REMOVE_CART_PRODUCT = 'REMOVE_CART_PRODUCT';
 
-const UPDATE_CART_ADDRESS = 'UPDATE_CART_ADDRESS';
+const SUBMIT_ORDER = 'SUBMIT_ORDER';
 
 /**
  * ACTION CREATORS
@@ -20,8 +20,6 @@ const getCart = cart => ({ type: GET_CART, cart });
 const addCartProduct = cartProduct => ({ type: ADD_CART_PRODUCT, cartProduct });
 const updateProductQuantity = cartProduct => ({ type: UPDATE_PRODUCT_QUANTITY, cartProduct });
 const removeCartProduct = removedProductId => ({ type: REMOVE_CART_PRODUCT, removedProductId });
-
-const updateCartAddress = address => ({ type: UPDATE_CART_ADDRESS, address });
 
 /**
  * THUNK CREATORS
@@ -89,13 +87,13 @@ export const removeFromCart = (orderId, productId) =>
       .catch(err => console.log(err))
   );
 
-export const updateAddress = (address) =>
-  // update the address of the cart
+export const submitOrder = (address) =>
+  // add an address to the order and convert status to 'Processing', then reset the cart
   dispatch => (
     axios.put(`/api/orders/process`, { address })
     .then(res => {
-        console.log('return from update: ', res.data)
-        dispatch(updateCartAddress(res.data));
+      console.log('return from update: ', res.data);
+      dispatch(fetchCart());
       })
       .catch(err => console.log(err))
   );
@@ -132,9 +130,6 @@ export default function (state = { id: null, cartProducts: [], address: '' }, ac
           })
         ]
       });
-
-    case UPDATE_CART_ADDRESS:
-      return Object.assign({}, state, { address: action.address });
 
     default:
       return state;

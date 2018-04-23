@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Checkbox, Input, Container, Button, Form, Select } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { shippingOptions, stateOptions, countryOptions } from '../utils';
-import { updateAddress } from '../store';
+import { submitOrder } from '../store';
 
 const initialState = {
   name: '',
@@ -112,7 +112,7 @@ class OrderInfo extends Component {
 const mapDispatch = dispatch => {
   return {
     handleSubmit: (formData) => {
-      dispatch(updateAddress(formData));
+      dispatch(submitOrder(formData));
     }
   };
 };
