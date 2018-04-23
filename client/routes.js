@@ -42,8 +42,10 @@ class Routes extends Component {
             <Route path="/home" component={UserHome} />
           </Switch>
         }
-        {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
+        {/* Displays our Browse component as a fallback */}
+        <Route render={
+          () => <BrowseProducts handleAddButton={this.props.handleAddButton} />
+        } />
       </Switch>
     );
   }
