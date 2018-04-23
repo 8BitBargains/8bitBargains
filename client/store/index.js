@@ -11,6 +11,7 @@ import genreEntry from './sidebar/genreEntry';
 import systemEntry from './sidebar/systemEntry';
 import genres from './genres';
 import systems from './systems';
+import orders from './orders';
 
 const reducer = combineReducers({
   user,
@@ -21,7 +22,8 @@ const reducer = combineReducers({
   genreEntry,
   systemEntry,
   genres,
-  systems
+  systems,
+  orders
 });
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
@@ -39,3 +41,4 @@ export * from './sidebar/systemEntry';
 export * from './cart';
 export * from './genres';
 export * from './systems';
+export * from './orders';

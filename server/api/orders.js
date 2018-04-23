@@ -40,7 +40,8 @@ router.get('/:orderId?',
       Order.findOne({ where: { id, userId } });
     } else {
       Order.findAll({
-        where: { userId }
+        where: { userId },
+        include: [ Product ]
       })
         .then(orders => res.json(orders))
         .catch(next);
