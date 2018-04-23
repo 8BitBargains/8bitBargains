@@ -10,18 +10,15 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db');
-<<<<<<< HEAD
+
 const {
   User,
-  Game,
+  Product,
   Genre,
   System,
   Order,
   GameOrder,
 } = require('../server/db/models');
-=======
-const { User, Product, Genre, System } = require('../server/db/models');
->>>>>>> master
 
 async function seed() {
   await db.sync({force: true});
@@ -30,15 +27,10 @@ async function seed() {
   // executed until that promise resolves!
 
   const users = await Promise.all([
-<<<<<<< HEAD
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'}),
-=======
     User.create({ email: 'cody@email.com', password: '123' }),
     User.create({ email: 'murphy@email.com', password: '123' }),
     User.create({ email: 'deploy@deploy.com', password: 'deploy' }),
     User.create({ email: 'admin@admin.com', password: 'admin', isAdmin: true })
->>>>>>> master
   ]);
 
   const systems = await Promise.all([
@@ -119,15 +111,11 @@ async function seed() {
     }),
     Genre.create({
       id: 13,
-<<<<<<< HEAD
-      name: 'Shooter',
-=======
       name: 'Shooter'
     }),
     Genre.create({
       id: 14,
       name: 'Puzzle'
->>>>>>> master
     }),
   ]);
 
@@ -149,15 +137,8 @@ async function seed() {
       inventory: 50,
       genreId: 8,
       systemId: 2,
-<<<<<<< HEAD
-      description:
-        "Super Mario World (JP) (originally released as Super Mario Bros. 4 (JP) in Japan) is a SNES classic released in 1990, 1991 and 1992 by Nintendo. The game has been hailed as one of the many various Super Mario Bros. classics, earned the title of being the best-selling Super NES game of all time, thus has been remade or re-released on various platforms including the Game Boy Advance and the Wii's Virtual Console.",
-      coverUrl:
-        'https://vignette.wikia.nocookie.net/nintendo/images/e/ed/Super_Mario_World_%28NA%29.png/revision/latest?cb=20120509225518&path-prefix=en',
-=======
       description: "Super Mario World (JP) (originally released as Super Mario Bros. 4 (JP) in Japan) is a SNES classic released in 1990, 1991 and 1992 by Nintendo. The game has been hailed as one of the many various Super Mario Bros. classics, earned the title of being the best-selling Super NES game of all time, thus has been remade or re-released on various platforms including the game Boy Advance and the Wii's Virtual Console.",
       coverUrl: 'https://vignette.wikia.nocookie.net/nintendo/images/e/ed/Super_Mario_World_%28NA%29.png/revision/latest?cb=20120509225518&path-prefix=en'
->>>>>>> master
     }),
     Product.create({
       title: 'The Legend of Zelda: A Link to the Past',
@@ -225,15 +206,9 @@ async function seed() {
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/3/3d/Super_Mario_Bros._%28NA%29.png/revision/latest/scale-to-width-down/250?cb=20120516222518&path-prefix=en',
     }),
-<<<<<<< HEAD
-    Game.create({
-      title: "Mike Tyson's Punch-Out!!",
-      price: 2699,
-=======
     Product.create({
       title: 'Mike Tyson\'s Punch-Out!!',
       price: 899,
->>>>>>> master
       inventory: 5,
       genreId: 3,
       systemId: 1,
@@ -247,17 +222,9 @@ async function seed() {
       price: 899,
       inventory: 40,
       genreId: 3,
-<<<<<<< HEAD
-      systemId: 4,
-      description:
-        'Battletoads & Double Dragon (stylized as Battletoads / Double Dragon) also known as Battletoads & Double Dragon - The Ultimate Team, is a video game released on the Nintendo Entertainment System, Game Boy and Super Nintendo Entertainment System in 1993 and 1994. It was a crossover between the Battletoads games and Double Dragon games.',
-      coverUrl:
-        'https://vignette.wikia.nocookie.net/nintendo/images/0/09/Battletoads_Double_Dragon_%28NES%29_%28NA%29.jpg/revision/latest/scale-to-width-down/250?cb=20120711171403&path-prefix=en',
-=======
       systemId: 1,
       description: 'Battletoads & Double Dragon (stylized as Battletoads / Double Dragon) also known as Battletoads & Double Dragon - The Ultimate Team, is a video game released on the Nintendo Entertainment System, Game Boy and Super Nintendo Entertainment System in 1993 and 1994. It was a crossover between the Battletoads games and Double Dragon games.',
       coverUrl: 'https://vignette.wikia.nocookie.net/nintendo/images/0/09/Battletoads_Double_Dragon_%28NES%29_%28NA%29.jpg/revision/latest/scale-to-width-down/250?cb=20120711171403&path-prefix=en'
->>>>>>> master
     }),
     Product.create({
       title: 'Super Smash Bros.',
@@ -377,12 +344,8 @@ async function seed() {
   console.log(`seeded ${users.length} users`);
   console.log(`seeded ${systems.length} systems`);
   console.log(`seeded ${genres.length} genres`);
-<<<<<<< HEAD
-  console.log(`seeded ${games.length} games`);
   console.log(`seeded ${orders.length} orders`);
-=======
   console.log(`seeded ${products.length} products`);
->>>>>>> master
   console.log(`seeded successfully`);
 }
 
