@@ -11,6 +11,7 @@ import {
   writeSearchEntry
 } from '../store';
 
+// move redux map functions below component?  for consistency only.
 const mapState = (state) => {
   return {
     cart: state.cart,

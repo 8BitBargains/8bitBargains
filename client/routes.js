@@ -69,12 +69,12 @@ const mapDispatch = (dispatch, ownProps) => {
       dispatch(me());
       dispatch(fetchCart());
     },
-    handleAddButton: (cart, product) => {
+    handleAddButton: (cart, product) => { // more logical place is to make it its own component which you use
       // check if product is in cart
       const productInCart = cart.cartProducts.filter(
         cartProduct => cartProduct.product.id === product.id
       )[0];
-      if (productInCart) {
+      if (productInCart) { // reads awkward, maybe always have brackets, but group's choice
         dispatch(updateCart(cart.id, product.id, ++productInCart.quantity, ownProps.history));
       }
       else dispatch(addToCart(product, ownProps.history));

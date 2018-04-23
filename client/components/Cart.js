@@ -5,6 +5,8 @@ import { displayPrice, truncate } from '../utils';
 import { connect } from 'react-redux';
 import { fetchCart, updateCart, removeFromCart } from '../store';
 
+// Geoff:  Iffy naming with cartProduct.product
+
 const ItemList = props => {
   const { cartProducts, handleUpdateQuantity, handleRemoveProduct, orderId } = props;
 
@@ -53,11 +55,14 @@ const ItemList = props => {
   );
 };
 
+// Geoff:  ItemList should be separate file.
+
 class Cart extends Component {
   componentDidMount() {
     this.props.loadCart();
   }
 
+  // should 'bind'?  POLYfill?  NOT standard JS yet.  Babel's specific plug-ins give you this.
   subtotal = () => {
     let subtotal = 0;
     this.props.cart.cartProducts.forEach(product => {
@@ -98,7 +103,7 @@ const mapDispatch = dispatch => {
       dispatch(fetchCart());
     },
     handleUpdateQuantity: (orderId, productId, quantity) => {
-      if (!quantity) console.log('please enter a new quantity');
+      if (!quantity) console.log('please enter a new quantity'); // should be a controlled component (maybe needs a real error message?)
       else dispatch(updateCart(orderId, productId, quantity));
     },
     handleRemoveProduct: (orderId, productId) => {
@@ -106,6 +111,16 @@ const mapDispatch = dispatch => {
     }
   };
 };
+
+/*
+Example refactoring (object notation):
+
+const mapDispatch = {
+  loadCart: fetchCart,
+  handle...: updateCart
+};
+
+*/
 
 const CartContainer = connect(mapState, mapDispatch)(Cart);
 

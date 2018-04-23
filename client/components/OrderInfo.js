@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { shippingOptions, stateOptions, countryOptions } from '../utils';
 import { updateAddress } from '../store';
 
-const initialState = {
+const initialState = { // comments
   name: '',
   address: '',
   city: '',
@@ -12,7 +12,7 @@ const initialState = {
   country: '',
   shipping: '',
 };
-class OrderInfo extends Component {
+class OrderInfo extends Component { // 2 handle submits?
   constructor(props){
     super(props);
     this.state = initialState;
@@ -27,6 +27,7 @@ class OrderInfo extends Component {
 
     if (typeof value === 'string'){
       // hack to get around the weird way react semantic ui handles select elements
+      // maybe more comments?  Geoff:  DBL DOWN -> MORE COMMENTS!!
       key = evt;
     } else {
       key = value.name;
