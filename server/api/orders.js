@@ -93,7 +93,7 @@ router.put('/cart/:orderId', (req, res, next) => {
   }
 });
 
-router.put('/process', (req, res, next) => {
+router.put('/checkout', (req, res, next) => {
   // add address, shipping method to order
   // change status to 'Processing'
   // no need to create a new empty cart--should be taken care of above
@@ -103,8 +103,8 @@ router.put('/process', (req, res, next) => {
   const userId = req.user ? req.user.id : null;
   const sessionId = userId ? null : req.session.id;
   Order.findOne({ where: { userId, sessionId, status: 'Created' } })
-  .then(order => {
-    return order.update({ address, status: 'Processing' })
+  .then(foundOrder => {
+    return foundOrder.update({ address, status: 'Processing' })
   })
   .then((processingOrder) => {
     console.log(processingOrder);

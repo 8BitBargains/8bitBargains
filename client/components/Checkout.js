@@ -12,7 +12,7 @@ const initialState = {
   country: '',
   shipping: '',
 };
-class OrderInfo extends Component {
+class Checkout extends Component {
   constructor(props){
     super(props);
     this.state = initialState;
@@ -117,6 +117,6 @@ const mapDispatch = dispatch => {
   };
 };
 
-const OrderInfoContainer = connect(null, mapDispatch)(OrderInfo);
+const CheckoutContainer = connect(null, mapDispatch)(Checkout);
 
-export default OrderInfoContainer;
+export default CheckoutContainer;

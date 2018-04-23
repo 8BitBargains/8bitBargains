@@ -90,7 +90,7 @@ export const removeFromCart = (orderId, productId) =>
 export const submitOrder = (address) =>
   // add an address to the order and convert status to 'Processing', then reset the cart
   dispatch => (
-    axios.put(`/api/orders/process`, { address })
+    axios.put(`/api/orders/checkout`, { address })
     .then(res => {
       console.log('return from update: ', res.data);
       dispatch(fetchCart());

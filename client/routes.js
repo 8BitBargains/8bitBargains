@@ -9,7 +9,7 @@ import {
   BrowseProducts,
   SingleProduct,
   Cart,
-  OrderInfo,
+  Checkout,
   AllOrders,
 } from './components';
 import { me, addToCart, updateCart } from './store';
@@ -35,7 +35,7 @@ class Routes extends Component {
           () => <BrowseProducts handleAddButton={this.props.handleAddButton} />
         } />
         <Route exact path="/cart" component={Cart} />
-        <Route exact path="/cart/process" component={OrderInfo} />
+        <Route exact path="/cart/process" component={Checkout} />
 
         <Route path="/products/:productId" render={
           ({ match }) => <SingleProduct match={match} handleAddButton={this.props.handleAddButton} />
