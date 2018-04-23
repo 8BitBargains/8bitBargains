@@ -1,34 +1,17 @@
 const router = require('express').Router();
 const { Order, ProductOrder, Product } = require('../db/models');
-const { isLoggedIn, isAdmin } = require('../utils/gatekeeperMiddleware');
+const { isLoggedIn, isAdmin, isAdminOrSelf } = require('../utils/gatekeeperMiddleware');
 module.exports = router;
 
-//TODO -- implement gatekeeping for this route
 // GET all orders for all users (admin only)
 router.get('/allOrders',
+  isLoggedIn,
   isAdmin,
   (req, res, next) => {
     Order.findAll()
       .then(orders => res.json(orders))
       .catch(next);
   });
-
-// GET all orders for current user
-// GET one order for current user
-router.get('/:orderId?', (req, res, next) => {
-  // fetch ALL orders for CURRENT user or just ONE if optional orderId param
-  const userId = req.user.id;
-  if (req.params.orderId) {
-    const id = req.params.orderId;
-    Order.findOne({ where: { id, userId } });
-  } else {
-    Order.findAll({
-      where: { userId }
-    })
-      .then(orders => res.json(orders))
-      .catch(next);
-  }
-});
 
 // GET cart ('created' order) for current user
 router.get('/cart', (req, res, next) => {
@@ -45,13 +28,32 @@ router.get('/cart', (req, res, next) => {
     .catch(next);
 });
 
+// GET all orders for CURRENT user
+// GET one order for CURRENT user
+router.get('/:orderId?',
+  isLoggedIn,
+  (req, res, next) => {
+    // fetch ALL orders for CURRENT user or just ONE if optional orderId param
+    const userId = req.user.id;
+    if (req.params.orderId) {
+      const id = req.params.orderId;
+      Order.findOne({ where: { id, userId } });
+    } else {
+      Order.findAll({
+        where: { userId }
+      })
+        .then(orders => res.json(orders))
+        .catch(next);
+    }
+  });
+
+
 // POST a single product to an order
 router.post('/cart', (req, res, next) => {
   // ie add a product to the cart
   const productId = req.body.id;
   const userId = req.user ? req.user.id : null;
   const sessionId = userId ? null : req.session.id;
-  console.log('inside the post to cart route');
   Order.findOne({ where: { userId, sessionId, status: 'Created' } })
     .then(order => {
       console.log('found order', order.id);
