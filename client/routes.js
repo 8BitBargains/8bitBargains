@@ -45,7 +45,7 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
-            <Route patch="/order-history" component={OrderHistory} />
+            <Route path="/order-history" component={OrderHistory} />
           </Switch>
         }
         {/* Displays our Browse component as a fallback */}

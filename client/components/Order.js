@@ -5,11 +5,11 @@ import {displayPrice} from '../utils';
 
 const Order = props => {
   let order = props.order;
-  let items = order.games;
+  let products = order.products;
 
-  let total = !items.length
+  let total = !products.length
     ? 0
-    : items.map(item => item.price).reduce((reducer, num) => reducer + num);
+    : products.map(item => item.price).reduce((reducer, num) => reducer + num);
 
   return (
     <Table padded="very" singleLine fixed color="green">
@@ -21,7 +21,7 @@ const Order = props => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {items.map(item => <OrderItem key={item.id} item={item} />)}
+        {products.map(item => <OrderItem key={item.id} item={item} />)}
       </Table.Body>
       <Table.Footer>
         <Table.Row>
