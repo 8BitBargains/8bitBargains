@@ -40,7 +40,7 @@ class OrderInfo extends Component {
     // takes the submit information from the form and passes it onto the container
     const { name, address, city, state, country } = formData;
     const shippingAddress = `${name},${address},${city},${state},${country}`;
-    console.log('address: ', shippingAddress)
+    console.log('address: ', shippingAddress);
     this.props.handleSubmit(shippingAddress);
     this.setState(initialState);
   }
@@ -112,7 +112,6 @@ class OrderInfo extends Component {
 const mapDispatch = dispatch => {
   return {
     handleSubmit: (formData) => {
-      // logic for converting to string here
       dispatch(updateAddress(formData));
     }
   };

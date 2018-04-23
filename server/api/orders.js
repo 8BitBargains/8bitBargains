@@ -39,26 +39,14 @@ router.get('/:orderId?', (req, res, next) => {
   }
 });
 
-// Need to refactor to create a cart for visitors
-// router.post('/', (req, res, next) => {
-//   // create new order
-//     const userId = req.body.userId;
-//     const address = req.body.address;
-//     Order.create({ userId, address })
-//       .then(order => res.json(order))
-//       .catch(next);
-// });
-
 router.post('/cart', (req, res, next) => {
   // create an instance of a product on an order
   // ie add a product to the cart
   const productId = req.body.id;
   const userId = req.user ? req.user.id : null;
   const sessionId = userId ? null : req.session.id;
-  console.log('inside the post to cart route');
   Order.findOne({ where: { userId, sessionId, status: 'Created' } })
     .then(order => {
-      console.log('found order', order.id);
       const orderId = order.id;
       return ProductOrder.create({ orderId, productId });
     })
@@ -92,5 +80,22 @@ router.put('/cart/:orderId', (req, res, next) => {
       .then(() => res.send({ productId: productId }))
       .catch(next);
   }
+});
+
+router.put('/process/:orderId', (req, res, next) => {
+  // add address, shipping method to order
+  // change status to 'Processing'
+  // no need to create a new empty cart--should be taken care of above
+  const id = req.params.orderId;
+  const address = req.body.address;
+  const shipping = req.body.shipping;
+  Order.update({ address, status: 'Processing' }, {
+    where: { id },
+    returning: true,
+  })
+  .then(([numAffected, affectedRows]) => {
+    res.json(affectedRows[0]);
+  })
+  .catch(next);
 });
 

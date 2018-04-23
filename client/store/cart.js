@@ -99,7 +99,6 @@ export const updateAddress = address =>
       .catch(err => console.log(err))
   );
 
-
 /**
  * REDUCER
  */
