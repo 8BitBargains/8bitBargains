@@ -82,19 +82,22 @@ router.put('/cart/:orderId', (req, res, next) => {
   }
 });
 
-router.put('/process/:orderId', (req, res, next) => {
+router.put('/process', (req, res, next) => {
   // add address, shipping method to order
   // change status to 'Processing'
   // no need to create a new empty cart--should be taken care of above
-  const id = req.params.orderId;
   const address = req.body.address;
-  const shipping = req.body.shipping;
-  Order.update({ address, status: 'Processing' }, {
-    where: { id },
-    returning: true,
+  // shipping not implemented just yet
+  // const shipping = req.body.shipping;
+  const userId = req.user ? req.user.id : null;
+  const sessionId = userId ? null : req.session.id;
+  Order.findOne({ where: { userId, sessionId, status: 'Created' } })
+  .then(order => {
+    return order.update({ address, status: 'Processing' })
   })
-  .then(([numAffected, affectedRows]) => {
-    res.json(affectedRows[0]);
+  .then((processingOrder) => {
+    console.log(processingOrder)
+    res.json(processingOrder);
   })
   .catch(next);
 });

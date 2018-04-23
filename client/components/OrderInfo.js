@@ -40,7 +40,7 @@ class OrderInfo extends Component {
     // takes the submit information from the form and passes it onto the container
     const { name, address, city, state, country } = formData;
     const shippingAddress = `${name},${address},${city},${state},${country}`;
-    console.log('address: ', shippingAddress);
+    // if implementing shipping details, add it here
     this.props.handleSubmit(shippingAddress);
     this.setState(initialState);
   }

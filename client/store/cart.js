@@ -89,11 +89,12 @@ export const removeFromCart = (orderId, productId) =>
       .catch(err => console.log(err))
   );
 
-export const updateAddress = address =>
+export const updateAddress = (address) =>
   // update the address of the cart
   dispatch => (
-    axios.put('/api/orders/cart/address', address)
-      .then(res => {
+    axios.put(`/api/orders/process`, { address })
+    .then(res => {
+        console.log('return from update: ', res.data)
         dispatch(updateCartAddress(res.data));
       })
       .catch(err => console.log(err))
