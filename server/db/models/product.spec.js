@@ -3,9 +3,9 @@
 
 const { expect } = require('chai')
 const db = require('../index')
-const Game = db.model('game')
+const Product = db.model('product')
 
-describe('Game model', () => {
+describe('Product model', () => {
   beforeEach(() => {
   })
 
@@ -14,4 +14,4 @@ describe('Game model', () => {
 
     }) // end describe('...')
   }) // end describe('...')
-}) // end describe('Game model')
+}) // end describe('Product model')

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {withRouter, Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
+<<<<<<< HEAD
   Login,
   Signup,
   UserHome,
@@ -14,6 +15,14 @@ import {
 } from './components';
 import {me} from './store';
 import {fetchCart} from './store/cart';
+=======
+  Login, Signup,
+  UserHome, BrowseProducts,
+  SingleProduct, Cart, OrderInfo
+} from './components';
+import { me, addToCart, updateCart } from './store';
+import { fetchCart } from './store/cart';
+>>>>>>> master
 
 /**
  * COMPONENT
@@ -31,20 +40,42 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+<<<<<<< HEAD
         <Route exact path="/products" component={BrowseProducts} />
         <Route exact path="/cart" component={Cart} />
         <Route exact path="/cart/process" component={OrderInfo} />
 
         <Route path="/products/:productId" component={SingleProduct} />
         {isLoggedIn && (
+=======
+        <Route exact path="/products" render={
+          () => <BrowseProducts handleAddButton={this.props.handleAddButton} />
+        } />
+        <Route exact path="/cart" component={Cart} />
+        <Route exact path="/cart/process" component={OrderInfo} />
+
+        <Route path="/products/:productId" render={
+          ({ match }) => <SingleProduct match={match} handleAddButton={this.props.handleAddButton} />
+        } />
+        {
+          isLoggedIn &&
+>>>>>>> master
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
             <Route patch="/order-history" component={OrderHistory} />
           </Switch>
+<<<<<<< HEAD
         )}
         {/* Displays our Login component as a fallback */}
         <Route component={Login} />
+=======
+        }
+        {/* Displays our Browse component as a fallback */}
+        <Route render={
+          () => <BrowseProducts handleAddButton={this.props.handleAddButton} />
+        } />
+>>>>>>> master
       </Switch>
     );
   }
@@ -61,13 +92,30 @@ const mapState = state => {
   };
 };
 
+<<<<<<< HEAD
 const mapDispatch = dispatch => {
+=======
+const mapDispatch = (dispatch, ownProps) => {
+>>>>>>> master
   // loads user and fetches cart upon load
   return {
-    loadInitialData() {
+    loadInitialData: () => {
       dispatch(me());
       dispatch(fetchCart());
     },
+<<<<<<< HEAD
+=======
+    handleAddButton: (cart, product) => {
+      // check if product is in cart
+      const productInCart = cart.cartProducts.filter(
+        cartProduct => cartProduct.product.id === product.id
+      )[0];
+      if (productInCart) {
+        dispatch(updateCart(cart.id, product.id, ++productInCart.quantity, ownProps.history));
+      }
+      else dispatch(addToCart(product, ownProps.history));
+    },
+>>>>>>> master
   };
 };
 

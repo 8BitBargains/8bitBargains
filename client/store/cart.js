@@ -1,5 +1,5 @@
 import axios from 'axios';
-const _ = require('lodash');
+import { omit } from 'lodash';
 
 /**
  * ACTION TYPES
@@ -34,10 +34,10 @@ export const fetchCart = () =>
         const cart = {
           id: res.data.id,
           address: res.data.address,
-          cartProducts: res.data.games.map(game => {
+          cartProducts: res.data.products.map(product => {
             return {
-              game: _.omit(game, 'game_order'),
-              quantity: game.game_order.quantity
+              product: omit(product, 'product_order'),
+              quantity: product.product_order.quantity
             };
           })
         };
@@ -47,12 +47,12 @@ export const fetchCart = () =>
   );
 
 export const addToCart = (product, history) =>
-  // add games to cart on back end
+  // add products to cart on back end
   dispatch => (
     axios.post(`/api/orders/cart`, product)
       .then(res => {
         const cartProduct = {
-          game: res.data,
+          product: res.data,
           quantity: 1
         };
         dispatch(addCartProduct(cartProduct));
@@ -62,13 +62,13 @@ export const addToCart = (product, history) =>
   );
 
 export const updateCart = (orderId, productId, quantity, history) =>
-  // update the quantity of a game in the cart
+  // update the quantity of a product in the cart
   dispatch => {
     return (
       axios.put(`/api/orders/cart/${orderId}`, { productId, quantity })
         .then(res => {
           const cartProduct = {
-            game: res.data,
+            product: res.data,
             quantity
           };
           dispatch(updateProductQuantity(cartProduct));
@@ -79,7 +79,7 @@ export const updateCart = (orderId, productId, quantity, history) =>
   };
 
 export const removeFromCart = (orderId, productId) =>
-  // remove a game from the cart
+  // remove a product from the cart
   dispatch => (
     axios.put(`/api/orders/cart/${orderId}`, { productId, quantity: 0 })
       .then(res => {
@@ -118,7 +118,7 @@ export default function (state = { id: null, cartProducts: [], address: '' }, ac
       return Object.assign({}, state, {
         cartProducts: [
           ...state.cartProducts.filter(cartProduct => {
-            return cartProduct.game.id !== action.cartProduct.game.id;
+            return cartProduct.product.id !== action.cartProduct.product.id;
           }),
           action.cartProduct
         ]
@@ -128,7 +128,7 @@ export default function (state = { id: null, cartProducts: [], address: '' }, ac
       return Object.assign({}, state, {
         cartProducts: [
           ...state.cartProducts.filter(cartProduct => {
-            return cartProduct.game.id !== action.removedProductId;
+            return cartProduct.product.id !== action.removedProductId;
           })
         ]
       });

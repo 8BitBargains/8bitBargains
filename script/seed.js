@@ -10,6 +10,7 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db');
+<<<<<<< HEAD
 const {
   User,
   Game,
@@ -18,6 +19,9 @@ const {
   Order,
   GameOrder,
 } = require('../server/db/models');
+=======
+const { User, Product, Genre, System } = require('../server/db/models');
+>>>>>>> master
 
 async function seed() {
   await db.sync({force: true});
@@ -26,8 +30,15 @@ async function seed() {
   // executed until that promise resolves!
 
   const users = await Promise.all([
+<<<<<<< HEAD
     User.create({email: 'cody@email.com', password: '123'}),
     User.create({email: 'murphy@email.com', password: '123'}),
+=======
+    User.create({ email: 'cody@email.com', password: '123' }),
+    User.create({ email: 'murphy@email.com', password: '123' }),
+    User.create({ email: 'deploy@deploy.com', password: 'deploy' }),
+    User.create({ email: 'admin@admin.com', password: 'admin', isAdmin: true })
+>>>>>>> master
   ]);
 
   const systems = await Promise.all([
@@ -108,14 +119,22 @@ async function seed() {
     }),
     Genre.create({
       id: 13,
+<<<<<<< HEAD
       name: 'Shooter',
+=======
+      name: 'Shooter'
+    }),
+    Genre.create({
+      id: 14,
+      name: 'Puzzle'
+>>>>>>> master
     }),
   ]);
 
-  const games = await Promise.all([
-    Game.create({
+  const products = await Promise.all([
+    Product.create({
       title: 'F-Zero',
-      price: 3400,
+      price: 999,
       inventory: 50,
       genreId: 10,
       systemId: 2,
@@ -124,21 +143,26 @@ async function seed() {
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/a/a0/FZeroBoxart.jpg/revision/latest?cb=20071214142632&path-prefix=en',
     }),
-    Game.create({
+    Product.create({
       title: 'Super Mario World',
-      price: 4100,
+      price: 1299,
       inventory: 50,
       genreId: 8,
       systemId: 2,
+<<<<<<< HEAD
       description:
         "Super Mario World (JP) (originally released as Super Mario Bros. 4 (JP) in Japan) is a SNES classic released in 1990, 1991 and 1992 by Nintendo. The game has been hailed as one of the many various Super Mario Bros. classics, earned the title of being the best-selling Super NES game of all time, thus has been remade or re-released on various platforms including the Game Boy Advance and the Wii's Virtual Console.",
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/e/ed/Super_Mario_World_%28NA%29.png/revision/latest?cb=20120509225518&path-prefix=en',
+=======
+      description: "Super Mario World (JP) (originally released as Super Mario Bros. 4 (JP) in Japan) is a SNES classic released in 1990, 1991 and 1992 by Nintendo. The game has been hailed as one of the many various Super Mario Bros. classics, earned the title of being the best-selling Super NES game of all time, thus has been remade or re-released on various platforms including the game Boy Advance and the Wii's Virtual Console.",
+      coverUrl: 'https://vignette.wikia.nocookie.net/nintendo/images/e/ed/Super_Mario_World_%28NA%29.png/revision/latest?cb=20120509225518&path-prefix=en'
+>>>>>>> master
     }),
-    Game.create({
+    Product.create({
       title: 'The Legend of Zelda: A Link to the Past',
       price: 2900,
-      inventory: 50,
+      inventory: 1299,
       genreId: 1,
       systemId: 2,
       description:
@@ -146,9 +170,9 @@ async function seed() {
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/c/cc/Legend_of_Zelda_A_Link_to_the_Past_%28NA%29.png/revision/latest?cb=20121109190950&path-prefix=en',
     }),
-    Game.create({
+    Product.create({
       title: 'Mario Kart 64',
-      price: 3300,
+      price: 1499,
       inventory: 50,
       genreId: 10,
       systemId: 3,
@@ -157,9 +181,9 @@ async function seed() {
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/a/ae/Mario_Kart_64_%28NA%29.png/revision/latest?cb=20120803153946&path-prefix=en',
     }),
-    Game.create({
+    Product.create({
       title: 'Donkey Kong Jr.',
-      price: 2999,
+      price: 899,
       inventory: 0,
       genreId: 2,
       systemId: 1,
@@ -168,9 +192,9 @@ async function seed() {
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/3/3e/DonkeyKongJr.jpg/revision/latest/scale-to-width-down/250?cb=20090529185655&path-prefix=en',
     }),
-    Game.create({
+    Product.create({
       title: 'Duck Hunt',
-      price: 2499,
+      price: 899,
       inventory: 0,
       genreId: 13,
       systemId: 1,
@@ -179,9 +203,9 @@ async function seed() {
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/e/e9/DuckHunt_box.jpg/revision/latest/scale-to-width-down/175?cb=20071214124446&path-prefix=en',
     }),
-    Game.create({
+    Product.create({
       title: 'Ice Climber',
-      price: 1999,
+      price: 899,
       inventory: 1,
       genreId: 8,
       systemId: 1,
@@ -190,9 +214,9 @@ async function seed() {
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/d/db/NES_Ice_Climber.jpg/revision/latest/scale-to-width-down/250?cb=20081001033851&path-prefix=en',
     }),
-    Game.create({
+    Product.create({
       title: 'Super Mario Bros.',
-      price: 3999,
+      price: 899,
       inventory: 3,
       genreId: 8,
       systemId: 1,
@@ -201,9 +225,15 @@ async function seed() {
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/3/3d/Super_Mario_Bros._%28NA%29.png/revision/latest/scale-to-width-down/250?cb=20120516222518&path-prefix=en',
     }),
+<<<<<<< HEAD
     Game.create({
       title: "Mike Tyson's Punch-Out!!",
       price: 2699,
+=======
+    Product.create({
+      title: 'Mike Tyson\'s Punch-Out!!',
+      price: 899,
+>>>>>>> master
       inventory: 5,
       genreId: 3,
       systemId: 1,
@@ -212,20 +242,26 @@ async function seed() {
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/0/04/MikeTysonPunchOut.jpg/revision/latest/scale-to-width-down/230?cb=20090402162228&path-prefix=en',
     }),
-    Game.create({
+    Product.create({
       title: 'Battletoads & Double Dragon',
-      price: 1499,
+      price: 899,
       inventory: 40,
       genreId: 3,
+<<<<<<< HEAD
       systemId: 4,
       description:
         'Battletoads & Double Dragon (stylized as Battletoads / Double Dragon) also known as Battletoads & Double Dragon - The Ultimate Team, is a video game released on the Nintendo Entertainment System, Game Boy and Super Nintendo Entertainment System in 1993 and 1994. It was a crossover between the Battletoads games and Double Dragon games.',
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/0/09/Battletoads_Double_Dragon_%28NES%29_%28NA%29.jpg/revision/latest/scale-to-width-down/250?cb=20120711171403&path-prefix=en',
+=======
+      systemId: 1,
+      description: 'Battletoads & Double Dragon (stylized as Battletoads / Double Dragon) also known as Battletoads & Double Dragon - The Ultimate Team, is a video game released on the Nintendo Entertainment System, Game Boy and Super Nintendo Entertainment System in 1993 and 1994. It was a crossover between the Battletoads games and Double Dragon games.',
+      coverUrl: 'https://vignette.wikia.nocookie.net/nintendo/images/0/09/Battletoads_Double_Dragon_%28NES%29_%28NA%29.jpg/revision/latest/scale-to-width-down/250?cb=20120711171403&path-prefix=en'
+>>>>>>> master
     }),
-    Game.create({
+    Product.create({
       title: 'Super Smash Bros.',
-      price: 3499,
+      price: 1499,
       inventory: 30,
       genreId: 4,
       systemId: 3,
@@ -234,7 +270,88 @@ async function seed() {
       coverUrl:
         'https://vignette.wikia.nocookie.net/nintendo/images/a/a9/Super_Smash_Bros._%28NA%29_boxart.jpg/revision/latest/scale-to-width-down/250?cb=20171026230649&path-prefix=en',
     }),
-    // Game.create({title: , price: , description: , cover_url: }),
+    Product.create({
+      title: 'Tetris',
+      price: 499,
+      inventory: 30,
+      genreId: 14,
+      systemId: 4,
+      description: 'Tetris (テトリス Tetorisu) is a puzzle video game for the Game Boy released in 1989. It is a portable version of Alexey Pajitnov\'s original Tetris and it was bundled in the North American and European releases of the Game Boy itself.It was the first game compatible with the Game Link Cable, a pack -in accessory that allowed two Game Boys to link together for multiplayer purposes. ',
+      coverUrl: 'https://upload.wikimedia.org/wikipedia/en/4/4a/Tetris_Boxshot.jpg'
+    }),
+    Product.create({
+      title: 'Dr. Mario',
+      price: 499,
+      inventory: 30,
+      genreId: 14,
+      systemId: 4,
+      description: 'Dr. Mario (Japanese: ドクターマリオ, often stylized as D℞. Mario) is a 1990 action puzzle video game produced by Gunpei Yokoi and designed by Takahiro Harada. Nintendo developed and published the game for the Nintendo Entertainment System and Game Boy consoles. The game\'s soundtrack was composed by Hirokazu Tanaka.',
+      coverUrl: 'https://images.lukiegames.com/t_300e2/assets/images/GB/gb_dr_mario_p_r2571i.jpg'
+    }),
+    Product.create({
+      title: 'Pokemon Pinball',
+      price: 499,
+      inventory: 30,
+      genreId: 2,
+      systemId: 4,
+      description: 'Pokémon Pinball (Japanese: ポケモンピンボール Pokémon Pinball) is a spin-off pinball game for the Game Boy Color. The cartridge was unique at the time among Game Boy games in that it includes a rumble pack powered by a single AAA battery, providing force feedback in much the same way as controllers for TV consoles. As the title suggests, the gameplay is pinball-based, but with a uniquely Pokémon-inspired spin.',
+      coverUrl: 'https://cdn.bulbagarden.net/upload/thumb/1/16/Pinball_EN_boxart.png/500px-Pinball_EN_boxart.png'
+    }),
+    Product.create({
+      title: 'Metroid II: Return of Samus',
+      price: 499,
+      inventory: 30,
+      genreId: 6,
+      systemId: 4,
+      description: 'Metroid II: Return of Samus[a] is an action-adventure video game developed and published by Nintendo for the Game Boy handheld game console. The second installment and the first handheld title in the Metroid series, it was released in North America in November 1991, and in Japan and Europe the following year. The story follows the protagonist and playable character Samus Aran, who is sent on a mission to exterminate the Metroid creatures from their home planet SR388 before the antagonistic Space Pirates obtain and use them. The gameplay involves killing a fixed number of Metroids before the player can advance deeper through the planet\'s tunnels.',
+      coverUrl: 'https://upload.wikimedia.org/wikipedia/en/9/93/Metroid2_boxart.jpg'
+    }),
+    Product.create({
+      title: 'Sonic The Hedgehog',
+      price: 999,
+      inventory: 30,
+      genreId: 8,
+      systemId: 6,
+      description: 'Sonic The Hedgehog is a video game released for the Sega Genesis in 1991 and developed by Sonic Team. Due to its success, it spawned the Sonic franchise and was ported to various platforms.',
+      coverUrl: 'http://img2.game-oldies.com/sites/default/files/packshots/sega-genesis/sonic-the-hedgehog-usa-europe.png'
+    }),
+    Product.create({
+      title: 'Earthworm Jim',
+      price: 999,
+      inventory: 30,
+      genreId: 8,
+      systemId: 6,
+      description: 'Earthworm Jim is a 1994 run and gun platform game developed by Shiny Entertainment, featuring an earthworm named Jim, who wears a robotic suit and battles evil. The game was released for the Sega Genesis, and subsequently ported to a number of other video game consoles. The game plays as a 2D sidescrolling platformer with elements of a run and gun game as well. The player controls Jim and must maneuver him through the level while avoiding obstacles and enemies.',
+      coverUrl: 'https://images-na.ssl-images-amazon.com/images/I/51uOk%2B3Kh5L.jpg'
+    }),
+    Product.create({
+      title: 'Golden Axe',
+      price: 999,
+      inventory: 30,
+      genreId: 3,
+      systemId: 6,
+      description: 'Golden Axe (ゴールデンアックス Gooruden Akkusu) is a side-scrolling, beat \'em up, arcade video game released in 1989 by Sega for the System 16-B arcade hardware.[1] It is the first game in the Golden Axe series. Makoto Uchida was the lead designer of the game, and also was responsible for the creation of Altered Beast. The game was ported to the Sega Genesis and Master System consoles, among many other systems.',
+      coverUrl: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fstatic.giantbomb.com%2Fuploads%2Foriginal%2F9%2F93770%2F2370592-genesis_goldenaxe.jpg&f=1'
+    }),
+    Product.create({
+      title: 'Ghouls \'n Ghosts',
+      price: 999,
+      inventory: 30,
+      genreId: 8,
+      systemId: 6,
+      description: 'Ghouls \'n Ghosts (Japanese: 大魔界村 Hepburn: Daimakaimura, lit. Great Demon World Village) is a side-scrolling platform game developed by Capcom and released as an arcade game in 1988, and subsequently ported to a number of other platforms. It is the sequel to Ghosts \'n Goblins and the second game in the Ghosts \'n Goblins series.',
+      coverUrl: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.retrogamecases.com%2Fwp-content%2Fuploads%2Fgenesis_ghoulsnghosts_front.jpg&f=1'
+    }),
+    Product.create({
+      title: 'Phantasy Star',
+      price: 799,
+      inventory: 30,
+      genreId: 8,
+      systemId: 5,
+      description: 'Phantasy Star (ファンタシースター) is a 1987 role-playing game developed and published by Sega. It is the first in a long line of Phantasy Star games, and is often considered one of the best games for the Sega Master System. ',
+      coverUrl: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.nintendolife.com%2Fgames%2Fmastersystem%2Fphantasy_star%2Fcover_large.jpg&f=1'
+    })
+    // Product.create({title: , price: , description: , cover_url: }),
   ]);
 
   const orders = await Promise.all([
@@ -260,8 +377,12 @@ async function seed() {
   console.log(`seeded ${users.length} users`);
   console.log(`seeded ${systems.length} systems`);
   console.log(`seeded ${genres.length} genres`);
+<<<<<<< HEAD
   console.log(`seeded ${games.length} games`);
   console.log(`seeded ${orders.length} orders`);
+=======
+  console.log(`seeded ${products.length} products`);
+>>>>>>> master
   console.log(`seeded successfully`);
 }
 

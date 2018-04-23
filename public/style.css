@@ -76,3 +76,7 @@ form div {
 .card-button {
   flex: 1
 }
+
+.inline-block {
+  display: inline-block
+}
