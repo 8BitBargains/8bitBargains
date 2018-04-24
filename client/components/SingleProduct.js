@@ -27,10 +27,9 @@ class SingleProduct extends React.Component {
     this.props.loadSingleProduct();
   }
 
+  // this code should update the page when a subproduct link is clicked,
+  // but currently it does not work as intended
   componentWillReceiveProps(nextProps) {
-    // this.props.loadSingleProduct();
-    console.log('this.props id', this.props.selectedProduct.id);
-    console.log('nextprops id', nextProps.selectedProduct.id);
     if (this.props.selectedProduct.id !== nextProps.selectedProduct.id) {
       this.props.loadSingleProduct();
     }
