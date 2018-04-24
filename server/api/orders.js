@@ -8,7 +8,7 @@ router.get('/allOrders',
   isLoggedIn,
   isAdmin,
   (req, res, next) => {
-    Order.findAll()
+    Order.findAll({ include: [ Product ] })
       .then(orders => res.json(orders))
       .catch(next);
   });
