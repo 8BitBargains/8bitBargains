@@ -13,7 +13,8 @@ export default function AllProducts(props) {
     <div className="all-products-container">
       <Card.Group>
         {products && products.map(product => (
-          <Card key={product.id} link>
+          <Card key={product.id} link >
+            {product.type === 'bundle' && console.log(product)}
             <Image
               src={product.coverUrl}
               centered size="small"
@@ -21,15 +22,24 @@ export default function AllProducts(props) {
             />
             <Card.Content>
               <Card.Header as={Link} to={`/products/${product.id}`}>{product.title}</Card.Header>
-              <Card.Meta>{product.system.name}</Card.Meta>
+              <Card.Meta>{product.system && product.system.name}</Card.Meta>
               <Card.Description>{truncate(product.description)}</Card.Description>
             </Card.Content>
             <Card.Content extra>
               <div className="card-price-button">
                 <span className="card-price">{displayPrice(product.price)}</span>
-                <Button className="card-button" onClick={
-                  () => handleAddButton(cart, product)
-                } positive>Add to Cart</Button>
+                {product.inventory
+                  ?
+                  <Button
+                    className="card-button" onClick={
+                      () => handleAddButton(cart, product)
+                    } positive>Add to Cart</Button>
+                  :
+                  <Button
+                    className="card-button" disabled>
+                    Out of Stock</Button>
+                }
+
               </div>
             </Card.Content>
           </Card>

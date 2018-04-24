@@ -32,14 +32,17 @@ export const fetchCart = () =>
         const cart = {
           id: res.data.id,
           address: res.data.address,
-          cartProducts: res.data.products.map(product => {
-            return {
-              product: omit(product, 'product_order'),
-              quantity: product.product_order.quantity
-            };
-          })
+          // check if products arr exists, it won't on the first load
+          cartProducts: res.data.products
+            ? res.data.products.map(product => {
+              return {
+                product: omit(product, 'product_order'),
+                quantity: product.product_order.quantity
+              };
+            })
+            : []
         };
-        dispatch(getCart(cart))
+        dispatch(getCart(cart));
       })
       .catch(err => console.log(err))
   );
@@ -91,9 +94,9 @@ export const submitOrder = (address) =>
   // add an address to the order and convert status to 'Processing', then reset the cart
   dispatch => (
     axios.put(`/api/orders/checkout`, { address })
-    .then(res => {
-      console.log('return from update: ', res.data);
-      dispatch(fetchCart());
+      .then(res => {
+        console.log('return from update: ', res.data);
+        dispatch(fetchCart());
       })
       .catch(err => console.log(err))
   );
