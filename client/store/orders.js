@@ -13,14 +13,17 @@ const getUserOrders = orders => ({type: GET_USER_ORDERS, orders});
 /**
  * THUNK CREATORS
  */
-export const fetchUserOrders = () =>
-  dispatch => (
-    axios.get('/api/orders/')
+export const fetchUserOrders = (isAdmin=false) => {
+  let routeEnding = isAdmin ? '/allOrders' : '';
+  return dispatch => (
+    axios.get('/api/orders/' + routeEnding)
       .then(res => res.data)
       .then(orders => {
         dispatch(getUserOrders(orders));
       })
-);
+  );
+}
+
 
 /**
  * REDUCER

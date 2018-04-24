@@ -22,14 +22,14 @@ const Order = props => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {products.map(item => <OrderItem key={item.id} item={item} />)}
+          {products && products.map(item => <OrderItem key={item.id} item={item} />)}
         </Table.Body>
         <Table.Footer>
           <Table.Row>
             <Table.Cell>
               Address: {order.address}
             </Table.Cell>
-            <Table.Cell textAlign='right'>
+            <Table.Cell textAlign="right">
               Total: {displayPrice(total)}
             </Table.Cell>
           </Table.Row>

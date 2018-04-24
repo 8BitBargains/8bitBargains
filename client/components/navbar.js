@@ -57,6 +57,17 @@ class Navbar extends React.Component {
                 </Menu.Item>
               </Menu.Menu>
             )}
+
+          <Menu.Menu>
+            <Menu.Item
+              as={Link} to="/admin"
+              name="admin"
+              active={activeItem === 'admin'}
+              onClick={this.handleItemClick}
+            >
+              Admin Panel
+            </Menu.Item>
+          </Menu.Menu>
           {/* The navbar will always show these links */}
           <Menu.Menu>
             <Menu.Item
@@ -89,7 +100,8 @@ class Navbar extends React.Component {
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    isAdmin: !!state.user.isAdmin
   };
 };
 
