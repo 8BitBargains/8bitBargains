@@ -13,3 +13,6 @@ export { default as SingleProduct } from './SingleProduct';
 export { default as Cart } from './Cart';
 export { default as Checkout } from './Checkout';
 export { default as AllOrders } from './AllOrders';
+export { default as SingleOrder } from './SingleOrder';
+export { default as Confirmation  } from './Confirmation';
+

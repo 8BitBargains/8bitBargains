@@ -5,12 +5,10 @@ import axios from 'axios';
  */
 const GET_USER_ORDERS = 'GET_USER_ORDERS';
 
-
 /**
  * ACTION CREATORS
  */
 const getUserOrders = orders => ({type: GET_USER_ORDERS, orders});
-
 
 /**
  * THUNK CREATORS
