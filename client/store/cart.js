@@ -5,7 +5,6 @@ import { omit } from 'lodash';
  * ACTION TYPES
  */
 const GET_CART = 'GET_CART';
-
 const ADD_CART_PRODUCT = 'ADD_CART_PRODUCT';
 const UPDATE_PRODUCT_QUANTITY = 'UPDATE_PRODUCT_QUANTITY';
 const REMOVE_CART_PRODUCT = 'REMOVE_CART_PRODUCT';
@@ -101,8 +100,8 @@ export const submitOrder = (address, history) =>
         const orderId = res.data.id;
         console.log('orderId', orderId)
         dispatch(fetchCart());
-        history.push(`/confirmation/${orderId}`);
-        // history.push('/products');
+        // history.push(`/confirmation/${orderId}`);
+        history.push('/products');
       })
       .catch(err => console.log(err));
 

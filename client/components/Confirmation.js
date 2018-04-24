@@ -21,7 +21,10 @@ class Confirmation extends Component {
   }
 
   render() {
-    return <SingleOrder order={this.lastOrder} />;
+    console.log('!!!!!!!lastOrder', this.lastOrder)
+    return (
+    <SingleOrder order={this.lastOrder} />
+    );
   }
 }
 
