@@ -11,6 +11,7 @@ export const UserHome = props => {
   return (
     <div>
       <h3>Welcome, {email}</h3>
+      <p>Feel free to browse at our incredible selection of games!</p>
     </div>
   );
 };

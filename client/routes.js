@@ -11,6 +11,7 @@ import {
   Cart,
   Checkout,
   AllOrders,
+  AdminPanel,
   Confirmation
 } from './components';
 import { me, addToCart, updateCart } from './store';
@@ -25,7 +26,7 @@ class Routes extends Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props;
+    const {isLoggedIn, isAdmin} = this.props;
 
     return (
       <Switch>
@@ -61,6 +62,7 @@ class Routes extends Component {
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
             <Route path="/order-history" component={AllOrders} />
+            <Route path="/admin" component={AdminPanel} />
           </Switch>
         )}
         {/* Displays our Browse component as a fallback */}
@@ -81,7 +83,8 @@ const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined as having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    isAdmin: !!state.user.isAdmin
   };
 };
 
