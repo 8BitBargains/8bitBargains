@@ -77,7 +77,7 @@ class Cart extends Component {
             orderId={this.props.cart.id}
           />
           <h1>Subtotal: {displayPrice(this.subtotal())}</h1>
-          <Button positive onClick={() => this.props.history.push('/cart/process')}>Check Out</Button>
+          <Button positive onClick={() => this.props.history.push('/cart/checkout')}>Check Out</Button>
         </Container>
       );
     } else {

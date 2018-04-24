@@ -1,17 +1,18 @@
 const router = require('express').Router();
 const { Order, ProductOrder, Product } = require('../db/models');
-const { isLoggedIn, isAdmin, isAdminOrSelf } = require('../utils/gatekeeperMiddleware');
+const {
+  isLoggedIn,
+  isAdmin,
+  isAdminOrSelf
+} = require('../utils/gatekeeperMiddleware');
 module.exports = router;
 
 // GET all orders for all users (admin only)
-router.get('/allOrders',
-  isLoggedIn,
-  isAdmin,
-  (req, res, next) => {
-    Order.findAll()
-      .then(orders => res.json(orders))
-      .catch(next);
-  });
+router.get('/allOrders', isLoggedIn, isAdmin, (req, res, next) => {
+  Order.findAll()
+    .then(orders => res.json(orders))
+    .catch(next);
+});
 
 // GET cart ('created' order) for current user
 router.get('/cart', (req, res, next) => {
@@ -30,24 +31,21 @@ router.get('/cart', (req, res, next) => {
 
 // GET all orders for CURRENT user
 // GET one order for CURRENT user
-router.get('/:orderId?',
-  isLoggedIn,
-  (req, res, next) => {
-    // fetch ALL orders for CURRENT user or just ONE if optional orderId param
-    const userId = req.user.id;
-    if (req.params.orderId) {
-      const id = req.params.orderId;
-      Order.findOne({ where: { id, userId } });
-    } else {
-      Order.findAll({
-        where: { userId },
-        include: [ Product ]
-      })
-        .then(orders => res.json(orders))
-        .catch(next);
-    }
-  });
-
+router.get('/:orderId?', isLoggedIn, (req, res, next) => {
+  // fetch ALL orders for CURRENT user or just ONE if optional orderId param
+  const userId = req.user.id;
+  if (req.params.orderId) {
+    const id = req.params.orderId;
+    Order.findOne({ where: { id, userId }, include: [Product] });
+  } else {
+    Order.findAll({
+      where: { userId },
+      include: [Product]
+    })
+      .then(orders => res.json(orders))
+      .catch(next);
+  }
+});
 
 // POST a single product to an order
 router.post('/cart', (req, res, next) => {
@@ -62,7 +60,7 @@ router.post('/cart', (req, res, next) => {
     })
     .then(productOrder => {
       const id = productOrder.productId;
-      return Product.findOne({ where: { id } })
+      return Product.findOne({ where: { id } });
     })
     .then(product => res.json(product))
     .catch(next);
@@ -76,11 +74,14 @@ router.put('/cart/:orderId', (req, res, next) => {
   const productId = req.body.productId;
   const quantity = req.body.quantity;
   if (quantity) {
-    ProductOrder.update({ quantity }, {
-      where: { productId, orderId },
-      returning: true,
-    })
-      .then(([numAffected, affectedRows]) => {
+    ProductOrder.update(
+      { quantity },
+      {
+        where: { productId, orderId },
+        returning: true
+      }
+    )
+      .then(([, affectedRows]) => {
         const id = affectedRows[0].productId;
         return Product.findOne({ where: { id } });
       })
@@ -96,21 +97,19 @@ router.put('/cart/:orderId', (req, res, next) => {
 router.put('/checkout', (req, res, next) => {
   // add address, shipping method to order
   // change status to 'Processing'
-  // no need to create a new empty cart--should be taken care of above
   const address = req.body.address;
   // shipping not implemented just yet
   // const shipping = req.body.shipping;
   const userId = req.user ? req.user.id : null;
   const sessionId = userId ? null : req.session.id;
   Order.findOne({ where: { userId, sessionId, status: 'Created' } })
-  .then(foundOrder => {
-    return foundOrder.update({ address, status: 'Processing' })
-  })
-  .then((processingOrder) => {
-    console.log(processingOrder);
-    // Create a new cart for the user. May need to use bluebird.tap to prevent a race condition
-    Order.create({ userId, sessionId, status: 'Created' })
-    res.json(processingOrder);
-  })
-  .catch(next);
+    .then(foundOrder => {
+      return foundOrder.update({ address, status: 'Processing' });
+    })
+    .then(processingOrder => {
+      // Create a new cart for the user. (Beware async? If we have trouble here, may need to use bluebird .tap.)
+      Order.create({ userId, sessionId, status: 'Created' });
+      res.json(processingOrder);
+    })
+    .catch(next);
 });
