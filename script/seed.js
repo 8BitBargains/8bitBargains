@@ -349,7 +349,7 @@ async function seed() {
     title: 'Platformer Bundle',
     price: 1999,
     type: 'bundle',
-    genreId: 9,
+    genreId: 8,
     description:
       'Awesome deal. This bundle includes Super Mario World, Sonic the Hedgehog, and Earthworm Jim',
     coverUrl:
