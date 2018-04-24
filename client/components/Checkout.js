@@ -104,13 +104,14 @@ class Checkout extends Component {
             <Checkbox label="I agree to pay for this stuff" />
           </Form.Field>
           <Button type="submit">Submit</Button>
+        </Form>
           <CheckoutButton
             name={'Pay for Your Stuff, Please'}
             description={'Really...We Need Money'}
             amount={1}
-            orderId={1}            
+            orderId={1}
+            history={this.props.history}
           />
-        </Form>
       </Container>
     );
   }

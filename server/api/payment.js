@@ -15,30 +15,19 @@ router.post('/', (req, res, next) => {
     description,
     source,
   })
-  .then( stripeRes => console.log(stripeRes) );
+  .then( stripeRes => {
+    console.log('stripe response ', stripeRes);
+    // if (stripeRes) {
+    //   res.sendStatus(200);
+    //   res.redirect('/confirmation/');
+    // } else {
+    //   res.sendStatus(401);
+    //   res.redirect('/');
+    // }
+    res.redirect(200, 'http://google.com');
+  })
+  .catch(next);
 
 });
 
 module.exports = router;
-
-// const stripe = require('../constants/stripe');
-
-// const postStripeCharge = res => (stripeErr, stripeRes) => {
-//   if (stripeErr) {
-//     res.status(500).send({ error: stripeErr });
-//   } else {
-//     res.status(200).send({ success: stripeRes });
-//   }
-// }
-
-// const paymentApi = app => {
-//   app.get('/', (req, res) => {
-//     res.send({ message: 'Hello Stripe checkout server!', timestamp: new Date().toISOString() })
-//   });
-
-//   app.post('/', (req, res) => {
-//     stripe.charges.create(req.body, postStripeCharge(res));
-//   });
-
-//   return app;
-// };
