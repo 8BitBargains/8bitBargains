@@ -81,6 +81,6 @@ form div {
   display: inline-block
 }
 
-.singleProduct {
+.singleProduct, .displayContainer {
   width: 70%;
 }
