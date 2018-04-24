@@ -13,13 +13,14 @@ const getLastOrder = lastOrder => ({ type: GET_LAST_ORDER, lastOrder });
 /**
  * THUNK CREATORS
  */
-export const fetchLastOrder = orderId => dispatch =>
+export const fetchLastOrder = orderId => dispatch => {
   axios
     .get(`/api/orders/${orderId}`)
     .then(res => res.data)
     .then(order => {
       dispatch(getLastOrder(order));
     });
+}
 
 /**
  * REDUCER
@@ -27,7 +28,7 @@ export const fetchLastOrder = orderId => dispatch =>
 export default function(state = {}, action) {
   switch (action.type) {
     case GET_LAST_ORDER:
-      return action.order;
+      return action.lastOrder;
     default:
       return state;
   }

@@ -35,8 +35,10 @@ router.get('/:orderId?', isLoggedIn, (req, res, next) => {
   // fetch ALL orders for CURRENT user or just ONE if optional orderId param
   const userId = req.user.id;
   if (req.params.orderId) {
-    const id = req.params.orderId;
-    Order.findOne({ where: { id, userId }, include: [Product] });
+    const id = +req.params.orderId;
+    Order.findOne({ where: { id, userId }, include: [Product] })
+      .then(order => res.json(order))
+      .catch(next);
   } else {
     Order.findAll({
       where: { userId },
@@ -105,6 +107,7 @@ router.put('/checkout', (req, res, next) => {
   Order.findOne({ where: { userId, sessionId, status: 'Created' } })
     .then(foundOrder => {
       return foundOrder.update({ address, status: 'Processing' });
+      npm;
     })
     .then(processingOrder => {
       // Create a new cart for the user. (Beware async? If we have trouble here, may need to use bluebird .tap.)
