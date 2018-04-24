@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux';
 import { shippingOptions, stateOptions, countryOptions } from '../utils';
 import { submitOrder } from '../store';
+import CheckoutButton from './stripe/Checkout';
 
 const initialState = {
   name: '',
@@ -48,8 +49,8 @@ class Checkout extends Component {
     const { name, address, city, state, country } = formData;
     const shippingAddress = `${name},${address},${city},${state},${country}`;
     // if implementing shipping details, add it here
-    this.props.handleSubmit(shippingAddress);
     this.setState(initialState);
+    this.props.handleSubmit(shippingAddress);
   }
   render() {
     const { handleSubmit, handleChange } = this;
@@ -129,6 +130,13 @@ class Checkout extends Component {
           </Form.Field>
           <Button type="submit">Submit</Button>
         </Form>
+          <CheckoutButton
+            name={'Pay for Your Stuff, Please'}
+            description={'Really...We Need Money'}
+            amount={1}
+            orderId={1}
+            history={this.props.history}
+          />
       </Container>
     );
   }
