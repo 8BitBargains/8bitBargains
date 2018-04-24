@@ -9,7 +9,10 @@ const CURRENCY = 'USD';
 const fromUSDToCent = amount => amount * 100;
 
 const successPayment = data => {
+  console.log('this is the payment data ',data)
   alert('Payment Successful');
+  // history.push(`/confirmation/${data.orderId}`);
+
 };
 
 const errorPayment = data => {
@@ -27,7 +30,7 @@ const onToken = (amount, description) => token =>
     .then(successPayment)
     .catch(errorPayment);
 
-const Checkout = ({ name, description, amount }) => (
+const Checkout = ({ name, description, amount, orderId }) => (
   <StripeCheckout
     name={name}
     description={description}
@@ -35,6 +38,7 @@ const Checkout = ({ name, description, amount }) => (
     token={onToken(amount, description)}
     currency={CURRENCY}
     stripeKey={STRIPE_PUBLISHABLE}
+    orderId = {orderId}
   />
 );
 

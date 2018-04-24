@@ -42,8 +42,8 @@ class Checkout extends Component {
     const { name, address, city, state, country } = formData;
     const shippingAddress = `${name},${address},${city},${state},${country}`;
     // if implementing shipping details, add it here
-    this.props.handleSubmit(shippingAddress);
     this.setState(initialState);
+    this.props.handleSubmit(shippingAddress);
   }
   render(){
     const { handleSubmit, handleChange } = this;
@@ -105,9 +105,10 @@ class Checkout extends Component {
           </Form.Field>
           <Button type="submit">Submit</Button>
           <CheckoutButton
-            name={'The Road to learn React'}
-            description={'Only the Book'}
+            name={'Pay for Your Stuff, Please'}
+            description={'Really...We Need Money'}
             amount={1}
+            orderId={1}            
           />
         </Form>
       </Container>
