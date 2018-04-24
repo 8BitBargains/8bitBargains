@@ -1,24 +1,25 @@
 import React from 'react';
-import {Table} from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import OrderItem from './OrderItem';
-import {displayPrice} from '../utils';
+import { displayPrice } from '../utils';
 
 const Order = props => {
   if (props.order) {
     let order = props.order;
     let products = order.products;
 
-    let total = products && products.length
-      ? products.map(item => item.price).reduce((reducer, num) => reducer + num)
-      : 0;
+    let total =
+      products && products.length
+        ? products
+            .map(item => item.price)
+            .reduce((reducer, num) => reducer + num)
+        : 0;
 
     return (
       <Table padded="very" singleLine fixed color="green">
         <Table.Header>
           <Table.Row>
-            <Table.Cell>
-              Order no. {order.id}
-            </Table.Cell>
+            <Table.Cell>Order no. {order.id}</Table.Cell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -26,10 +27,8 @@ const Order = props => {
         </Table.Body>
         <Table.Footer>
           <Table.Row>
-            <Table.Cell>
-              Address: {order.address}
-            </Table.Cell>
-            <Table.Cell textAlign='right'>
+            <Table.Cell>Address: {order.address}</Table.Cell>
+            <Table.Cell textAlign="right">
               Total: {displayPrice(total)}
             </Table.Cell>
           </Table.Row>
@@ -37,9 +36,7 @@ const Order = props => {
       </Table>
     );
   } else {
-    return (
-      null
-    );
+    return null;
   }
 };
 

@@ -5,17 +5,17 @@ import { Item } from 'semantic-ui-react';
 import { fetchUserOrders } from '../store';
 import SingleOrder from './SingleOrder';
 
-const mapState = (state) => {
+const mapState = state => {
   return {
     orders: state.orders
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
     loadOrders: () => dispatch(fetchUserOrders())
-  }
-}
+  };
+};
 
 class OrderHistory extends Component {
   componentDidMount() {

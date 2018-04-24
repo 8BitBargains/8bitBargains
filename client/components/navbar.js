@@ -21,7 +21,8 @@ class Navbar extends React.Component {
             <Menu.Menu>
               {/* The navbar will show these links after you log in */}
               <Menu.Item
-                as={Link} to="/home"
+                as={Link}
+                to="/home"
                 name="home"
                 active={activeItem === 'home'}
                 onClick={this.handleItemClick}
@@ -29,7 +30,8 @@ class Navbar extends React.Component {
                 Home
               </Menu.Item>
               <Menu.Item
-                as={Link} to="/logout"
+                as={Link}
+                to="/logout"
                 name="logout"
                 onClick={this.props.handleLogout}
               >
@@ -37,30 +39,33 @@ class Navbar extends React.Component {
               </Menu.Item>
             </Menu.Menu>
           ) : (
-              <Menu.Menu>
-                {/* The navbar will show these links before you log in */}
-                <Menu.Item
-                  as={Link} to="/login"
-                  name="login"
-                  active={activeItem === 'login'}
-                  onClick={this.handleItemClick}
-                >
-                  Login
-                </Menu.Item>
-                <Menu.Item
-                  as={Link} to="/signup"
-                  name="signup"
-                  active={activeItem === 'signup'}
-                  onClick={this.handleItemClick}
-                >
-                  Signup
-                </Menu.Item>
-              </Menu.Menu>
-            )}
+            <Menu.Menu>
+              {/* The navbar will show these links before you log in */}
+              <Menu.Item
+                as={Link}
+                to="/login"
+                name="login"
+                active={activeItem === 'login'}
+                onClick={this.handleItemClick}
+              >
+                Login
+              </Menu.Item>
+              <Menu.Item
+                as={Link}
+                to="/signup"
+                name="signup"
+                active={activeItem === 'signup'}
+                onClick={this.handleItemClick}
+              >
+                Signup
+              </Menu.Item>
+            </Menu.Menu>
+          )}
           {/* The navbar will always show these links */}
           <Menu.Menu>
             <Menu.Item
-              as={Link} to="/products"
+              as={Link}
+              to="/products"
               name="browse"
               active={activeItem === 'browse'}
               onClick={this.handleItemClick}
@@ -68,7 +73,8 @@ class Navbar extends React.Component {
               Browse
             </Menu.Item>
             <Menu.Item
-              as={Link} to="/cart"
+              as={Link}
+              to="/cart"
               name="cart"
               active={activeItem === 'cart'}
               onClick={this.handleItemClick}
@@ -82,7 +88,6 @@ class Navbar extends React.Component {
     );
   }
 }
-
 
 /**
  * CONTAINER

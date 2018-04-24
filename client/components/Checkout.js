@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Checkbox, Input, Container, Button, Form, Select } from 'semantic-ui-react';
+import {
+  Checkbox,
+  Input,
+  Container,
+  Button,
+  Form,
+  Select
+} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { shippingOptions, stateOptions, countryOptions } from '../utils';
 import { submitOrder } from '../store';
@@ -10,22 +17,22 @@ const initialState = {
   city: '',
   state: '',
   country: '',
-  shipping: '',
+  shipping: ''
 };
 class Checkout extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = initialState;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange (evt, value) {
+  handleChange(evt, value) {
     // updates local state only based on the change of the form inputs
     let newState = {};
     let key;
 
-    if (typeof value === 'string'){
+    if (typeof value === 'string') {
       // hack to get around the weird way react semantic ui handles select elements
       key = evt;
     } else {
@@ -36,7 +43,7 @@ class Checkout extends Component {
     this.setState(newState);
   }
 
-  handleSubmit (formData) {
+  handleSubmit(formData) {
     // takes the submit information from the form and passes it onto the container
     const { name, address, city, state, country } = formData;
     const shippingAddress = `${name},${address},${city},${state},${country}`;
@@ -44,27 +51,42 @@ class Checkout extends Component {
     this.props.handleSubmit(shippingAddress);
     this.setState(initialState);
   }
-  render(){
+  render() {
     const { handleSubmit, handleChange } = this;
     const { name, address, city, state, country, shipping } = this.state;
 
     return (
       <Container>
-        <Form id="order-info-form" onSubmit={ () => handleSubmit(this.state)} >
-          <div className="component" >
+        <Form id="order-info-form" onSubmit={() => handleSubmit(this.state)}>
+          <div className="component">
             <div className="section">
               <label>Shipping Address</label>
               <Form.Field required>
                 <label>Name</label>
-                <Input name="name" value={name} onChange={handleChange} placeholder="Name" />
+                <Input
+                  name="name"
+                  value={name}
+                  onChange={handleChange}
+                  placeholder="Name"
+                />
               </Form.Field>
               <Form.Field required>
                 <label>Address</label>
-                <Input name="address" value={address} onChange={handleChange} placeholder="Address" />
+                <Input
+                  name="address"
+                  value={address}
+                  onChange={handleChange}
+                  placeholder="Address"
+                />
               </Form.Field>
               <Form.Field required>
                 <label>City</label>
-                <Input name="city" value={city} onChange={handleChange} placeholder="City" />
+                <Input
+                  name="city"
+                  value={city}
+                  onChange={handleChange}
+                  placeholder="City"
+                />
               </Form.Field>
               <Form.Field required>
                 <label>State</label>
@@ -73,7 +95,8 @@ class Checkout extends Component {
                   value={state}
                   onChange={(evt, { value }) => handleChange('state', value)}
                   placeholder="State"
-                  options={stateOptions} />
+                  options={stateOptions}
+                />
               </Form.Field>
               <Form.Field required>
                 <label>Country</label>
@@ -82,7 +105,8 @@ class Checkout extends Component {
                   value={country}
                   onChange={(evt, { value }) => handleChange('country', value)}
                   placeholder="Country"
-                  options={countryOptions} />
+                  options={countryOptions}
+                />
               </Form.Field>
               <Form.Field required>
                 <label>Shipping Options</label>
@@ -91,7 +115,8 @@ class Checkout extends Component {
                   value={shipping}
                   onChange={(evt, { value }) => handleChange('shipping', value)}
                   placeholder="Shipping Options"
-                  options={shippingOptions} />
+                  options={shippingOptions}
+                />
               </Form.Field>
             </div>
             <div className="section">
@@ -111,7 +136,7 @@ class Checkout extends Component {
 
 const mapDispatch = (dispatch, ownProps) => {
   return {
-    handleSubmit: (formData) => {
+    handleSubmit: formData => {
       dispatch(submitOrder(formData, ownProps.history));
     }
   };
