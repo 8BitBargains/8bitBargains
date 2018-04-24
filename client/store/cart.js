@@ -36,12 +36,15 @@ export const fetchCart = () =>
         const cart = {
           id: res.data.id,
           address: res.data.address,
-          cartProducts: res.data.products.map(product => {
-            return {
-              product: omit(product, 'product_order'),
-              quantity: product.product_order.quantity
-            };
-          })
+          // check if products arr exists, it won't on the first load
+          cartProducts: res.data.products
+            ? res.data.products.map(product => {
+              return {
+                product: omit(product, 'product_order'),
+                quantity: product.product_order.quantity
+              };
+            })
+            : []
         };
         dispatch(getCart(cart));
       })
@@ -106,7 +109,7 @@ export const submitOrder = (address, history) =>
 /**
  * REDUCER
  */
-export default function(
+export default function (
   state = { id: null, cartProducts: [], address: '' },
   action
 ) {

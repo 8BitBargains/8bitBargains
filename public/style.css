@@ -80,3 +80,7 @@ form div {
 .inline-block {
   display: inline-block
 }
+
+.singleProduct {
+  width: 70%;
+}

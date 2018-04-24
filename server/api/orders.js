@@ -107,7 +107,6 @@ router.put('/checkout', (req, res, next) => {
   Order.findOne({ where: { userId, sessionId, status: 'Created' } })
     .then(foundOrder => {
       return foundOrder.update({ address, status: 'Processing' });
-      npm;
     })
     .then(processingOrder => {
       // Create a new cart for the user. (Beware async? If we have trouble here, may need to use bluebird .tap.)
