@@ -3,6 +3,7 @@ import { Checkbox, Input, Container, Button, Form, Select } from 'semantic-ui-re
 import { connect } from 'react-redux';
 import { shippingOptions, stateOptions, countryOptions } from '../utils';
 import { submitOrder } from '../store';
+import CheckoutButton from './stripe/Checkout';
 
 const initialState = {
   name: '',
@@ -103,6 +104,11 @@ class Checkout extends Component {
             <Checkbox label="I agree to pay for this stuff" />
           </Form.Field>
           <Button type="submit">Submit</Button>
+          <CheckoutButton
+            name={'The Road to learn React'}
+            description={'Only the Book'}
+            amount={1}
+          />
         </Form>
       </Container>
     );
