@@ -11,14 +11,20 @@ class AdminPanel extends Component {
     this.state = {
       users: []
     };
+
+    this.fetchAllUsers = this.fetchAllUsers.bind(this);
   }
 
-  componentDidMount() {
+  fetchAllUsers() {
     axios
       .get('/api/users')
       .then(res => res.data)
       .then(users => this.setState({users}))
       .catch(console.error.bind(console));
+  }
+
+  componentDidMount() {
+    this.fetchAllUsers;
   }
 
   render() {

@@ -3,7 +3,7 @@ const { User } = require('../db/models');
 const { isLoggedIn, isAdmin } = require('../utils/gatekeeperMiddleware');
 module.exports = router;
 
-router.user(isLoggedIn, isAdmin);
+router.use(isLoggedIn, isAdmin);
 
 router.get('/', (req, res, next) => {
   User
@@ -11,14 +11,14 @@ router.get('/', (req, res, next) => {
       // explicitly select only the id and email fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
-      attributes: ['id', 'email']
+      attributes: ['id', 'email', 'isAdmin']
     })
     .then(users => res.json(users))
     .catch(next);
 });
 
 router.put('/adminStatus', (req, res, next) => {
-  let id = req.body.user.id;
+  let id = req.body.userId;
   let adminStatus;
 
   User
@@ -28,7 +28,7 @@ router.put('/adminStatus', (req, res, next) => {
       user.isAdmin = adminStatus;
       user.save();
 
-      res.status(204).send(Status);
+      res.status(204).send(adminStatus);
     })
     .catch(next);
 });

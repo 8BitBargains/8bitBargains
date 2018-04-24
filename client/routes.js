@@ -11,7 +11,7 @@ import {
   Cart,
   Checkout,
   AllOrders,
-  AdminPanel
+  AdminPanel,
   Confirmation
 } from './components';
 import { me, addToCart, updateCart } from './store';
@@ -83,12 +83,8 @@ const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined as having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-<<<<<<< HEAD
     isLoggedIn: !!state.user.id,
     isAdmin: !!state.user.isAdmin
-=======
-    isLoggedIn: !!state.user.id
->>>>>>> master
   };
 };
 
