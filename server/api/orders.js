@@ -31,12 +31,13 @@ router.get('/cart', (req, res, next) => {
 
 // GET all orders for CURRENT user
 // GET one order for CURRENT user
-router.get('/:orderId?', isLoggedIn, (req, res, next) => {
+router.get('/:orderId?', (req, res, next) => {
   // fetch ALL orders for CURRENT user or just ONE if optional orderId param
-  const userId = req.user.id;
+  const userId = req.user ? req.user.id : null;
+  const sessionId = userId ? null : req.session.id;
   if (req.params.orderId) {
     const id = +req.params.orderId;
-    Order.findOne({ where: { id, userId }, include: [Product] })
+    Order.findOne({ where: { id, userId, sessionId }, include: [Product] })
       .then(order => res.json(order))
       .catch(next);
   } else {
