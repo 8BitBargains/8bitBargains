@@ -94,13 +94,6 @@ export const removeFromCart = (orderId, productId) =>
 
 export const submitOrder = (address, history) =>
   // add an address to the order and convert status to 'Processing', then reset the cart
-<<<<<<< HEAD
-  dispatch => (
-    axios.put(`/api/orders/checkout`, { address })
-      .then(res => {
-        console.log('return from update: ', res.data);
-        dispatch(fetchCart());
-=======
   // redirect to confirmation page
   dispatch =>
     axios
@@ -110,14 +103,13 @@ export const submitOrder = (address, history) =>
         dispatch(fetchCart());
         history.push(`/confirmation/${orderId}`);
         // history.push('/products');
->>>>>>> master
       })
       .catch(err => console.log(err));
 
 /**
  * REDUCER
  */
-export default function(
+export default function (
   state = { id: null, cartProducts: [], address: '' },
   action
 ) {

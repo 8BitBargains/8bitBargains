@@ -142,8 +142,8 @@ async function seed() {
     }),
     Product.create({
       title: 'The Legend of Zelda: A Link to the Past',
-      price: 2900,
-      inventory: 1299,
+      price: 1299,
+      inventory: 4,
       genreId: 1,
       systemId: 2,
       description:
@@ -321,7 +321,7 @@ async function seed() {
 
   ]);
 
-  // grab our game instances we just created, so we can add them to bundles
+  // grab our game instances we just created (by destructuring the array), so we can add them to bundles
   const [
     fZero,
     superMarioWorld,
@@ -352,18 +352,9 @@ async function seed() {
     genreId: 9,
     description:
       'Awesome deal. This bundle includes Super Mario World, Sonic the Hedgehog, and Earthworm Jim',
-    // 'Earthworm Jim is a 1994 run and gun platform game developed by Shiny Entertainment, featuring an earthworm named Jim, who wears a robotic suit and battles evil. The game was released for the Sega Genesis, and subsequently ported to a number of other video game consoles. The game plays as a 2D sidescrolling platformer with elements of a run and gun game as well. The player controls Jim and must maneuver him through the level while avoiding obstacles and enemies.',
     coverUrl:
-      'http://fillmurray.com/200/200',
+      '/platformer-bundle.jpg',
   });
-
-  // await earthwormJim.addBundle(platformerBundle);
-  // await superMarioWorld.addBundle(platformerBundle);
-  // await superMarioBros.addBundle(platformerBundle);
-
-  // await platformerBundle.addBundle(earthwormJim);
-  // await platformerBundle.addBundle(superMarioWorld);
-  // await platformerBundle.addBundle(superMarioBros);
 
   await platformerBundle.addSubProduct(earthwormJim);
   await platformerBundle.addSubProduct(superMarioWorld);
