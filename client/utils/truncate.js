@@ -7,7 +7,8 @@ export default function (str, numWords = 30) {
   let result = strArray.slice(0, numWords);
 
   // convert back to string and append an ellipsis, only if our string was actually truncated
-  if (numWords < strArray.length) result = result.join(' ') + ' ...';
+  result = result.join(' ');
+  if (numWords < strArray.length) result += ' ...';
 
   return result;
 }

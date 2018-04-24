@@ -25,7 +25,6 @@ class AllOrders extends Component {
 
   render() {
     let orders = this.props.orders;
-
     return (
       <div className="order-history-container">
         <Item.Group>

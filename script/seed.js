@@ -21,7 +21,7 @@ const {
 } = require('../server/db/models');
 
 async function seed() {
-  await db.sync({force: true});
+  await db.sync({ force: true });
   console.log('db synced!');
   // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
   // executed until that promise resolves!
@@ -142,8 +142,8 @@ async function seed() {
     }),
     Product.create({
       title: 'The Legend of Zelda: A Link to the Past',
-      price: 2900,
-      inventory: 1299,
+      price: 1299,
+      inventory: 4,
       genreId: 1,
       systemId: 2,
       description:
@@ -283,15 +283,6 @@ async function seed() {
       coverUrl: 'http://img2.game-oldies.com/sites/default/files/packshots/sega-genesis/sonic-the-hedgehog-usa-europe.png'
     }),
     Product.create({
-      title: 'Earthworm Jim',
-      price: 999,
-      inventory: 30,
-      genreId: 8,
-      systemId: 6,
-      description: 'Earthworm Jim is a 1994 run and gun platform game developed by Shiny Entertainment, featuring an earthworm named Jim, who wears a robotic suit and battles evil. The game was released for the Sega Genesis, and subsequently ported to a number of other video game consoles. The game plays as a 2D sidescrolling platformer with elements of a run and gun game as well. The player controls Jim and must maneuver him through the level while avoiding obstacles and enemies.',
-      coverUrl: 'https://images-na.ssl-images-amazon.com/images/I/51uOk%2B3Kh5L.jpg'
-    }),
-    Product.create({
       title: 'Golden Axe',
       price: 999,
       inventory: 30,
@@ -317,13 +308,61 @@ async function seed() {
       systemId: 5,
       description: 'Phantasy Star (ファンタシースター) is a 1987 role-playing game developed and published by Sega. It is the first in a long line of Phantasy Star games, and is often considered one of the best games for the Sega Master System. ',
       coverUrl: 'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.nintendolife.com%2Fgames%2Fmastersystem%2Fphantasy_star%2Fcover_large.jpg&f=1'
+    }),
+    Product.create({
+      title: 'Earthworm Jim',
+      price: 999,
+      inventory: 30,
+      genreId: 8,
+      systemId: 6,
+      description: 'Earthworm Jim is a 1994 run and gun platform game developed by Shiny Entertainment, featuring an earthworm named Jim, who wears a robotic suit and battles evil. The game was released for the Sega Genesis, and subsequently ported to a number of other video game consoles. The game plays as a 2D sidescrolling platformer with elements of a run and gun game as well. The player controls Jim and must maneuver him through the level while avoiding obstacles and enemies.',
+      coverUrl: 'https://images-na.ssl-images-amazon.com/images/I/51uOk%2B3Kh5L.jpg'
     })
-    // Product.create({title: , price: , description: , cover_url: }),
+
   ]);
 
+  // grab our game instances we just created (by destructuring the array), so we can add them to bundles
+  const [
+    fZero,
+    superMarioWorld,
+    zeldaLinkToThePast,
+    marioKart64,
+    donkeyKongJr,
+    duckHunt,
+    iceClimber,
+    superMarioBros,
+    punchOut,
+    battletoads,
+    superSmashBros,
+    tetris,
+    drMario,
+    pokemonPinball,
+    metroid2,
+    sonic,
+    goldenAxe,
+    ghoulsNGhosts,
+    phantasyStar,
+    earthwormJim
+  ] = products;
+
+  const platformerBundle = await Product.create({
+    title: 'Platformer Bundle',
+    price: 1999,
+    type: 'bundle',
+    genreId: 8,
+    description:
+      'Awesome deal. This bundle includes Super Mario World, Sonic the Hedgehog, and Earthworm Jim',
+    coverUrl:
+      '/platformer-bundle.jpg',
+  });
+
+  await platformerBundle.addSubProduct(earthwormJim);
+  await platformerBundle.addSubProduct(superMarioWorld);
+  await platformerBundle.addSubProduct(superMarioBros);
+
   const orders = await Promise.all([
-    Order.create({address: '123 Fake St', status: 'Completed'}),
-    Order.create({address: '742 Evergreen Terr', status: 'Completed'}),
+    Order.create({ address: '123 Fake St', status: 'Completed' }),
+    Order.create({ address: '742 Evergreen Terr', status: 'Completed' }),
   ]);
 
   const setUsersForOrders = await Promise.all([
@@ -332,11 +371,11 @@ async function seed() {
   ]);
 
   const addItemsToOrders = await Promise.all([
-    orders[0].addProduct(products[0], { through: {quantity: 2, salePrice: products[0].price} }),
-    orders[0].addProduct(products[1], { through: {quantity: 3, salePrice: products[1].price} }),
-    orders[0].addProduct(products[2], { through: {quantity: 4, salePrice: products[2].price} }),
-    orders[1].addProduct(products[3], { through: {quantity: 1, salePrice: products[3].price} }),
-    orders[1].addProduct(products[4], { through: {quantity: 2, salePrice: products[4].price} })
+    orders[0].addProduct(products[0], { through: { quantity: 2, salePrice: products[0].price } }),
+    orders[0].addProduct(products[1], { through: { quantity: 3, salePrice: products[1].price } }),
+    orders[0].addProduct(products[2], { through: { quantity: 4, salePrice: products[2].price } }),
+    orders[1].addProduct(products[3], { through: { quantity: 1, salePrice: products[3].price } }),
+    orders[1].addProduct(products[4], { through: { quantity: 2, salePrice: products[4].price } })
   ]);
 
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
