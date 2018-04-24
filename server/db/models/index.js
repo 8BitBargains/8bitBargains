@@ -28,4 +28,5 @@ module.exports = {
   System,
   Order,
   ProductOrder,
+  ProductBundle
 };

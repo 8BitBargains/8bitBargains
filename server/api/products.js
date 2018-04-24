@@ -4,7 +4,7 @@ module.exports = router;
 
 // GET all products
 router.get('/', (req, res, next) => {
-  Product.findAll({ include: { all: true } })
+  Product.findAll({ include: [{ model: Product, as: 'subProduct' }] })
     .then(products => res.json(products))
     .catch(next);
 });
