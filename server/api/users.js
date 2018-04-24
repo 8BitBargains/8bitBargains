@@ -19,16 +19,13 @@ router.get('/', (req, res, next) => {
 
 router.put('/adminStatus', (req, res, next) => {
   let id = req.body.userId;
-  let adminStatus;
 
   User
     .findOne({ where: { id } })
     .then(user => {
-      adminStatus = !user.isAdmin;
-      user.isAdmin = adminStatus;
+      user.isAdmin = !user.isAdmin;
       user.save();
-
-      res.status(204).send(adminStatus);
     })
+    .then(() => res.sendStatus(204))
     .catch(next);
 });
