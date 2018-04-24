@@ -31,12 +31,13 @@ router.get('/cart', (req, res, next) => {
 
 // GET all orders for CURRENT user
 // GET one order for CURRENT user
-router.get('/:orderId?', isLoggedIn, (req, res, next) => {
+router.get('/:orderId?', (req, res, next) => {
   // fetch ALL orders for CURRENT user or just ONE if optional orderId param
-  const userId = req.user.id;
+  const userId = req.user ? req.user.id : null;
+  const sessionId = userId ? null : req.session.id;
   if (req.params.orderId) {
     const id = +req.params.orderId;
-    Order.findOne({ where: { id, userId }, include: [Product] })
+    Order.findOne({ where: { id, userId, sessionId }, include: [Product] })
       .then(order => res.json(order))
       .catch(next);
   } else {
@@ -104,13 +105,19 @@ router.put('/checkout', (req, res, next) => {
   // const shipping = req.body.shipping;
   const userId = req.user ? req.user.id : null;
   const sessionId = userId ? null : req.session.id;
-  Order.findOne({ where: { userId, sessionId, status: 'Created' } })
+  Order.findOne({ where: { userId, sessionId, status: 'Created' }, include: [Product] })
+    .tap(foundOrder => {
+      // update quantity of products included in the order
+      console.log(foundOrder);
+    })
     .then(foundOrder => {
-      return foundOrder.update({ address, status: 'Processing' });
+        return foundOrder.update({ address, status: 'Processing' });
+      })
+    .tap(() => {
+      // Create a new cart for the user.
+      Order.create({ userId, sessionId, status: 'Created' });
     })
     .then(processingOrder => {
-      // Create a new cart for the user. (Beware async? If we have trouble here, may need to use bluebird .tap.)
-      Order.create({ userId, sessionId, status: 'Created' });
       res.json(processingOrder);
     })
     .catch(next);
