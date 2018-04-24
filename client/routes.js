@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {withRouter, Route, Switch} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Login,
@@ -11,6 +11,7 @@ import {
   Cart,
   Checkout,
   AllOrders,
+  Confirmation
 } from './components';
 import { me, addToCart, updateCart } from './store';
 import { fetchCart } from './store/cart';
@@ -24,34 +25,50 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props;
+    const { isLoggedIn } = this.props;
 
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route exact path="/products" render={
-          () => <BrowseProducts handleAddButton={this.props.handleAddButton} />
-        } />
+        <Route
+          exact
+          path="/products"
+          render={() => (
+            <BrowseProducts handleAddButton={this.props.handleAddButton} />
+          )}
+        />
         <Route exact path="/cart" component={Cart} />
-        <Route exact path="/cart/process" component={Checkout} />
-
-        <Route path="/products/:productId" render={
-          ({ match }) => <SingleProduct match={match} handleAddButton={this.props.handleAddButton} />
-        } />
-        {
-          isLoggedIn &&
+        <Route exact path="/cart/checkout" component={Checkout} />
+        <Route
+          path="/products/:productId"
+          render={({ match }) => (
+            <SingleProduct
+              match={match}
+              handleAddButton={this.props.handleAddButton}
+            />
+          )}
+        />
+        <Route
+          path="/confirmation/:orderId"
+          render={({ match }) => (
+            <Confirmation match={match} />
+          )}
+        />
+        {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
             <Route path="/order-history" component={AllOrders} />
           </Switch>
-        }
+        )}
         {/* Displays our Browse component as a fallback */}
-        <Route render={
-          () => <BrowseProducts handleAddButton={this.props.handleAddButton} />
-        } />
+        <Route
+          render={() => (
+            <BrowseProducts handleAddButton={this.props.handleAddButton} />
+          )}
+        />
       </Switch>
     );
   }
@@ -62,9 +79,9 @@ class Routes extends Component {
  */
 const mapState = state => {
   return {
-    // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
+    // Being 'logged in' for our purposes will be defined as having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.user.id,
+    isLoggedIn: !!state.user.id
   };
 };
 
@@ -81,10 +98,16 @@ const mapDispatch = (dispatch, ownProps) => {
         cartProduct => cartProduct.product.id === product.id
       )[0];
       if (productInCart) {
-        dispatch(updateCart(cart.id, product.id, ++productInCart.quantity, ownProps.history));
-      }
-      else dispatch(addToCart(product, ownProps.history));
-    },
+        dispatch(
+          updateCart(
+            cart.id,
+            product.id,
+            ++productInCart.quantity,
+            ownProps.history
+          )
+        );
+      } else {dispatch(addToCart(product, ownProps.history));}
+    }
   };
 };
 
@@ -97,5 +120,5 @@ export default withRouter(connect(mapState, mapDispatch)(Routes));
  */
 Routes.propTypes = {
   loadInitialData: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
 };

@@ -115,10 +115,10 @@ class Checkout extends Component {
   }
 }
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch, ownProps) => {
   return {
     handleSubmit: (formData) => {
-      dispatch(submitOrder(formData));
+      dispatch(submitOrder(formData, ownProps.history));
     }
   };
 };
