@@ -17,10 +17,11 @@ const Product = db.define('product', {
       if (this.getDataValue('type') === 'game') {
         return this.getDataValue('inventory');
       } else if (this.getDataValue('type') === 'bundle') {
-        const subProductInventoryVals = []
-        this.getDataValue('subProduct').forEach(subProduct => {
-          subProductInventoryVals.push(subProduct.inventory);
-        });
+        const subProductInventoryVals = [];
+        this.getDataValue('subProduct') &&
+          this.getDataValue('subProduct').forEach(subProduct => {
+            subProductInventoryVals.push(subProduct.inventory);
+          });
         return Math.min(...subProductInventoryVals);
       }
     }

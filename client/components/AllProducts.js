@@ -26,6 +26,8 @@ export default function AllProducts(props) {
               <Card.Description>{truncate(product.description)}</Card.Description>
             </Card.Content>
             <Card.Content extra>
+              {product.inventory < 5 && product.inventory > 0 &&
+                <p>Only {product.inventory} left in stock!</p>}
               <div className="card-price-button">
                 <span className="card-price">{displayPrice(product.price)}</span>
                 {product.inventory
