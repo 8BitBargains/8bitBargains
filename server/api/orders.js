@@ -107,18 +107,29 @@ router.put('/checkout', (req, res, next) => {
   const sessionId = userId ? null : req.session.id;
   Order.findOne({
     where: { userId, sessionId, status: 'Created' },
+    // include: [Product]
     include: [Product]
   })
     .tap(foundOrder => {
       // update quantity of products included in the order
       foundOrder.dataValues.products.forEach(product => {
+        const type = product.dataValues.type;
         const id = product.dataValues.id;
         const quantity = product.dataValues.product_order.quantity;
-        const inventory = product.dataValues.inventory - quantity;
-        console.log('id, inventory, quantity', id, inventory, quantity);
-        Product.update({ inventory }, { where: { id } });
-        // console.log('inventory ', inventory)
-        // Product.update()
+        if (type === 'game') {
+          const inventory = product.dataValues.inventory - quantity;
+          Product.update({ inventory }, { where: { id } });
+        } else {
+          console.log('type', type);
+          Product.findOne({where: {id}, include: {all: true}})
+          .then( bundle => {
+            bundle.dataValues.subProduct.forEach(product => {
+              const productId = product.dataValues.id;
+              const inventory = product.dataValues.inventory - quantity;
+              Product.update({ inventory }, { where: { id: productId } });
+            });
+          });
+        }
       });
     })
     .then(foundOrder => {
