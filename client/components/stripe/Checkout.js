@@ -5,66 +5,48 @@ import STRIPE_PUBLISHABLE from './constants/stripe';
 import PAYMENT_SERVER_URL from './constants/server';
 import { submitOrder } from '../../store';
 import { connect } from 'react-redux';
+import { shippingOptions } from '../../utils';
 
 const CURRENCY = 'USD';
 
 const fromUSDToCent = amount => amount * 100;
 
-// const successPayment = data => {
-//   console.log('this is the payment data ',data)
-//   alert('Payment Successful');
-
-
-// };
-
-const errorPayment = data => {
+const errorPayment = () => {
   alert('Payment Error');
 };
 
-// const onToken = (amount, description) => token =>
-//   axios.post(PAYMENT_SERVER_URL,
-//     {
-//       description,
-//       source: token.id,
-//       currency: CURRENCY,
-//       amount: fromUSDToCent(amount)
-//     })
-//     .then(successPayment)
-//     .catch(errorPayment);
-
-const Checkout = ({ name, description, amount, orderId, onToken }) => (
+const Checkout = ({ name, description, amount, orderId, onToken, address }) => (
+  // dispatching payment information to stripe
   <StripeCheckout
     name={name}
     description={description}
-    amount={fromUSDToCent(amount)}
-    token={onToken(amount, description)}
+    amount={Math.floor(fromUSDToCent(amount))}
+    token={onToken(Math.floor(fromUSDToCent(amount)), description, address)}
     currency={CURRENCY}
     stripeKey={STRIPE_PUBLISHABLE}
     orderId = {orderId}
+    address = {address}
   />
 );
 
 const mapDispatch = ((dispatch, ownProps) => {
-  //need to move ontoken function here so it has access to dispatch
-  // so that we can dispatch the submit checkout thunk 
-  // which will update database and redirect to confirmation page.
+  // dispatch request to backend with the order information
   return {
-    onToken: (amount, description) => token => {
-    console.log('mapdispatch ownprops', ownProps);
-
+    onToken: (amount, description, address) => token => {
       axios.post(PAYMENT_SERVER_URL,
         {
           description,
           source: token.id,
           currency: CURRENCY,
-          amount: fromUSDToCent(amount)
+          amount,
+          address
         })
-        .then((data) => {
-          console.log('this is the payment data ', data);
-          alert('Payment Successful');
-          dispatch(submitOrder('test', ownProps.history));
+        .then(() => {
+          // submit order sends request to retrieve the purchased order
+          // and load the confirmation page
+          dispatch(submitOrder(address, ownProps.history));
         })
-        .catch(errorPayment)
+        .catch(errorPayment);
       }
   };
 });
