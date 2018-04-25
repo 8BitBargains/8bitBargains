@@ -21,7 +21,7 @@ const Order = props => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {orderProducts && orderProducts.map(item => <OrderItem key={item.product.id} item={item.product} />)}
+          {orderProducts && orderProducts.map(item => <OrderItem quantity={item.quantity} key={item.product.id} item={item.product} />)}
         </Table.Body>
         <Table.Footer>
           <Table.Row>

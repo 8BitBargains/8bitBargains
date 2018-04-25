@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Image } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import { displayPrice } from '../utils';
 
 const OrderItem = props => {
@@ -10,10 +10,13 @@ const OrderItem = props => {
         <Table.Header as="h3">{item.title}</Table.Header>
       </Table.Cell>
       <Table.Cell>
-        <p>{item.description}</p>
+        <p>description: {item.description}</p>
       </Table.Cell>
       <Table.Cell textAlign="right">
-        <p>{displayPrice(item.price)}</p>
+        <p>Price: {displayPrice(item.price)}</p>
+      </Table.Cell>
+      <Table.Cell>
+        <p> Quantity: {props.quantity}</p>
       </Table.Cell>
     </Table.Row>
   );
