@@ -2,6 +2,7 @@ import React from 'react';
 import { Table } from 'semantic-ui-react';
 import OrderItem from './OrderItem';
 import { displayPrice } from '../utils';
+import { parseAddress } from '../utils';
 
 const Order = props => {
   if (props.order) {
@@ -15,6 +16,8 @@ const Order = props => {
             .reduce((reducer, num) => reducer + num)
         : 0;
 
+    let address = parseAddress(order.address);
+
     return (
       <Table padded="very" singleLine fixed color="green">
         <Table.Header>
@@ -23,12 +26,19 @@ const Order = props => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {products && products.map(item => <OrderItem key={item.id} item={item} />)}
+          {products &&
+            products.map(item => <OrderItem key={item.id} item={item} />)}
         </Table.Body>
         <Table.Footer>
           <Table.Row>
+            <Table.Cell>Name: {address.name}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Address line 1: {address.address}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
             <Table.Cell>
-              Address: {order.address}
+              Address line 2: {address.city}, {address.state} {address.country}
             </Table.Cell>
             <Table.Cell textAlign="right">
               Total: {displayPrice(total)}
