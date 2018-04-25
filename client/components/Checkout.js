@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Checkbox, Input, Container, Button, Form, Select } from 'semantic-ui-react';
+import { Input, Container, Form, Select } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { shippingOptions, stateOptions, countryOptions } from '../utils';
-import { submitOrder } from '../store';
+import { shippingOptions, stateOptions, countryOptions, subtotal } from '../utils';
 import CheckoutButton from './stripe/Checkout';
 
 const initialState = {
@@ -13,12 +12,12 @@ const initialState = {
   country: '',
   shipping: '',
 };
+
 class Checkout extends Component {
   constructor(props){
     super(props);
     this.state = initialState;
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange (evt, value) {
@@ -26,8 +25,11 @@ class Checkout extends Component {
     let newState = {};
     let key;
 
+    // hack to get around the weird way react semantic ui handles select elements
+    // select elements accept onChange events differently than input elements.
+    // doing the following enables handleChange function to work for both
+    // semantic ui select elements and semantic ui input elements.
     if (typeof value === 'string'){
-      // hack to get around the weird way react semantic ui handles select elements
       key = evt;
     } else {
       key = value.name;
@@ -37,21 +39,16 @@ class Checkout extends Component {
     this.setState(newState);
   }
 
-  handleSubmit (formData) {
-    // takes the submit information from the form and passes it onto the container
-    const { name, address, city, state, country } = formData;
-    const shippingAddress = `${name},${address},${city},${state},${country}`;
-    // if implementing shipping details, add it here
-    this.setState(initialState);
-    this.props.handleSubmit(shippingAddress);
-  }
   render(){
-    const { handleSubmit, handleChange } = this;
+    const { handleChange } = this;
     const { name, address, city, state, country, shipping } = this.state;
+    const { history, orderId, cartProducts } = this.props;
+    const shippingAddress = `${name},${address},${city},${state},${country}`;
 
     return (
       <Container>
-        <Form id="order-info-form" onSubmit={ () => handleSubmit(this.state)} >
+        <Form id="order-info-form" >
+
           <div className="component" >
             <div className="section">
               <label>Shipping Address</label>
@@ -95,36 +92,28 @@ class Checkout extends Component {
                   options={shippingOptions} />
               </Form.Field>
             </div>
-            <div className="section">
-              <label>Billing Address</label>
-              <Checkbox label="Same as Shipping Address" />
-            </div>
           </div>
-          <Form.Field>
-            <Checkbox label="I agree to pay for this stuff" />
-          </Form.Field>
-          <Button type="submit">Submit</Button>
+
         </Form>
-          <CheckoutButton
-            name={'Pay for Your Stuff, Please'}
-            description={'Really...We Need Money'}
-            amount={1}
-            orderId={1}
-            history={this.props.history}
-          />
+        <CheckoutButton
+          name={'Pay for Your Stuff, Please'}
+          description={'Really...We Need Money'}
+          amount={subtotal(cartProducts) / 100}
+          orderId={orderId}
+          history={history}
+          address={shippingAddress}
+        />
       </Container>
     );
   }
 }
-
-const mapDispatch = (dispatch, ownProps) => {
+const mapState = (state) => {
   return {
-    handleSubmit: (formData) => {
-      dispatch(submitOrder(formData, ownProps.history));
-    }
+    cartProducts: state.cart.cartProducts,
+    orderId: state.cart.id
   };
 };
 
-const CheckoutContainer = connect(null, mapDispatch)(Checkout);
+const CheckoutContainer = connect(mapState)(Checkout);
 
 export default CheckoutContainer;
