@@ -8,7 +8,7 @@ const GET_GENRES = 'GET_GENRES';
 /**
  * ACTION CREATORS
  */
-const getGenres = genres => ({ type: GET_GENRES, genres });
+export const getGenres = genres => ({ type: GET_GENRES, genres });
 
 /**
  * THUNK CREATORS
@@ -22,7 +22,7 @@ export const fetchGenres = () => dispatch =>
 /**
  * REDUCER
  */
-export default function(state = [], action) {
+export default function (state = [], action) {
   switch (action.type) {
     case GET_GENRES:
       return action.genres;
