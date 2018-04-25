@@ -12,8 +12,8 @@ const Order = props => {
     order.products.forEach(product => {
       orderProducts.push({product, quantity: product.product_order.quantity});
     });
-
-    let address = parseAddress(order.address);
+    
+    let address = order.address ? parseAddress(order.address) : { name: '', address: '', city: '', state: '', country: '' }
 
     return (
       <Table padded="very" singleLine fixed color="green">
