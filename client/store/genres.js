@@ -8,18 +8,16 @@ const GET_GENRES = 'GET_GENRES';
 /**
  * ACTION CREATORS
  */
-const getGenres = genres => ({ type: GET_GENRES, genres });
+export const getGenres = genres => ({ type: GET_GENRES, genres });
 
 /**
  * THUNK CREATORS
  */
-export const fetchGenres = () =>
-  dispatch => (
-    axios.get('/api/genres')
-      .then(res =>
-        dispatch(getGenres(res.data)))
-      .catch(err => console.log(err))
-  );
+export const fetchGenres = () => dispatch =>
+  axios
+    .get('/api/genres')
+    .then(res => dispatch(getGenres(res.data)))
+    .catch(err => console.log(err));
 
 /**
  * REDUCER

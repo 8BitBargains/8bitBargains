@@ -6,7 +6,7 @@ module.exports = router;
 router.get('/', (req, res, next) => {
   Product.findAll({
     include: [
-      { model: Product, as: 'subProduct' },
+      { model: Product, as: 'subProduct' }
       // { model: Orders }
     ]
   })
@@ -18,9 +18,7 @@ router.get('/', (req, res, next) => {
 router.get('/:productId', (req, res, next) => {
   Product.findOne({
     where: { id: req.params.productId },
-    include: [
-      { model: Product, as: 'subProduct' }
-    ]
+    include: [{ model: Product, as: 'subProduct' }]
   })
     .then(product => res.json(product))
     .catch(next);

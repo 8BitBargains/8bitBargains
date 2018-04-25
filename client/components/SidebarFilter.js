@@ -5,7 +5,7 @@ import { alphaSort } from '../utils';
 export default class SidebarFilter extends React.Component {
   state = {};
 
-  handleItemClick = name => this.setState({ activeItem: name })
+  handleItemClick = name => this.setState({ activeItem: name });
 
   render() {
     const { activeItem } = this.state;
@@ -13,18 +13,22 @@ export default class SidebarFilter extends React.Component {
     const genres = this.props.genres;
     const systems = this.props.systems;
 
-    const createOptions = (array) => {
-      return [{
-        key: 0,
-        text: '-',
-        value: null
-      }].concat(alphaSort(array, 'name').map(elem => {
-        return {
-          key: elem.id,
-          text: elem.name,
-          value: elem.id
-        };
-      }));
+    const createOptions = array => {
+      return [
+        {
+          key: 0,
+          text: '-',
+          value: null
+        }
+      ].concat(
+        alphaSort(array, 'name').map(elem => {
+          return {
+            key: elem.id,
+            text: elem.name,
+            value: elem.id
+          };
+        })
+      );
     };
 
     return (
@@ -48,18 +52,20 @@ export default class SidebarFilter extends React.Component {
               onClick={() => {
                 this.props.sortProducts('price', 'asc');
                 this.handleItemClick('price-ascending');
-              }}>
+              }}
+            >
               Ascending
-              </Menu.Item>
+            </Menu.Item>
             <Menu.Item
               name="price-descending"
               active={activeItem === 'price-descending'}
               onClick={() => {
                 this.props.sortProducts('price', 'desc');
                 this.handleItemClick('price-descending');
-              }}>
+              }}
+            >
               Descending
-              </Menu.Item>
+            </Menu.Item>
           </Menu.Menu>
         </Menu.Item>
         <Menu.Item>
@@ -71,18 +77,20 @@ export default class SidebarFilter extends React.Component {
               onClick={() => {
                 this.props.sortProducts('title', 'asc');
                 this.handleItemClick('title-ascending');
-              }}>
+              }}
+            >
               Ascending
-              </Menu.Item>
+            </Menu.Item>
             <Menu.Item
               name="title-descending"
               active={activeItem === 'title-descending'}
               onClick={() => {
                 this.props.sortProducts('title', 'desc');
                 this.handleItemClick('title-descending');
-              }}>
+              }}
+            >
               Descending
-              </Menu.Item>
+            </Menu.Item>
           </Menu.Menu>
         </Menu.Item>
         <Menu.Item>
@@ -90,8 +98,10 @@ export default class SidebarFilter extends React.Component {
           <Menu.Menu>
             <Dropdown
               placeholder="Select Genre"
-              fluid search
-              selection options={createOptions(genres)}
+              fluid
+              search
+              selection
+              options={createOptions(genres)}
               onChange={this.props.handleGenreChange}
             />
           </Menu.Menu>
@@ -101,8 +111,10 @@ export default class SidebarFilter extends React.Component {
           <Menu.Menu>
             <Dropdown
               placeholder="Select Console"
-              fluid search
-              selection options={createOptions(systems)}
+              fluid
+              search
+              selection
+              options={createOptions(systems)}
               onChange={this.props.handleSystemChange}
             />
           </Menu.Menu>

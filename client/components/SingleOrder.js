@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table} from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import OrderItem from './OrderItem';
 import {displayPrice} from '../utils';
 import { parseAddress } from '../utils';
@@ -9,9 +9,12 @@ const Order = props => {
     let order = props.order;
     let products = order.products;
 
-    let total = products && products.length
-      ? products.map(item => item.price).reduce((reducer, num) => reducer + num)
-      : 0;
+    let total =
+      products && products.length
+        ? products
+            .map(item => item.price)
+            .reduce((reducer, num) => reducer + num)
+        : 0;
 
     let address = parseAddress(order.address);
 
@@ -19,13 +22,11 @@ const Order = props => {
       <Table padded="very" singleLine fixed color="green">
         <Table.Header>
           <Table.Row>
-            <Table.Cell>
-              Order no. {order.id}
-            </Table.Cell>
+            <Table.Cell>Order no. {order.id}</Table.Cell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {products.map(item => <OrderItem key={item.id} item={item} />)}
+          {products && products.map(item => <OrderItem key={item.id} item={item} />)}
         </Table.Body>
         <Table.Footer>
           <Table.Row>
@@ -38,7 +39,7 @@ const Order = props => {
             <Table.Cell>
               Address: {address.city}, {address.state} {address.country}
             </Table.Cell>
-            <Table.Cell textAlign='right'>
+            <Table.Cell textAlign="right">
               Total: {displayPrice(total)}
             </Table.Cell>
           </Table.Row>
@@ -46,9 +47,7 @@ const Order = props => {
       </Table>
     );
   } else {
-    return (
-      null
-    );
+    return null;
   }
 };
 

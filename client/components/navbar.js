@@ -10,8 +10,25 @@ class Navbar extends React.Component {
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
+  // Created to make this file more DRY
+  standardNavItem = (text, activeItem, handleClick = this.handleItemClick) => {
+    let displayText = text.split('-').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
+
+    return (
+      <Menu.Item
+        as={Link}
+        to={`/${text}`}
+        name={text}
+        active={activeItem === text}
+        onClick={handleClick}
+      >
+        {displayText}
+      </Menu.Item>
+  )};
+
   render() {
     const { activeItem } = this.state;
+    const navItem = this.standardNavItem;
 
     return (
       <div>
@@ -20,61 +37,28 @@ class Navbar extends React.Component {
           {this.props.isLoggedIn ? (
             <Menu.Menu>
               {/* The navbar will show these links after you log in */}
-              <Menu.Item
-                as={Link} to="/home"
-                name="home"
-                active={activeItem === 'home'}
-                onClick={this.handleItemClick}
-              >
-                Home
-              </Menu.Item>
-              <Menu.Item
-                as={Link} to="/logout"
-                name="logout"
-                onClick={this.props.handleLogout}
-              >
-                Logout
-              </Menu.Item>
+              {navItem('home', activeItem)}
+              {navItem('order-history', activeItem)}
+              {navItem('logout', activeItem, this.props.handleLogout)}
             </Menu.Menu>
           ) : (
               <Menu.Menu>
                 {/* The navbar will show these links before you log in */}
-                <Menu.Item
-                  as={Link} to="/login"
-                  name="login"
-                  active={activeItem === 'login'}
-                  onClick={this.handleItemClick}
-                >
-                  Login
-                </Menu.Item>
-                <Menu.Item
-                  as={Link} to="/signup"
-                  name="signup"
-                  active={activeItem === 'signup'}
-                  onClick={this.handleItemClick}
-                >
-                  Signup
-                </Menu.Item>
+                {navItem('login', activeItem)}
+                {navItem('signup', activeItem)}
               </Menu.Menu>
             )}
+
+          {this.props.isAdmin && (
+            <Menu.Menu>
+              {navItem('admin', activeItem)}
+            </Menu.Menu>
+          )}
+
           {/* The navbar will always show these links */}
           <Menu.Menu>
-            <Menu.Item
-              as={Link} to="/products"
-              name="browse"
-              active={activeItem === 'browse'}
-              onClick={this.handleItemClick}
-            >
-              Browse
-            </Menu.Item>
-            <Menu.Item
-              as={Link} to="/cart"
-              name="cart"
-              active={activeItem === 'cart'}
-              onClick={this.handleItemClick}
-            >
-              Cart
-            </Menu.Item>
+            {navItem('products', activeItem)}
+            {navItem('cart', activeItem)}
           </Menu.Menu>
         </Menu>
         <br />
@@ -83,13 +67,13 @@ class Navbar extends React.Component {
   }
 }
 
-
 /**
  * CONTAINER
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    isAdmin: !!state.user.isAdmin
   };
 };
 

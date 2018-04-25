@@ -9,7 +9,7 @@ module.exports = router;
 
 // GET all orders for all users (admin only)
 router.get('/allOrders', isLoggedIn, isAdmin, (req, res, next) => {
-  Order.findAll()
+  Order.findAll({ include: [Product] })
     .then(orders => res.json(orders))
     .catch(next);
 });
@@ -105,14 +105,36 @@ router.put('/checkout', (req, res, next) => {
   // const shipping = req.body.shipping;
   const userId = req.user ? req.user.id : null;
   const sessionId = userId ? null : req.session.id;
-  Order.findOne({ where: { userId, sessionId, status: 'Created' }, include: [Product] })
+  Order.findOne({
+    where: { userId, sessionId, status: 'Created' },
+    // include: [Product]
+    include: [Product]
+  })
     .tap(foundOrder => {
       // update quantity of products included in the order
-      console.log(foundOrder);
+      foundOrder.dataValues.products.forEach(product => {
+        const type = product.dataValues.type;
+        const id = product.dataValues.id;
+        const quantity = product.dataValues.product_order.quantity;
+        if (type === 'game') {
+          const inventory = product.dataValues.inventory - quantity;
+          Product.update({ inventory }, { where: { id } });
+        } else {
+          console.log('type', type);
+          Product.findOne({where: {id}, include: {all: true}})
+          .then( bundle => {
+            bundle.dataValues.subProduct.forEach(product => {
+              const productId = product.dataValues.id;
+              const inventory = product.dataValues.inventory - quantity;
+              Product.update({ inventory }, { where: { id: productId } });
+            });
+          });
+        }
+      });
     })
     .then(foundOrder => {
-        return foundOrder.update({ address, status: 'Processing' });
-      })
+      return foundOrder.update({ address, status: 'Processing' });
+    })
     .tap(() => {
       // Create a new cart for the user.
       Order.create({ userId, sessionId, status: 'Created' });

@@ -26,22 +26,22 @@ describe('Product routes', () => {
 
     it('GET /api/products', () => {
       return request(app)
-      .get('/api/products')
-      .expect(200)
-      .then(res => {
-        expect(res.body).to.be.an('array');
-        expect(res.body[0].title).to.be.equal(newTitle);
-      });
+        .get('/api/products')
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.be.an('array');
+          expect(res.body[0].title).to.be.equal(newTitle);
+        });
     });
 
     it('GET /api/products/1', () => {
       return request(app)
-      .get('/api/products/1')
-      .expect(200)
-      .then(res => {
-        expect(res.body).to.be.an('object');
-        expect(res.body.title).to.be.equal(newTitle);
-      });
+        .get('/api/products/1')
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.be.an('object');
+          expect(res.body.title).to.be.equal(newTitle);
+        });
     });
   }); // end describe('/api/products')
 }); // end describe('Product routes')

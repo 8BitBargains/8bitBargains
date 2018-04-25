@@ -13,18 +13,16 @@ const getSystems = systems => ({ type: GET_SYSTEMS, systems });
 /**
  * THUNK CREATORS
  */
-export const fetchSystems = () =>
-  dispatch => (
-    axios.get('/api/systems')
-      .then(res =>
-        dispatch(getSystems(res.data)))
-      .catch(err => console.log(err))
-  );
+export const fetchSystems = () => dispatch =>
+  axios
+    .get('/api/systems')
+    .then(res => dispatch(getSystems(res.data)))
+    .catch(err => console.log(err));
 
 /**
  * REDUCER
  */
-export default function (state = [], action) {
+export default function(state = [], action) {
   switch (action.type) {
     case GET_SYSTEMS:
       return action.systems;

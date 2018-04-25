@@ -5,21 +5,22 @@ import { Item } from 'semantic-ui-react';
 import { fetchUserOrders } from '../store';
 import SingleOrder from './SingleOrder';
 
-const mapState = (state) => {
+const mapState = state => {
   return {
-    orders: state.orders
+    orders: state.orders,
+    isAdmin: state.user.isAdmin
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
-    loadOrders: () => dispatch(fetchUserOrders())
-  }
-}
+    loadOrders: isAdmin => dispatch(fetchUserOrders(isAdmin))
+  };
+};
 
-class OrderHistory extends Component {
+class AllOrders extends Component {
   componentDidMount() {
-    this.props.loadOrders();
+    this.props.loadOrders(this.props.isAdmin);
   }
 
   render() {
@@ -34,6 +35,6 @@ class OrderHistory extends Component {
   }
 }
 
-const OrderHistoryContainer = connect(mapState, mapDispatch)(OrderHistory);
+const AllOrdersContainer = connect(mapState, mapDispatch)(AllOrders);
 
-export default OrderHistoryContainer;
+export default AllOrdersContainer;
