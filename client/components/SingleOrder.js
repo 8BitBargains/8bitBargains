@@ -1,20 +1,17 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import OrderItem from './OrderItem';
-import { displayPrice } from '../utils';
-import { parseAddress } from '../utils';
+import { displayPrice, subtotal, parseAddress } from '../utils';
 
 const Order = props => {
   if (props.order) {
     let order = props.order;
-    let products = order.products;
-
-    let total =
-      products && products.length
-        ? products
-            .map(item => item.price)
-            .reduce((reducer, num) => reducer + num)
-        : 0;
+    let orderProducts = [];
+    // builds orderProducts array which will be used
+    // by the imported subtotal function
+    order.products.forEach(product => {
+      orderProducts.push({product, quantity: product.product_order.quantity});
+    });
 
     let address = parseAddress(order.address);
 
@@ -26,8 +23,7 @@ const Order = props => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {products &&
-            products.map(item => <OrderItem key={item.id} item={item} />)}
+          {orderProducts && orderProducts.map(item => <OrderItem quantity={item.quantity} key={item.product.id} item={item.product} />)}
         </Table.Body>
         <Table.Footer>
           <Table.Row>
@@ -41,7 +37,7 @@ const Order = props => {
               Address line 2: {address.city}, {address.state} {address.country}
             </Table.Cell>
             <Table.Cell textAlign="right">
-              Total: {displayPrice(total)}
+              Total: {displayPrice(subtotal(orderProducts))}
             </Table.Cell>
           </Table.Row>
         </Table.Footer>

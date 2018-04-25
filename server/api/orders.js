@@ -3,7 +3,6 @@ const { Order, ProductOrder, Product } = require('../db/models');
 const {
   isLoggedIn,
   isAdmin,
-  isAdminOrSelf
 } = require('../utils/gatekeeperMiddleware');
 module.exports = router;
 
@@ -101,13 +100,11 @@ router.put('/checkout', (req, res, next) => {
   // add address, shipping method to order
   // change status to 'Processing'
   const address = req.body.address;
-  // shipping not implemented just yet
-  // const shipping = req.body.shipping;
+
   const userId = req.user ? req.user.id : null;
   const sessionId = userId ? null : req.session.id;
   Order.findOne({
     where: { userId, sessionId, status: 'Created' },
-    // include: [Product]
     include: [Product]
   })
     .tap(foundOrder => {
@@ -120,7 +117,6 @@ router.put('/checkout', (req, res, next) => {
           const inventory = product.dataValues.inventory - quantity;
           Product.update({ inventory }, { where: { id } });
         } else {
-          console.log('type', type);
           Product.findOne({where: {id}, include: {all: true}})
           .then( bundle => {
             bundle.dataValues.subProduct.forEach(product => {

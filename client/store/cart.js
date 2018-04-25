@@ -99,7 +99,6 @@ export const submitOrder = (address, history) =>
     axios
       .put(`/api/orders/checkout`, { address })
       .then(res => {
-        console.log('product from server: ', res.data)
         const orderId = res.data.id;
         dispatch(fetchCart());
         history.push(`/confirmation/${orderId}`);
