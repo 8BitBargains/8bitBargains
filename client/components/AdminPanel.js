@@ -6,7 +6,6 @@ import AllUsers from './AllUsers';
 
 const AdminPanel = () => (
   <div>
-    {console.log('Hi Mario')}
     <Header as="h1">Administrator Panel</Header>
       <Header as="h2">All Users</Header>
       <AllUsers />
