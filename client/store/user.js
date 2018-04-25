@@ -1,6 +1,8 @@
 import axios from 'axios';
 import history from '../history';
 
+import { clearAllOrders } from './orders';
+
 /**
  * ACTION TYPES
  */
@@ -47,6 +49,7 @@ export const logout = () => dispatch =>
     .post('/auth/logout')
     .then(_ => {
       dispatch(removeUser());
+      dispatch(clearAllOrders());
       history.push('/login');
     })
     .catch(err => console.log(err));
