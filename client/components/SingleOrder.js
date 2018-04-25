@@ -17,8 +17,6 @@ const Order = props => {
         : 0;
 
     let address = parseAddress(order.address);
-    console.log(order.address);
-    console.log(address);
 
     return (
       <Table padded="very" singleLine fixed color="green">
