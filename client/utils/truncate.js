@@ -1,6 +1,5 @@
-
 // util function that takes in a string and a desired length,
-export default function (str, numWords = 30) {
+export default function(str, numWords = 30) {
   let strArray = str.split(' ');
 
   // truncate our string array to length specified

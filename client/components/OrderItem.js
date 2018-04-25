@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Image} from 'semantic-ui-react';
+import { Table, Image } from 'semantic-ui-react';
 import { displayPrice } from '../utils';
 
 const OrderItem = props => {

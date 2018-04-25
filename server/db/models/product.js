@@ -31,10 +31,10 @@ const Product = db.define('product', {
     defaultValue: 'game'
   },
   description: {
-    type: Sequelize.TEXT,
+    type: Sequelize.TEXT
   },
   coverUrl: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING
   }
 });
 
@@ -44,11 +44,9 @@ module.exports = Product;
  * instanceMethods
  */
 
-
 /**
  * classMethods
  */
-
 
 /**
  * hooks

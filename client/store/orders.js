@@ -8,7 +8,7 @@ const GET_USER_ORDERS = 'GET_USER_ORDERS';
 /**
  * ACTION CREATORS
  */
-const getUserOrders = orders => ({type: GET_USER_ORDERS, orders});
+const getUserOrders = orders => ({ type: GET_USER_ORDERS, orders });
 
 /**
  * THUNK CREATORS
@@ -28,8 +28,8 @@ export const fetchUserOrders = (isAdmin=false) => {
 /**
  * REDUCER
  */
-export default function (state = [], action) {
-  switch (action.type){
+export default function(state = [], action) {
+  switch (action.type) {
     case GET_USER_ORDERS:
       return action.orders;
     default:

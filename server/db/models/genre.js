@@ -14,11 +14,9 @@ module.exports = Genre;
  * instanceMethods
  */
 
-
 /**
  * classMethods
  */
-
 
 /**
  * hooks

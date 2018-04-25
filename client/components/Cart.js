@@ -6,49 +6,71 @@ import { connect } from 'react-redux';
 import { fetchCart, updateCart, removeFromCart } from '../store';
 
 const ItemList = props => {
-  const { cartProducts, handleUpdateQuantity, handleRemoveProduct, orderId } = props;
+  const {
+    cartProducts,
+    handleUpdateQuantity,
+    handleRemoveProduct,
+    orderId
+  } = props;
 
   return (
     <List divided relaxed>
-      {cartProducts && cartProducts.map(cartProduct => {
-        return (
-          <List.Item key={cartProduct.product.title}>
-            <div>
+      {cartProducts &&
+        cartProducts.map(cartProduct => {
+          return (
+            <List.Item key={cartProduct.product.title}>
               <div>
-                <Link to={`/products/${cartProduct.product.id}`}>
-                  <Image src={cartProduct.product.coverUrl} size="small" />
-                </Link>
-              </div>
-              <div>
-                <List.Content>
+                <div>
                   <Link to={`/products/${cartProduct.product.id}`}>
-                    <List.Header as="h3" >{cartProduct.product.title}</List.Header>
+                    <Image src={cartProduct.product.coverUrl} size="small" />
                   </Link>
-                  <List.Description as="p">
-                    {truncate(cartProduct.product.description)}
-                  </List.Description>
-                </List.Content>
+                </div>
+                <div>
+                  <List.Content>
+                    <Link to={`/products/${cartProduct.product.id}`}>
+                      <List.Header as="h3">
+                        {cartProduct.product.title}
+                      </List.Header>
+                    </Link>
+                    <List.Description as="p">
+                      {truncate(cartProduct.product.description)}
+                    </List.Description>
+                  </List.Content>
+                </div>
+                <div>{displayPrice(cartProduct.product.price)}</div>
+                <div>
+                  <Form
+                    className="inline-block"
+                    onSubmit={e =>
+                      handleUpdateQuantity(
+                        orderId,
+                        cartProduct.product.id,
+                        e.target.update.value
+                      )
+                    }
+                  >
+                    <strong>Quantity:</strong>
+                    <Input
+                      name="update"
+                      type="text"
+                      placeholder={cartProduct.quantity}
+                    />
+                    <Button type="submit">Update</Button>
+                  </Form>
+                  <Button
+                    className="inline-block"
+                    negative
+                    onClick={() =>
+                      handleRemoveProduct(orderId, cartProduct.product.id)
+                    }
+                  >
+                    Remove
+                  </Button>
+                </div>
               </div>
-              <div>{displayPrice(cartProduct.product.price)}</div>
-              <div>
-
-                <Form className="inline-block" onSubmit={e => handleUpdateQuantity(orderId, cartProduct.product.id, e.target.update.value)}>
-                  <strong>Quantity:</strong>
-                  <Input
-                    name="update"
-                    type="text"
-                    placeholder={cartProduct.quantity}
-                  />
-                  <Button type="submit">Update</Button>
-                </Form>
-                <Button className="inline-block" negative onClick={() => handleRemoveProduct(orderId, cartProduct.product.id)}>
-                  Remove
-                </Button>
-              </div>
-            </div>
-          </List.Item>
-        );
-      })}
+            </List.Item>
+          );
+        })}
     </List>
   );
 };
@@ -77,7 +99,12 @@ class Cart extends Component {
             orderId={this.props.cart.id}
           />
           <h1>Subtotal: {displayPrice(this.subtotal())}</h1>
-          <Button positive onClick={() => this.props.history.push('/cart/checkout')}>Check Out</Button>
+          <Button
+            positive
+            onClick={() => this.props.history.push('/cart/checkout')}
+          >
+            Check Out
+          </Button>
         </Container>
       );
     } else {
