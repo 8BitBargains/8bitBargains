@@ -53,9 +53,7 @@ class Routes extends Component {
         />
         <Route
           path="/confirmation/:orderId"
-          render={({ match }) => (
-            <Confirmation match={match} />
-          )}
+          render={({ match }) => <Confirmation match={match} />}
         />
         {isLoggedIn && (
           <Switch>
@@ -109,7 +107,9 @@ const mapDispatch = (dispatch, ownProps) => {
             ownProps.history
           )
         );
-      } else {dispatch(addToCart(product, ownProps.history));}
+      } else {
+        dispatch(addToCart(product, ownProps.history));
+      }
     }
   };
 };

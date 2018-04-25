@@ -4,13 +4,13 @@ const db = require('../db');
 const Order = db.define('order', {
   address: {
     // expecting a comma separated string
-    type: Sequelize.STRING,
+    type: Sequelize.STRING
   },
 
   sessionId: {
     // will store the session which will be configured
     // established when the session is created.
-    type: Sequelize.STRING,
+    type: Sequelize.STRING
   },
 
   status: {
@@ -19,7 +19,6 @@ const Order = db.define('order', {
     values: ['Created', 'Processing', 'Cancelled', 'Completed'],
     defaultValue: 'Created'
   }
-
 });
 
 module.exports = Order;

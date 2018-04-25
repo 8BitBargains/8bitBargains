@@ -5,18 +5,18 @@ import { Item } from 'semantic-ui-react';
 import { fetchUserOrders } from '../store';
 import SingleOrder from './SingleOrder';
 
-const mapState = (state) => {
+const mapState = state => {
   return {
     orders: state.orders,
     isAdmin: state.user.isAdmin
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
-    loadOrders: (isAdmin) => dispatch(fetchUserOrders(isAdmin))
-  }
-}
+    loadOrders: isAdmin => dispatch(fetchUserOrders(isAdmin))
+  };
+};
 
 class AllOrders extends Component {
   componentDidMount() {

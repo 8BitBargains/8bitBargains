@@ -105,14 +105,25 @@ router.put('/checkout', (req, res, next) => {
   // const shipping = req.body.shipping;
   const userId = req.user ? req.user.id : null;
   const sessionId = userId ? null : req.session.id;
-  Order.findOne({ where: { userId, sessionId, status: 'Created' }, include: [Product] })
+  Order.findOne({
+    where: { userId, sessionId, status: 'Created' },
+    include: [Product]
+  })
     .tap(foundOrder => {
       // update quantity of products included in the order
-      console.log(foundOrder);
+      foundOrder.dataValues.products.forEach(product => {
+        const id = product.dataValues.id;
+        const quantity = product.dataValues.product_order.quantity;
+        const inventory = product.dataValues.inventory - quantity;
+        console.log('id, inventory, quantity', id, inventory, quantity);
+        Product.update({ inventory }, { where: { id } });
+        // console.log('inventory ', inventory)
+        // Product.update()
+      });
     })
     .then(foundOrder => {
-        return foundOrder.update({ address, status: 'Processing' });
-      })
+      return foundOrder.update({ address, status: 'Processing' });
+    })
     .tap(() => {
       // Create a new cart for the user.
       Order.create({ userId, sessionId, status: 'Created' });

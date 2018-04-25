@@ -11,7 +11,7 @@ import {
   writeSearchEntry
 } from '../store';
 
-const mapState = (state) => {
+const mapState = state => {
   return {
     cart: state.cart,
     products: state.products,
@@ -23,7 +23,7 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = dispatch => {
   return {
     loadData: () => {
       dispatch(fetchGenres());
@@ -61,13 +61,14 @@ class BrowseProducts extends React.Component {
       })
       .filter(product => {
         if (selectedGenre && selectedSystem) {
-          return product.genreId === selectedGenre && product.systemId === selectedSystem;
-        }
-        else if (selectedGenre) return product.genreId === selectedGenre;
-        else if (selectedSystem) return product.systemId === selectedSystem;
-        else return true;
+          return (
+            product.genreId === selectedGenre &&
+            product.systemId === selectedSystem
+          );
+        } else if (selectedGenre) {return product.genreId === selectedGenre;}
+        else if (selectedSystem) {return product.systemId === selectedSystem;}
+        else {return true;}
       });
-
 
     return (
       <div className="browse-products-container">
