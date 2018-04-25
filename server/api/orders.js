@@ -111,12 +111,15 @@ router.put('/checkout', (req, res, next) => {
   })
     .tap(foundOrder => {
       // update quantity of products included in the order
-      foundOrder.dataValues.products.forEach( product => {
-        const inventory = product.dataValues.inventory;
-        console.log('product.id= ', product.dataValues.id)
-        console.log('inventory ', inventory)
-
-      })
+      foundOrder.dataValues.products.forEach(product => {
+        const id = product.dataValues.id;
+        const quantity = product.dataValues.product_order.quantity;
+        const inventory = product.dataValues.inventory - quantity;
+        console.log('id, inventory, quantity', id, inventory, quantity);
+        Product.update({ inventory }, { where: { id } });
+        // console.log('inventory ', inventory)
+        // Product.update()
+      });
     })
     .then(foundOrder => {
       return foundOrder.update({ address, status: 'Processing' });
