@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { List, Image, Input, Container, Button, Form } from 'semantic-ui-react';
-import { displayPrice, truncate } from '../utils';
+import { displayPrice, truncate, subtotal } from '../utils';
 import { connect } from 'react-redux';
 import { fetchCart, updateCart, removeFromCart } from '../store';
 
@@ -80,31 +80,20 @@ class Cart extends Component {
     this.props.loadCart();
   }
 
-  subtotal = () => {
-    let subtotal = 0;
-    this.props.cart.cartProducts.forEach(product => {
-      subtotal += product.product.price * product.quantity;
-    });
-    return subtotal;
-  };
-
   render() {
-    if (this.props.cart.cartProducts.length) {
+    const { handleRemoveProduct, handleUpdateQuantity, cart, history } = this.props;
+    const cartProducts = cart.cartProducts;
+    if (cartProducts.length) {
       return (
         <Container>
           <ItemList
-            cartProducts={this.props.cart.cartProducts}
-            handleUpdateQuantity={this.props.handleUpdateQuantity}
-            handleRemoveProduct={this.props.handleRemoveProduct}
-            orderId={this.props.cart.id}
+            cartProducts={cartProducts}
+            handleUpdateQuantity={handleUpdateQuantity}
+            handleRemoveProduct={handleRemoveProduct}
+            orderId={cart.id}
           />
-          <h1>Subtotal: {displayPrice(this.subtotal())}</h1>
-          <Button
-            positive
-            onClick={() => this.props.history.push('/cart/checkout')}
-          >
-            Check Out
-          </Button>
+          <h1>Subtotal: {displayPrice(subtotal(cartProducts))}</h1>
+          <Button positive onClick={() => history.push('/cart/checkout')}>Check Out</Button>
         </Container>
       );
     } else {
