@@ -17,3 +17,4 @@ router.get('/:genreId', (req, res, next) => {
     .then(genre => res.json(genre))
     .catch(next);
 });
+

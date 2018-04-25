@@ -1,4 +1,4 @@
-const {expect} = require('chai');
+const { expect } = require('chai');
 const request = require('supertest');
 const db = require('../db');
 const app = require('../index');
@@ -7,7 +7,7 @@ const Genre = db.model('genre');
 // tests all routes for genre model
 describe('Genre routes', () => {
   beforeEach(() => {
-    return db.sync({force: true});
+    return db.sync({ force: true });
   });
 
   describe('/api/genres/', () => {

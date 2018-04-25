@@ -53,16 +53,14 @@ class Routes extends Component {
         />
         <Route
           path="/confirmation/:orderId"
-          render={({ match }) => (
-            <Confirmation match={match} />
-          )}
+          render={({ match }) => <Confirmation match={match} />}
         />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
             <Route path="/order-history" component={AllOrders} />
-            <Route path="/admin" component={AdminPanel} />
+            {isAdmin && <Route path="/admin" component={AdminPanel} />}
           </Switch>
         )}
         {/* Displays our Browse component as a fallback */}
@@ -109,7 +107,9 @@ const mapDispatch = (dispatch, ownProps) => {
             ownProps.history
           )
         );
-      } else {dispatch(addToCart(product, ownProps.history));}
+      } else {
+        dispatch(addToCart(product, ownProps.history));
+      }
     }
   };
 };

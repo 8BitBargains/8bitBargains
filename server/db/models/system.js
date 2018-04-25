@@ -14,11 +14,9 @@ module.exports = System;
  * instanceMethods
  */
 
-
 /**
  * classMethods
  */
-
 
 /**
  * hooks

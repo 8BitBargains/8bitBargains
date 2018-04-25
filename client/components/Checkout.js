@@ -10,17 +10,17 @@ const initialState = {
   city: '',
   state: '',
   country: '',
-  shipping: '',
+  shipping: ''
 };
 
 class Checkout extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = initialState;
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange (evt, value) {
+  handleChange(evt, value) {
     // updates local state only based on the change of the form inputs
     let newState = {};
     let key;
@@ -48,21 +48,35 @@ class Checkout extends Component {
     return (
       <Container>
         <Form id="order-info-form" >
-
           <div className="component" >
             <div className="section">
               <label>Shipping Address</label>
               <Form.Field required>
                 <label>Name</label>
-                <Input name="name" value={name} onChange={handleChange} placeholder="Name" />
+                <Input
+                  name="name"
+                  value={name}
+                  onChange={handleChange}
+                  placeholder="Name"
+                />
               </Form.Field>
               <Form.Field required>
                 <label>Address</label>
-                <Input name="address" value={address} onChange={handleChange} placeholder="Address" />
+                <Input
+                  name="address"
+                  value={address}
+                  onChange={handleChange}
+                  placeholder="Address"
+                />
               </Form.Field>
               <Form.Field required>
                 <label>City</label>
-                <Input name="city" value={city} onChange={handleChange} placeholder="City" />
+                <Input
+                  name="city"
+                  value={city}
+                  onChange={handleChange}
+                  placeholder="City"
+                />
               </Form.Field>
               <Form.Field required>
                 <label>State</label>
@@ -71,7 +85,8 @@ class Checkout extends Component {
                   value={state}
                   onChange={(evt, { value }) => handleChange('state', value)}
                   placeholder="State"
-                  options={stateOptions} />
+                  options={stateOptions}
+                />
               </Form.Field>
               <Form.Field required>
                 <label>Country</label>
@@ -80,7 +95,8 @@ class Checkout extends Component {
                   value={country}
                   onChange={(evt, { value }) => handleChange('country', value)}
                   placeholder="Country"
-                  options={countryOptions} />
+                  options={countryOptions}
+                />
               </Form.Field>
               <Form.Field required>
                 <label>Shipping Options</label>
@@ -89,7 +105,8 @@ class Checkout extends Component {
                   value={shipping}
                   onChange={(evt, { value }) => handleChange('shipping', value)}
                   placeholder="Shipping Options"
-                  options={shippingOptions} />
+                  options={shippingOptions}
+                />
               </Form.Field>
             </div>
           </div>

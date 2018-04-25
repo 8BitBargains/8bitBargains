@@ -21,7 +21,8 @@ class Navbar extends React.Component {
             <Menu.Menu>
               {/* The navbar will show these links after you log in */}
               <Menu.Item
-                as={Link} to="/home"
+                as={Link}
+                to="/home"
                 name="home"
                 active={activeItem === 'home'}
                 onClick={this.handleItemClick}
@@ -29,7 +30,8 @@ class Navbar extends React.Component {
                 Home
               </Menu.Item>
               <Menu.Item
-                as={Link} to="/logout"
+                as={Link}
+                to="/logout"
                 name="logout"
                 onClick={this.props.handleLogout}
               >
@@ -58,20 +60,24 @@ class Navbar extends React.Component {
               </Menu.Menu>
             )}
 
-          <Menu.Menu>
-            <Menu.Item
-              as={Link} to="/admin"
-              name="admin"
-              active={activeItem === 'admin'}
-              onClick={this.handleItemClick}
-            >
-              Admin Panel
-            </Menu.Item>
-          </Menu.Menu>
+          {this.props.isAdmin && (
+            <Menu.Menu>
+              <Menu.Item
+                as={Link} to="/admin"
+                name="admin"
+                active={activeItem === 'admin'}
+                onClick={this.handleItemClick}
+              >
+                Admin Panel
+              </Menu.Item>
+            </Menu.Menu>
+          )}
+
           {/* The navbar will always show these links */}
           <Menu.Menu>
             <Menu.Item
-              as={Link} to="/products"
+              as={Link}
+              to="/products"
               name="browse"
               active={activeItem === 'browse'}
               onClick={this.handleItemClick}
@@ -79,7 +85,8 @@ class Navbar extends React.Component {
               Browse
             </Menu.Item>
             <Menu.Item
-              as={Link} to="/cart"
+              as={Link}
+              to="/cart"
               name="cart"
               active={activeItem === 'cart'}
               onClick={this.handleItemClick}
@@ -93,7 +100,6 @@ class Navbar extends React.Component {
     );
   }
 }
-
 
 /**
  * CONTAINER

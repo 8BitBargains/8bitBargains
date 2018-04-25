@@ -20,7 +20,7 @@ export const fetchLastOrder = orderId => dispatch => {
     .then(order => {
       dispatch(getLastOrder(order));
     });
-}
+};
 
 /**
  * REDUCER

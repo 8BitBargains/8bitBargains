@@ -5,7 +5,7 @@ const productOrder = db.define('product_order', {
   quantity: {
     // number of products in cart which defaults to 1 when item is first added
     type: Sequelize.INTEGER,
-    defaultValue: 1,
+    defaultValue: 1
   },
 
   salePrice: {

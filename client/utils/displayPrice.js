@@ -1,4 +1,3 @@
-
 // takes in price as an integer and converts to a currency-formatted string as ($0.00)
 export default function displayPrice(price) {
   const priceStr = price.toString();
