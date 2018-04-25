@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { shippingOptions, stateOptions, countryOptions, subtotal } from '../utils';
 import CheckoutButton from './stripe/Checkout';
 
+
 const initialState = {
   name: '',
   address: '',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import OrderItem from './OrderItem';
-import { displayPrice, subtotal } from '../utils';
+import { displayPrice, subtotal, parseAddress } from '../utils';
 
 const Order = props => {
   if (props.order) {
@@ -12,6 +12,8 @@ const Order = props => {
     order.products.forEach(product => {
       orderProducts.push({product, quantity: product.product_order.quantity});
     });
+
+    let address = parseAddress(order.address);
 
     return (
       <Table padded="very" singleLine fixed color="green">
@@ -25,8 +27,14 @@ const Order = props => {
         </Table.Body>
         <Table.Footer>
           <Table.Row>
+            <Table.Cell>Name: {address.name}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Address line 1: {address.address}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
             <Table.Cell>
-              Address: {order.address}
+              Address line 2: {address.city}, {address.state} {address.country}
             </Table.Cell>
             <Table.Cell textAlign="right">
               Total: {displayPrice(subtotal(orderProducts))}
